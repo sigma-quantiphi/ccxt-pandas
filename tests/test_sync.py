@@ -5,7 +5,7 @@ import pytest
 import pandas as pd
 from dotenv import load_dotenv
 
-from crypto_pandas.ccxt.ccxt_pandas_exchange import CCXTPandasExchange
+from ccxt_pandas.wrappers.ccxt_pandas_exchange import CCXTPandasExchange
 
 load_dotenv()
 symbol = "BNB/USDT"
@@ -395,6 +395,13 @@ def test_fetch_funding_interval(okx_exchange):
     data = okx_exchange.fetch_funding_interval(symbol="BTC/USDT:USDT")
     print(data)
     assert isinstance(data, dict)
+
+
+def test_fetch_open_interests(okx_exchange):
+    data = okx_exchange.fetch_open_interests()
+    print(data)
+    print(data.dtypes)
+    assert isinstance(data, pd.DataFrame)
 
 
 def test_fetch_funding_intervals(binance_exchange):

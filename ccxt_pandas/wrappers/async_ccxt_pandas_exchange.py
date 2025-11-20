@@ -10,22 +10,22 @@ from dataclasses import dataclass, field
 
 from async_lru import alru_cache
 
-from crypto_pandas.ccxt.base_processor import BaseProcessor
-from crypto_pandas.ccxt.method_mappings import (
+from ccxt_pandas.wrappers.base_processor import BaseProcessor
+from ccxt_pandas.wrappers.method_mappings import (
     bulk_order_methods,
     single_order_methods,
     symbol_order_methods,
     modified_methods,
 )
-from crypto_pandas.utils.async_ccxt_pandas_exchange_typed import (
+from ccxt_pandas.utils.async_ccxt_pandas_exchange_typed import (
     AsyncCCXTPandasExchangeTyped,
 )
-from crypto_pandas.utils.pandas_utils import (
+from ccxt_pandas.utils.pandas_utils import (
     timestamp_to_int,
     preprocess_order,
     preprocess_order_dataframe,
 )
-from crypto_pandas.utils.utils import exchange_has_method
+from ccxt_pandas.utils.utils import exchange_has_method
 
 if sys.platform.startswith("win"):
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
@@ -34,11 +34,11 @@ if sys.platform.startswith("win"):
 @dataclass
 class AsyncCCXTPandasExchange(AsyncCCXTPandasExchangeTyped):
     """
-    An asynchronous wrapper class for ccxt Exchange that integrates pandas for enhanced data handling
+    An asynchronous wrapper class for wrappers Exchange that integrates pandas for enhanced data handling
     and provides preprocessing utilities for working with cryptocurrency trading data.
 
     Attributes:
-        exchange (ccxt.Exchange): The ccxt exchange instance, defaulting to Binance.
+        exchange (ccxt.Exchange): The wrappers exchange instance, defaulting to Binance.
         exchange_name (str | None): The name of the exchange, used for processor initialization.
         account_name (str | None): The account name, used for processor initialization.
         dropna_fields (bool): Determines whether empty (NaN) columns are removed from DataFrame outputs.
@@ -56,12 +56,12 @@ class AsyncCCXTPandasExchange(AsyncCCXTPandasExchangeTyped):
             - "warn": Logs a warning while removing the order.
             - "clip": Adjusts the price to fit within predefined limits.
         semaphore_value (int): The value for the asyncio Semaphore controlling concurrent requests.
-        _ccxt_processor (BaseProcessor): The processor handling preprocessing tasks for ccxt methods.
+        _ccxt_processor (BaseProcessor): The processor handling preprocessing tasks for wrappers methods.
         _semaphore (Semaphore): An asyncio Semaphore instance to limit concurrency.
 
     Methods:
         __getattr__(method_name: str) -> Callable:
-            Dynamically intercepts ccxt methods to preprocess inputs/outputs and adds semaphore control.
+            Dynamically intercepts wrappers methods to preprocess inputs/outputs and adds semaphore control.
 
         load_cached_markets(params: dict = {}) -> pd.DataFrame:
             Loads and caches markets data asynchronously, with optional parameters for customization.

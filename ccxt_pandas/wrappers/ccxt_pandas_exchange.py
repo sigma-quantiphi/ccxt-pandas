@@ -6,20 +6,20 @@ from dataclasses import dataclass, field
 
 from cachetools.func import ttl_cache
 
-from crypto_pandas.ccxt.base_processor import BaseProcessor
-from crypto_pandas.ccxt.method_mappings import (
+from ccxt_pandas.wrappers.base_processor import BaseProcessor
+from ccxt_pandas.wrappers.method_mappings import (
     bulk_order_methods,
     single_order_methods,
     symbol_order_methods,
     modified_methods,
 )
-from crypto_pandas.utils.ccxt_pandas_exchange_typed import CCXTPandasExchangeTyped
-from crypto_pandas.utils.pandas_utils import (
+from ccxt_pandas.utils.ccxt_pandas_exchange_typed import CCXTPandasExchangeTyped
+from ccxt_pandas.utils.pandas_utils import (
     timestamp_to_int,
     preprocess_order,
     preprocess_order_dataframe,
 )
-from crypto_pandas.utils.utils import exchange_has_method
+from ccxt_pandas.utils.utils import exchange_has_method
 
 
 @dataclass

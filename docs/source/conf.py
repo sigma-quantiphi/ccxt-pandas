@@ -12,7 +12,7 @@ import datetime
 
 sys.path.insert(0, os.path.abspath("../../"))  # adjust based on where your code is
 
-project = "Crypto-Pandas"
+project = "CCXT-Pandas"
 copyright = f"{datetime.datetime.now().year}, Sigma Quantiphi"
 author = "Sigma Quantiphi"
 with open("../../pyproject.toml", "rb") as toml_file:
@@ -47,7 +47,7 @@ exclude_patterns = []
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
-html_baseurl = "https://crypto-pandas.readthedocs.io/en/latest/"
+html_baseurl = "https://ccxt-pandas.readthedocs.io/en/latest/"
 html_theme = "furo"
 html_static_path = ["_static"]
 html_context = {"default_mode": "dark"}
@@ -56,10 +56,10 @@ html_favicon = "_static/favicon.png"
 html_theme_options = {
     # shows a GitHub icon in the header **and**
     # an “Edit this page” button in the right sidebar
-    "source_repository": "https://github.com/sigma-quantiphi/crypto-pandas/",
+    "source_repository": "https://github.com/sigma-quantiphi/ccxt-pandas/",
     "source_branch": "main",  # or "master"
     "source_directory": "docs/",  # path inside the repo
 }
 ogp_site_url = html_baseurl  # reuse the value above
-ogp_site_name = "Crypto-Pandas Docs"
+ogp_site_name = "CCXT-Pandas Docs"
 ogp_description_length = 180
