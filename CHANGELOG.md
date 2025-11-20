@@ -1,3 +1,6 @@
+## v0.13.0
+- Renaming project to `CCXT-Pandas` for clearer link between Pandas & CCXT.
+
 ## v0.12.7
 - Addressed Pandera import issue.
 
@@ -131,7 +134,7 @@ to determine if they want a warning when price/volume out of limits range or if 
 - `async_concat_results` can now accept awaitable, listvawaitable or listvlistvawaitable
 
 ## v0.9.5
-- Introduced `account` and `exchange` parameters in BaseProcessor for Crypto-Pandas-Pro.
+- Introduced `account` and `exchange` parameters in BaseProcessor for CCXT-Pandas-Pro.
 - Made `BaseProcessor` attribute of CCXTPandasExchange.
 
 ## v0.9.1
@@ -192,7 +195,7 @@ e.g: `{"days": -1, "hour": 0, "minute": 0, "seconds": 0}` to set  to yesterday m
 - Fixed `fetch_funding_history` API call in both sync and async class.
 
 ## v0.5.0
-- Transformed `orders_dataframe_preprocessing` into standard function to allow simpler use within crypto-pandas-pro.
+- Transformed `orders_dataframe_preprocessing` into standard function to allow simpler use within ccxt-pandas-pro.
 
 ## v0.4.11
 - Adding default `WindowsSelectorEventLoopPolicy` to `AsyncCCXTPandasExchange`.

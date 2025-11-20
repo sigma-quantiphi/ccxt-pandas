@@ -2,7 +2,7 @@ import asyncio
 import ccxt.pro as ccxt_pro
 import pandas as pd
 
-from crypto_pandas import AsyncCCXTPandasExchange
+from ccxt_pandas import AsyncCCXTPandasExchange
 
 exchange = ccxt_pro.binance()
 pandas_exchange = AsyncCCXTPandasExchange(exchange=exchange)

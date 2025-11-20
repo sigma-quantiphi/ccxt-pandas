@@ -11,15 +11,15 @@ class CCXTPandasExchangeTyped(Protocol):
     def watch_order_book_for_symbols(
         self, symbols: List[str], limit: Int = None, params={}
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.watch_order_book_for_symbols"""
+        """Returns a pd.DataFrame from wrappers.watch_order_book_for_symbols"""
         ...
 
     def watch_ticker(self, symbol: str, params={}) -> dict:
-        """Returns a dict from ccxt.watch_ticker"""
+        """Returns a dict from wrappers.watch_ticker"""
         ...
 
     def watch_funding_rate(self, symbol: str, params={}) -> dict:
-        """Returns a dict from ccxt.watch_funding_rate"""
+        """Returns a dict from wrappers.watch_funding_rate"""
         ...
 
     def watch_trades(
@@ -29,11 +29,11 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.watch_trades"""
+        """Returns a pd.DataFrame from wrappers.watch_trades"""
         ...
 
     def fetch_tickers(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_tickers"""
+        """Returns a pd.DataFrame from wrappers.fetch_tickers"""
         ...
 
     def watch_ohlcv_for_symbols(
@@ -43,7 +43,7 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.watch_ohlcv_for_symbols"""
+        """Returns a pd.DataFrame from wrappers.watch_ohlcv_for_symbols"""
         ...
 
     def watch_orders_for_symbols(
@@ -53,31 +53,31 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.watch_orders_for_symbols"""
+        """Returns a pd.DataFrame from wrappers.watch_orders_for_symbols"""
         ...
 
     def fetch_greeks(self, symbol: str, params={}) -> dict:
-        """Returns a dict from ccxt.fetch_greeks"""
+        """Returns a dict from wrappers.fetch_greeks"""
         ...
 
     def fetch_deposit_addresses(self, codes: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_deposit_addresses"""
+        """Returns a pd.DataFrame from wrappers.fetch_deposit_addresses"""
         ...
 
     def fetch_cross_borrow_rates(self, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_cross_borrow_rates"""
+        """Returns a pd.DataFrame from wrappers.fetch_cross_borrow_rates"""
         ...
 
     def fetch_funding_rates(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_funding_rates"""
+        """Returns a pd.DataFrame from wrappers.fetch_funding_rates"""
         ...
 
     def watch_tickers(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.watch_tickers"""
+        """Returns a pd.DataFrame from wrappers.watch_tickers"""
         ...
 
     def fetch_isolated_borrow_rates(self, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_isolated_borrow_rates"""
+        """Returns a pd.DataFrame from wrappers.fetch_isolated_borrow_rates"""
         ...
 
     def fetch_transfers(
@@ -87,7 +87,7 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_transfers"""
+        """Returns a pd.DataFrame from wrappers.fetch_transfers"""
         ...
 
     def watch_my_liquidations(
@@ -97,7 +97,7 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.watch_my_liquidations"""
+        """Returns a pd.DataFrame from wrappers.watch_my_liquidations"""
         ...
 
     def watch_liquidations_for_symbols(
@@ -107,15 +107,15 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.watch_liquidations_for_symbols"""
+        """Returns a pd.DataFrame from wrappers.watch_liquidations_for_symbols"""
         ...
 
     def fetch_positions_risk(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_positions_risk"""
+        """Returns a pd.DataFrame from wrappers.fetch_positions_risk"""
         ...
 
     def fetch_trading_fee(self, symbol: str, params={}) -> dict:
-        """Returns a dict from ccxt.fetch_trading_fee"""
+        """Returns a dict from wrappers.fetch_trading_fee"""
         ...
 
     def fetch_ledger(
@@ -125,19 +125,19 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_ledger"""
+        """Returns a pd.DataFrame from wrappers.fetch_ledger"""
         ...
 
     def fetch_leverages(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_leverages"""
+        """Returns a pd.DataFrame from wrappers.fetch_leverages"""
         ...
 
     def cancel_order(self, id: str, symbol: Str = None, params={}) -> dict:
-        """Returns a dict from ccxt.cancel_order"""
+        """Returns a dict from wrappers.cancel_order"""
         ...
 
     def fetch_bids_asks(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_bids_asks"""
+        """Returns a pd.DataFrame from wrappers.fetch_bids_asks"""
         ...
 
     def fetch_funding_history(
@@ -147,7 +147,7 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_funding_history"""
+        """Returns a pd.DataFrame from wrappers.fetch_funding_history"""
         ...
 
     def watch_my_trades_for_symbols(
@@ -157,7 +157,7 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.watch_my_trades_for_symbols"""
+        """Returns a pd.DataFrame from wrappers.watch_my_trades_for_symbols"""
         ...
 
     def watch_liquidations(
@@ -167,7 +167,7 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.watch_liquidations"""
+        """Returns a pd.DataFrame from wrappers.watch_liquidations"""
         ...
 
     def create_order(
@@ -179,11 +179,11 @@ class CCXTPandasExchangeTyped(Protocol):
         price: Union[NoneType, str, float, int, Decimal] = None,
         params={},
     ) -> dict:
-        """Returns a dict from ccxt.create_order"""
+        """Returns a dict from wrappers.create_order"""
         ...
 
     def fetch_position(self, symbol: str, params={}) -> dict:
-        """Returns a dict from ccxt.fetch_position"""
+        """Returns a dict from wrappers.fetch_position"""
         ...
 
     def watch_positions(
@@ -193,11 +193,11 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.watch_positions"""
+        """Returns a pd.DataFrame from wrappers.watch_positions"""
         ...
 
     def edit_orders(self, orders: pd.DataFrame, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.edit_orders"""
+        """Returns a pd.DataFrame from wrappers.edit_orders"""
         ...
 
     def fetch_my_liquidations(
@@ -207,15 +207,15 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_my_liquidations"""
+        """Returns a pd.DataFrame from wrappers.fetch_my_liquidations"""
         ...
 
     def watch_bids_asks(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.watch_bids_asks"""
+        """Returns a pd.DataFrame from wrappers.watch_bids_asks"""
         ...
 
     def fetch_open_interest(self, symbol: str, params={}) -> dict:
-        """Returns a dict from ccxt.fetch_open_interest"""
+        """Returns a dict from wrappers.fetch_open_interest"""
         ...
 
     def watch_trades_for_symbols(
@@ -225,27 +225,27 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.watch_trades_for_symbols"""
+        """Returns a pd.DataFrame from wrappers.watch_trades_for_symbols"""
         ...
 
     def watch_balance(self, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.watch_balance"""
+        """Returns a pd.DataFrame from wrappers.watch_balance"""
         ...
 
     def fetch_currencies(self, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_currencies"""
+        """Returns a pd.DataFrame from wrappers.fetch_currencies"""
         ...
 
     def fetch_transaction_fees(self, codes: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_transaction_fees"""
+        """Returns a pd.DataFrame from wrappers.fetch_transaction_fees"""
         ...
 
     def fetch_isolated_borrow_rate(self, symbol: str, params={}) -> dict:
-        """Returns a dict from ccxt.fetch_isolated_borrow_rate"""
+        """Returns a dict from wrappers.fetch_isolated_borrow_rate"""
         ...
 
     def fetch_markets(self, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_markets"""
+        """Returns a pd.DataFrame from wrappers.fetch_markets"""
         ...
 
     def fetch_orders(
@@ -255,27 +255,27 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_orders"""
+        """Returns a pd.DataFrame from wrappers.fetch_orders"""
         ...
 
     def fetch_last_prices(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_last_prices"""
+        """Returns a pd.DataFrame from wrappers.fetch_last_prices"""
         ...
 
     def fetch_margin_modes(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_margin_modes"""
+        """Returns a pd.DataFrame from wrappers.fetch_margin_modes"""
         ...
 
     def fetch_funding_rate(self, symbol: str, params={}) -> dict:
-        """Returns a dict from ccxt.fetch_funding_rate"""
+        """Returns a dict from wrappers.fetch_funding_rate"""
         ...
 
     def fetch_mark_prices(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_mark_prices"""
+        """Returns a pd.DataFrame from wrappers.fetch_mark_prices"""
         ...
 
     def fetch_order(self, id: str, symbol: Str = None, params={}) -> dict:
-        """Returns a dict from ccxt.fetch_order"""
+        """Returns a dict from wrappers.fetch_order"""
         ...
 
     def fetch_positions_history(
@@ -285,29 +285,29 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_positions_history"""
+        """Returns a pd.DataFrame from wrappers.fetch_positions_history"""
         ...
 
     def watch_funding_rates(self, symbols: List[str], params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.watch_funding_rates"""
+        """Returns a pd.DataFrame from wrappers.watch_funding_rates"""
         ...
 
     def create_orders(self, orders: pd.DataFrame, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.create_orders"""
+        """Returns a pd.DataFrame from wrappers.create_orders"""
         ...
 
     def fetch_status(self, params={}) -> dict:
-        """Returns a dict from ccxt.fetch_status"""
+        """Returns a dict from wrappers.fetch_status"""
         ...
 
     def fetch_option_chain(self, code: str, params={}) -> dict:
-        """Returns a dict from ccxt.fetch_option_chain"""
+        """Returns a dict from wrappers.fetch_option_chain"""
         ...
 
     def fetch_order_book(
         self, symbol: str, limit: Int = None, params={}
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_order_book"""
+        """Returns a pd.DataFrame from wrappers.fetch_order_book"""
         ...
 
     def fetch_open_interest_history(
@@ -318,7 +318,7 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_open_interest_history"""
+        """Returns a pd.DataFrame from wrappers.fetch_open_interest_history"""
         ...
 
     def watch_my_liquidations_for_symbols(
@@ -328,11 +328,11 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.watch_my_liquidations_for_symbols"""
+        """Returns a pd.DataFrame from wrappers.watch_my_liquidations_for_symbols"""
         ...
 
     def fetch_leverage_tiers(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_leverage_tiers"""
+        """Returns a pd.DataFrame from wrappers.fetch_leverage_tiers"""
         ...
 
     def fetch_margin_adjustment_history(
@@ -343,7 +343,7 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Union[NoneType, str, float, int, Decimal] = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_margin_adjustment_history"""
+        """Returns a pd.DataFrame from wrappers.fetch_margin_adjustment_history"""
         ...
 
     def fetch_long_short_ratio_history(
@@ -354,11 +354,11 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_long_short_ratio_history"""
+        """Returns a pd.DataFrame from wrappers.fetch_long_short_ratio_history"""
         ...
 
     def fetch_positions(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_positions"""
+        """Returns a pd.DataFrame from wrappers.fetch_positions"""
         ...
 
     def fetch_liquidations(
@@ -368,7 +368,7 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_liquidations"""
+        """Returns a pd.DataFrame from wrappers.fetch_liquidations"""
         ...
 
     def fetch_funding_rate_history(
@@ -378,11 +378,11 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_funding_rate_history"""
+        """Returns a pd.DataFrame from wrappers.fetch_funding_rate_history"""
         ...
 
     def fetch_mark_price(self, symbol: str, params={}) -> dict:
-        """Returns a dict from ccxt.fetch_mark_price"""
+        """Returns a dict from wrappers.fetch_mark_price"""
         ...
 
     def fetch_withdrawals(
@@ -392,7 +392,7 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_withdrawals"""
+        """Returns a pd.DataFrame from wrappers.fetch_withdrawals"""
         ...
 
     def fetch_deposits(
@@ -402,7 +402,7 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_deposits"""
+        """Returns a pd.DataFrame from wrappers.fetch_deposits"""
         ...
 
     def edit_order(
@@ -415,7 +415,7 @@ class CCXTPandasExchangeTyped(Protocol):
         price: Union[NoneType, str, float, int, Decimal] = None,
         params={},
     ) -> dict:
-        """Returns a dict from ccxt.edit_order"""
+        """Returns a dict from wrappers.edit_order"""
         ...
 
     def fetch_open_orders(
@@ -425,7 +425,7 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_open_orders"""
+        """Returns a pd.DataFrame from wrappers.fetch_open_orders"""
         ...
 
     def fetch_order_trades(
@@ -436,15 +436,15 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_order_trades"""
+        """Returns a pd.DataFrame from wrappers.fetch_order_trades"""
         ...
 
     def fetch_trading_fees(self, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_trading_fees"""
+        """Returns a pd.DataFrame from wrappers.fetch_trading_fees"""
         ...
 
     def fetch_ticker(self, symbol: str, params={}) -> dict:
-        """Returns a dict from ccxt.fetch_ticker"""
+        """Returns a dict from wrappers.fetch_ticker"""
         ...
 
     def fetch_convert_trade_history(
@@ -454,7 +454,7 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_convert_trade_history"""
+        """Returns a pd.DataFrame from wrappers.fetch_convert_trade_history"""
         ...
 
     def fetch_canceled_and_closed_orders(
@@ -464,7 +464,7 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_canceled_and_closed_orders"""
+        """Returns a pd.DataFrame from wrappers.fetch_canceled_and_closed_orders"""
         ...
 
     def fetch_borrow_interest(
@@ -475,7 +475,7 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_borrow_interest"""
+        """Returns a pd.DataFrame from wrappers.fetch_borrow_interest"""
         ...
 
     def fetch_my_trades(
@@ -485,27 +485,27 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_my_trades"""
+        """Returns a pd.DataFrame from wrappers.fetch_my_trades"""
         ...
 
     def cancel_orders_for_symbols(
         self, orders: pd.DataFrame, params={}
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.cancel_orders_for_symbols"""
+        """Returns a pd.DataFrame from wrappers.cancel_orders_for_symbols"""
         ...
 
     def fetch_deposit_withdraw_fee(self, code: str, params={}) -> dict:
-        """Returns a dict from ccxt.fetch_deposit_withdraw_fee"""
+        """Returns a dict from wrappers.fetch_deposit_withdraw_fee"""
         ...
 
     def fetch_option(self, symbol: str, params={}) -> dict:
-        """Returns a dict from ccxt.fetch_option"""
+        """Returns a dict from wrappers.fetch_option"""
         ...
 
     def watch_order_book(
         self, symbol: str, limit: Int = None, params={}
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.watch_order_book"""
+        """Returns a pd.DataFrame from wrappers.watch_order_book"""
         ...
 
     def fetch_ohlcv(
@@ -516,7 +516,7 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_ohlcv"""
+        """Returns a pd.DataFrame from wrappers.fetch_ohlcv"""
         ...
 
     def watch_orders(
@@ -526,7 +526,7 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.watch_orders"""
+        """Returns a pd.DataFrame from wrappers.watch_orders"""
         ...
 
     def fetch_position_history(
@@ -536,7 +536,7 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_position_history"""
+        """Returns a pd.DataFrame from wrappers.fetch_position_history"""
         ...
 
     def fetch_trades(
@@ -546,15 +546,15 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_trades"""
+        """Returns a pd.DataFrame from wrappers.fetch_trades"""
         ...
 
     def cancel_all_orders(self, symbol: Str = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.cancel_all_orders"""
+        """Returns a pd.DataFrame from wrappers.cancel_all_orders"""
         ...
 
     def fetch_convert_currencies(self, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_convert_currencies"""
+        """Returns a pd.DataFrame from wrappers.fetch_convert_currencies"""
         ...
 
     def fetch_deposits_withdrawals(
@@ -564,15 +564,15 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_deposits_withdrawals"""
+        """Returns a pd.DataFrame from wrappers.fetch_deposits_withdrawals"""
         ...
 
     def fetch_balance(self, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_balance"""
+        """Returns a pd.DataFrame from wrappers.fetch_balance"""
         ...
 
     def watch_position(self, symbol: Str = None, params={}) -> dict:
-        """Returns a dict from ccxt.watch_position"""
+        """Returns a dict from wrappers.watch_position"""
         ...
 
     def fetch_closed_orders(
@@ -582,15 +582,15 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_closed_orders"""
+        """Returns a pd.DataFrame from wrappers.fetch_closed_orders"""
         ...
 
     def fetch_accounts(self, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_accounts"""
+        """Returns a pd.DataFrame from wrappers.fetch_accounts"""
         ...
 
     def fetch_all_greeks(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_all_greeks"""
+        """Returns a pd.DataFrame from wrappers.fetch_all_greeks"""
         ...
 
     def watch_ohlcv(
@@ -601,21 +601,21 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.watch_ohlcv"""
+        """Returns a pd.DataFrame from wrappers.watch_ohlcv"""
         ...
 
     def fetch_deposit_withdraw_fees(
         self, codes: Strings = None, params={}
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.fetch_deposit_withdraw_fees"""
+        """Returns a pd.DataFrame from wrappers.fetch_deposit_withdraw_fees"""
         ...
 
     def load_markets(self, reload=False, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.load_markets"""
+        """Returns a pd.DataFrame from wrappers.load_markets"""
         ...
 
     def fetch_cross_borrow_rate(self, code: str, params={}) -> dict:
-        """Returns a dict from ccxt.fetch_cross_borrow_rate"""
+        """Returns a dict from wrappers.fetch_cross_borrow_rate"""
         ...
 
     def watch_my_trades(
@@ -625,5 +625,5 @@ class CCXTPandasExchangeTyped(Protocol):
         limit: Int = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from ccxt.watch_my_trades"""
+        """Returns a pd.DataFrame from wrappers.watch_my_trades"""
         ...

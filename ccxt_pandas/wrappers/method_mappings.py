@@ -1,4 +1,4 @@
-from crypto_pandas.utils.utils import add_camel_case_methods
+from ccxt_pandas.utils.utils import add_camel_case_methods
 
 standard_dataframe_methods = {
     "fetch_accounts",
@@ -66,6 +66,7 @@ markets_dataframe_methods = {
     "fetch_last_prices",
     "fetch_leverages",
     "fetch_mark_prices",
+    "fetch_open_interests",
     "fetch_option_chain",
     "fetch_tickers",
     "fetch_trading_fees",

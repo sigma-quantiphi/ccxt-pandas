@@ -1,6 +1,6 @@
 [project]
-name = "crypto-pandas"
-version = "0.12.7"
+name = "ccxt-pandas"
+version = "0.13.0"
 description = "Library combining the power of CCXT with Pandas."
 authors = [
     {name = "Sigma Quantiphi", email = "contact@sqphi.com"}
@@ -18,12 +18,12 @@ dependencies = [
 ]
 
 [project.urls]
-homepage = "https://github.com/sigma-quantiphi/crypto-pandas"
-repository = "https://github.com/sigma-quantiphi/crypto-pandas"
-documentation = "https://github.com/sigma-quantiphi/crypto-pandas"
+homepage = "https://github.com/sigma-quantiphi/ccxt-pandas"
+repository = "https://github.com/sigma-quantiphi/ccxt-pandas"
+documentation = "https://github.com/sigma-quantiphi/ccxt-pandas"
 
 [tool.poetry]
-include = ["crypto_pandas/*"]
+include = ["ccxt_pandas/*"]
 exclude = ["binder/*", "dist/*", "docs/*", "examples/*", "tests/*", ".env"]
 
 [tool.poetry.group.docs]
