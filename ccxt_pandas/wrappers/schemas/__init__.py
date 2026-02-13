@@ -21,20 +21,27 @@ from ccxt_pandas.wrappers.schemas.borrow_rates_schema import (
     IsolatedBorrowRatesSchema,
 )
 from ccxt_pandas.wrappers.schemas.currency_schema import CurrencySchema
-from ccxt_pandas.wrappers.schemas.deposit_withdraw_fees_schema import DepositWithdrawFeesSchema
+from ccxt_pandas.wrappers.schemas.deposit_withdraw_fees_schema import (
+    DepositWithdrawFeesSchema,
+)
 from ccxt_pandas.wrappers.schemas.funding_history_schema import FundingHistorySchema
 from ccxt_pandas.wrappers.schemas.funding_intervals_schema import FundingIntervalsSchema
 from ccxt_pandas.wrappers.schemas.funding_rate_schema import FundingRateSchema
-from ccxt_pandas.wrappers.schemas.funding_rate_history_schema import FundingRateHistorySchema
+from ccxt_pandas.wrappers.schemas.funding_rate_history_schema import (
+    FundingRateHistorySchema,
+)
 from ccxt_pandas.wrappers.schemas.greeks_schema import GreeksSchema
 from ccxt_pandas.wrappers.schemas.last_prices_schema import LastPricesSchema
+from ccxt_pandas.wrappers.schemas.ledger_schema import LedgerSchema
 from ccxt_pandas.wrappers.schemas.leverages_schema import LeveragesSchema
 from ccxt_pandas.wrappers.schemas.liquidations_schema import LiquidationsSchema
 from ccxt_pandas.wrappers.schemas.long_short_ratio_schema import LongShortRatioSchema
 from ccxt_pandas.wrappers.schemas.mark_prices_schema import MarkPricesSchema
 from ccxt_pandas.wrappers.schemas.market_schema import MarketSchema
 from ccxt_pandas.wrappers.schemas.ohlcv_schema import OHLCVSchema
-from ccxt_pandas.wrappers.schemas.open_interest_history_schema import OpenInterestHistorySchema
+from ccxt_pandas.wrappers.schemas.open_interest_history_schema import (
+    OpenInterestHistorySchema,
+)
 from ccxt_pandas.wrappers.schemas.order_schema import OrderSchema
 from ccxt_pandas.wrappers.schemas.orders_schema import OrdersSchema
 from ccxt_pandas.wrappers.schemas.order_book_schema import OrderBookSchema
@@ -47,7 +54,9 @@ from ccxt_pandas.wrappers.schemas.trade_schema import MyTradesSchema, TradeSchem
 from ccxt_pandas.wrappers.schemas.trading_fees_schema import TradingFeesSchema
 from ccxt_pandas.wrappers.schemas.transactions_schema import TransactionsSchema
 from ccxt_pandas.wrappers.schemas.transfers_schema import TransfersSchema
-from ccxt_pandas.wrappers.schemas.volatility_history_schema import VolatilityHistorySchema
+from ccxt_pandas.wrappers.schemas.volatility_history_schema import (
+    VolatilityHistorySchema,
+)
 
 __all__ = [
     "AccountsSchema",
@@ -72,6 +81,7 @@ __all__ = [
     "GreeksSchema",
     "IsolatedBorrowRatesSchema",
     "LastPricesSchema",
+    "LedgerSchema",
     "LeveragesSchema",
     "LiquidationsSchema",
     "LongShortRatioSchema",
