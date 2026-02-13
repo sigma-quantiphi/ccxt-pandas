@@ -31,12 +31,11 @@ from ccxt_pandas.wrappers.method_mappings import (
     ohlcv_symbols_dataframe_methods,
     dict_methods,
 )
-from ccxt_pandas.wrappers.order_schema import OrderSchema
+from ccxt_pandas.wrappers.schemas.order_schema import OrderSchema
 from ccxt_pandas.utils.pandas_utils import (
     expand_dict_columns,
     determine_mandatory_optional_fields_pandera,
 )
-from pandera.typing import DataFrame
 
 possible_depth_meta = ["symbol", "timestamp", "datetime", "nonce", "exchange", "T", "u"]
 
@@ -265,7 +264,7 @@ class BaseProcessor:
                 value = pd.Timestamp(value, tz="UTC")
             elif self.numeric_fields and (key in self.numeric_fields):
                 value = pd.to_numeric(value, errors="coerce")
-            if value:
+            if value is not None:
                 if isinstance(value, (list, set, tuple)) or pd.notnull(value):
                     new_data[key] = value
         if self.exchange_name:
@@ -332,14 +331,13 @@ class BaseProcessor:
         self, data: list | dict, column_names: tuple = None
     ) -> pd.DataFrame:
         """
-                Convert a list of dictionaries into a pandas DataFrame and preprocess it.
+        Convert a list of dictionaries into a pandas DataFrame and preprocess it.
 
-                Args:
-                    data (list): Raw data returned from the API.
-                    column_names (tuple, optional): Column names for the DataFrame.
-        symbol (str): The trading pair (e.g., "BTC/USDT") associated with the OHLCV data.
-                Returns:
-                    pd.DataFrame: A preprocessed DataFrame.
+        Args:
+            data (list): Raw data returned from the API.
+            column_names (tuple, optional): Column names for the DataFrame.
+        Returns:
+            pd.DataFrame: A preprocessed DataFrame.
         """
         data = pd.DataFrame(data=data)
         if column_names:
@@ -365,16 +363,16 @@ class BaseProcessor:
             ]
             network["id"] = row["id"]
             networks.append(network.copy())
-        networks = (
-            pd.concat(networks)
-            .drop(columns=["network"], errors="ignore")
-            .reset_index()
-            .rename(columns={"index": "network"})
-        )
-        return self.preprocess_dataframe(
-            data.merge(networks).drop(
-                columns=["networks", "network_info", "fees"], errors="ignore"
+        if networks:
+            networks = (
+                pd.concat(networks)
+                .drop(columns=["network"], errors="ignore")
+                .reset_index()
+                .rename(columns={"index": "network"})
             )
+            data = data.merge(networks)
+        return self.preprocess_dataframe(
+            data.drop(columns=["networks", "network_info", "fees"], errors="ignore")
         )
 
     def balance_to_dataframe(self, data: dict) -> pd.DataFrame:
@@ -385,16 +383,18 @@ class BaseProcessor:
                     df[column] = df["symbol"].map(data[column])
         else:
             df = pd.DataFrame(data={"symbol": data.keys()})
-            df = df.query("~(symbol in ['info', 'timestamp', 'datetime'])").reset_index(
+            df = df[~df["symbol"].isin(["info", "timestamp", "datetime"])].reset_index(
                 drop=True
             )
             df["base"] = df["symbol"].str.split("/").str[0]
             df["quote"] = df["symbol"].str.split("/").str[1]
             for index, row in df.iterrows():
                 for x in ["base", "quote"]:
+                    if pd.isna(row.get(x)):
+                        continue
                     for column in ["free", "used", "total", "debt"]:
                         symbol_data = data[row["symbol"]]
-                        if column in symbol_data:
+                        if row[x] in symbol_data and column in symbol_data[row[x]]:
                             df.loc[index, f"{x}_{column}"] = symbol_data[row[x]][column]
         if "timestamp" in data:
             df["timestamp"] = data["timestamp"]
@@ -414,6 +414,8 @@ class BaseProcessor:
         """
         dfs = []
         if isinstance(data, list):
+            if not data:
+                return pd.DataFrame()
             keys = data[0].keys()
         else:
             keys = data.keys()
@@ -452,6 +454,8 @@ class BaseProcessor:
             if not symbol_data.empty:
                 symbol_data["symbol"] = symbol
                 df.append(symbol_data.copy())
+        if not df:
+            return pd.DataFrame()
         return pd.concat(df, ignore_index=True)
 
     def ohlcv_to_dataframe(self, data: list, symbol: str | None = None) -> pd.DataFrame:
@@ -488,6 +492,8 @@ class BaseProcessor:
                 df = self.ohlcv_to_dataframe(data=ohlcv_data, symbol=symbol)
                 df["timeframe"] = timeframe
                 full_data.append(df.copy())
+        if not full_data:
+            return pd.DataFrame()
         return pd.concat(full_data, ignore_index=True)
 
     def orders_to_dataframe(self, data: list) -> pd.DataFrame:

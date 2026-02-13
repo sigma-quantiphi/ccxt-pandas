@@ -31,12 +31,12 @@ def get_signature_with_custom_types(method: Callable, method_name: str) -> str:
             annotation = str(param.annotation)
             if (
                 "typing." in annotation
-                or "wrappers.base.types." in annotation
+                or "ccxt.base.types." in annotation
                 or "decimal." in annotation
             ):
                 annotation = (
                     annotation.replace("typing.", "")
-                    .replace("wrappers.base.types.", "")
+                    .replace("ccxt.base.types.", "")
                     .replace("decimal.", "")
                 )
                 if annotation in types_dict:
@@ -55,7 +55,7 @@ def get_signature_with_custom_types(method: Callable, method_name: str) -> str:
     return_type = "pd.DataFrame" if method_name in dataframe_methods else "dict"
     return f'''
     def {method_name}({param_str}) -> {return_type}:
-        """Returns a {return_type} from wrappers.{method_name}"""
+        """Returns a {return_type} from ccxt.{method_name}"""
         ...'''
 
 
@@ -63,7 +63,7 @@ def generate_typed_interface_class(base: type, class_name: str) -> str:
     import_lines = """from decimal import Decimal
 from types import NoneType
 from typing import List, Union, Protocol
-from wrappers.base.types import Int, OrderSide, OrderType, Str, Strings
+from ccxt.base.types import Int, OrderSide, OrderType, Str, Strings
 import pandas as pd\n\n
 """
     class_header = f'''class {class_name}(Protocol):
