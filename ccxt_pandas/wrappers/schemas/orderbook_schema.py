@@ -39,6 +39,3 @@ class OrderBookSchema(BaseExchangeSchema):
     nonce: Optional[Series[int]] = pa.Field(
         nullable=True, title="Nonce", description="Order book sequence number"
     )
-    updateId: Optional[Series[int]] = pa.Field(
-        nullable=True, title="Update ID", description="Exchange-specific update ID"
-    )
