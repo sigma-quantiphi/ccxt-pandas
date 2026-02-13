@@ -1,3 +1,27 @@
+## Unreleased
+
+### Added
+- **Claude Code Skill**: Added `.claude/skills/ccxt-pandas-helper.md` skill for accelerated development with Claude Code
+  - Quick reference for sync/async usage patterns
+  - Common DataFrame structures for all methods
+  - Batch operation examples and best practices
+  - Troubleshooting tips and testing setup
+  - Copy to `~/.claude/skills/` to use in any project
+- **Pandera Schemas**: Comprehensive schema definitions for all DataFrame types (35+ schemas)
+  - Located in `ccxt_pandas/wrappers/schemas/`
+  - Documents DataFrame structures for all fetch methods
+  - Includes schemas for: OHLCV, orders, trades, positions, balances, tickers, and more
+  - `FeeFieldsMixin` for consistent fee field handling across schemas
+  - Schemas use data-driven approach based on real exchange responses
+
+### Changed
+- Updated `.gitignore` to allow `.claude/skills/` directory while ignoring other Claude Code local files
+
+### Documentation
+- Added Claude Code Integration section to README.md
+- Added Claude Code Skill section to CLAUDE.md
+- Created `.claude/skills/README.md` with usage instructions
+
 ## v0.13.0
 - Renaming project to `CCXT-Pandas` for clearer link between Pandas & CCXT.
 

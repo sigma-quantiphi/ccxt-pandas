@@ -81,6 +81,23 @@ from ccxt_pandas import CCXTPandasExchange, AsyncCCXTPandasExchange
 
 These are the only two public exports.
 
+## Claude Code Skill
+
+A helper skill is available at `.claude/skills/ccxt-pandas-helper.md` that provides:
+- Quick reference for sync/async usage patterns
+- Common DataFrame structures for all fetch methods
+- Batch operation examples (create/cancel/edit orders)
+- Best practices for rate limiting, testing, and error handling
+- Troubleshooting common issues
+
+**Usage:** Invoke with `/ccxt-pandas-helper` when working in this repository, or copy to `~/.claude/skills/` to use in other projects.
+
+This skill is particularly useful when:
+- Starting a new project that uses ccxt-pandas
+- Helping other developers understand ccxt-pandas patterns
+- Debugging common issues or looking up DataFrame structures
+- Setting up batch operations or async workflows
+
 ## Planning
 
 When creating or updating a plan, always save it to `.claude/plan/plan.md`. This ensures the plan persists across sessions and can be referenced later.
