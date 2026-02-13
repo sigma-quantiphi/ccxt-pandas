@@ -14,6 +14,7 @@ All schemas inherit from BaseExchangeSchema and use permissive validation
 from ccxt_pandas.wrappers.schemas.balance_schema import BalanceSchema
 from ccxt_pandas.wrappers.schemas.base_schemas import BaseExchangeSchema
 from ccxt_pandas.wrappers.schemas.bids_asks_schema import BidsAsksSchema
+from ccxt_pandas.wrappers.schemas.cross_borrow_rates_schema import CrossBorrowRatesSchema
 from ccxt_pandas.wrappers.schemas.currency_schema import CurrencySchema
 from ccxt_pandas.wrappers.schemas.funding_rate_schema import FundingRateSchema
 from ccxt_pandas.wrappers.schemas.funding_rate_history_schema import FundingRateHistorySchema
@@ -39,6 +40,7 @@ __all__ = [
     "OHLCVSchema",
     "BalanceSchema",
     "MarketSchema",
+    "CrossBorrowRatesSchema",
     "CurrencySchema",
     "OrderBookSchema",
     "TickersSchema",
