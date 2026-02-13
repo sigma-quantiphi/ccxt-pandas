@@ -22,6 +22,7 @@ from ccxt_pandas.wrappers.schemas.last_prices_schema import LastPricesSchema
 from ccxt_pandas.wrappers.schemas.mark_prices_schema import MarkPricesSchema
 from ccxt_pandas.wrappers.schemas.market_schema import MarketSchema
 from ccxt_pandas.wrappers.schemas.ohlcv_schema import OHLCVSchema
+from ccxt_pandas.wrappers.schemas.open_interest_history_schema import OpenInterestHistorySchema
 from ccxt_pandas.wrappers.schemas.order_schema import OrderSchema
 from ccxt_pandas.wrappers.schemas.order_book_schema import OrderBookSchema
 from ccxt_pandas.wrappers.schemas.trade_schema import TradeSchema
@@ -41,4 +42,5 @@ __all__ = [
     "GreeksSchema",
     "LastPricesSchema",
     "MarkPricesSchema",
+    "OpenInterestHistorySchema",
 ]

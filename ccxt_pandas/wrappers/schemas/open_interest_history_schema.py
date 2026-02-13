@@ -1,0 +1,48 @@
+"""Open interest history data schema."""
+
+from typing import Optional
+
+import pandas as pd
+import pandera.pandas as pa
+from pandera.typing import Series
+
+from ccxt_pandas.wrappers.schemas.base_schemas import BaseExchangeSchema
+
+
+class OpenInterestHistorySchema(BaseExchangeSchema):
+    """Open interest history data schema.
+
+    Used by methods like fetch_open_interest_history.
+
+    Returns historical open interest data for derivatives contracts.
+    """
+
+    # Required fields
+    symbol: Series[str] = pa.Field(
+        title="Symbol", description="Trading pair"
+    )
+    openInterestAmount: Series[float] = pa.Field(
+        ge=0, title="Open Interest Amount", description="Open interest in base currency"
+    )
+
+    # Optional volume fields
+    baseVolume: Optional[Series[float]] = pa.Field(
+        ge=0, nullable=True, title="Base Volume", description="Volume in base currency"
+    )
+    quoteVolume: Optional[Series[float]] = pa.Field(
+        ge=0, nullable=True, title="Quote Volume", description="Volume in quote currency"
+    )
+
+    # Optional open interest value
+    openInterestValue: Optional[Series[float]] = pa.Field(
+        ge=0, nullable=True, title="Open Interest Value", description="Open interest in quote currency value"
+    )
+
+    # Optional timestamps
+    timestamp: Optional[Series[pd.Timestamp]] = pa.Field(
+        nullable=True, title="Timestamp", description="Open interest timestamp"
+    )
+    datetime: Optional[Series[pd.Timestamp]] = pa.Field(
+        nullable=True, title="Datetime", description="Open interest datetime (alias)"
+    )
+    # Note: exchange field comes from BaseExchangeSchema (Optional)
