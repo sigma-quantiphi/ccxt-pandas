@@ -5,6 +5,7 @@ and risk management tasks, built on top of the ccxt-pandas DataFrame outputs.
 """
 
 from ccxt_pandas.calculations.delta import calculate_delta_exposure
+from ccxt_pandas.calculations.precision import ceil_series, floor_series
 from ccxt_pandas.calculations.trades import (
     aggregate_trades,
     calculate_realized_pnl,
@@ -14,4 +15,6 @@ __all__ = [
     "calculate_delta_exposure",
     "aggregate_trades",
     "calculate_realized_pnl",
+    "floor_series",
+    "ceil_series",
 ]

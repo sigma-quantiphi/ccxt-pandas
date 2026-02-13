@@ -13,6 +13,8 @@ from ccxt_pandas.calculations import (
     calculate_delta_exposure,
     aggregate_trades,
     calculate_realized_pnl,
+    floor_series,
+    ceil_series,
 )
 
 __all__ = [
@@ -26,4 +28,6 @@ __all__ = [
     "calculate_delta_exposure",
     "aggregate_trades",
     "calculate_realized_pnl",
+    "floor_series",
+    "ceil_series",
 ]

@@ -2,16 +2,7 @@ import os
 from typing import Any
 
 import requests
-import numpy as np
 import pandas as pd
-
-
-def floor_series(data: pd.Series, digits: int = 0) -> pd.Series:
-    return pd.Series(np.floor(data * 10**digits) / 10**digits)
-
-
-def ceil_series(data: pd.Series, digits: int = 0) -> pd.Series:
-    return pd.Series(np.ceil(data * 10**digits) / 10**digits)
 
 
 def print_markdown(message: Any) -> None:

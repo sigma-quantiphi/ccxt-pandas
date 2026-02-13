@@ -160,6 +160,90 @@ print(delta)
 
 ---
 
+## Precision & Rounding
+
+### `floor_series()`
+
+Round Series values down to specified decimal places.
+
+**Parameters:**
+- `data`: Series to round
+- `digits`: Number of decimal places (default: `0`)
+
+**Returns:**
+- Series with values rounded down
+
+**Example:**
+
+```python
+import ccxt_pandas as cpd
+import pandas as pd
+
+prices = pd.Series([1.2345, 2.6789, 3.9999])
+
+# Round down to 2 decimals
+floored = cpd.floor_series(prices, digits=2)
+print(floored)
+# 0    1.23
+# 1    2.67
+# 2    3.99
+
+# Round down to integer
+floored = cpd.floor_series(prices)
+print(floored)
+# 0    1.0
+# 1    2.0
+# 2    3.0
+```
+
+**Use cases:**
+- Price precision requirements
+- Rounding amounts down to exchange limits
+- Ensuring minimum tick sizes
+
+---
+
+### `ceil_series()`
+
+Round Series values up to specified decimal places.
+
+**Parameters:**
+- `data`: Series to round
+- `digits`: Number of decimal places (default: `0`)
+
+**Returns:**
+- Series with values rounded up
+
+**Example:**
+
+```python
+import ccxt_pandas as cpd
+import pandas as pd
+
+prices = pd.Series([1.2345, 2.6789, 3.0001])
+
+# Round up to 2 decimals
+ceiled = cpd.ceil_series(prices, digits=2)
+print(ceiled)
+# 0    1.24
+# 1    2.68
+# 2    3.01
+
+# Round up to integer
+ceiled = cpd.ceil_series(prices)
+print(ceiled)
+# 0    2.0
+# 1    3.0
+# 2    4.0
+```
+
+**Use cases:**
+- Minimum order size requirements
+- Ensuring amounts meet exchange minimums
+- Conservative rounding for risk management
+
+---
+
 ## Future Additions
 
 This module is designed to be extensible. Planned additions:
