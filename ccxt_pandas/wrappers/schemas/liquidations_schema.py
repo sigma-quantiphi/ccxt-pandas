@@ -26,11 +26,6 @@ class LiquidationsSchema(BaseExchangeSchema):
     price: Series[float] = pa.Field(
         ge=0, title="Price", description="Liquidation price"
     )
-    side: Series[str] = pa.Field(
-        isin=["buy", "sell"],
-        title="Side",
-        description="Liquidation side: 'buy' or 'sell'",
-    )
     timestamp: Series[pd.Timestamp] = pa.Field(
         title="Timestamp", description="Liquidation timestamp"
     )
@@ -39,6 +34,12 @@ class LiquidationsSchema(BaseExchangeSchema):
     )
 
     # Optional fields (not present in all exchanges)
+    side: Optional[Series[str]] = pa.Field(
+        isin=["buy", "sell"],
+        nullable=True,
+        title="Side",
+        description="Liquidation side: 'buy' or 'sell'",
+    )
     baseValue: Optional[Series[float]] = pa.Field(
         ge=0,
         nullable=True,
