@@ -74,11 +74,6 @@ class MyTradesSchema(TradeSchema, FeeFieldsMixin):
         isin=["taker", "maker"], title="Taker or Maker", description="Whether trade was taker or maker"
     )
 
-    # Override to make fees required for user trades
-    fees: Series[object] = pa.Field(
-        title="Fees", description="Fee details (dict or list)"
-    )
-
     # Override fee fields to make them required for user trades
     fee_currency: Series[str] = pa.Field(
         title="Fee Currency", description="Currency in which fee was charged"
