@@ -3,12 +3,19 @@
 from typing import Optional
 
 import pandas as pd
+import pandera as pa
+from pandera.typing import DataFrame
+
+from ccxt_pandas.wrappers.schemas.balance_schema import BalanceSchema
+from ccxt_pandas.wrappers.schemas.market_schema import MarketSchema
+from ccxt_pandas.wrappers.schemas.positions_schema import PositionsSchema
 
 
+@pa.check_types
 def calculate_delta_exposure(
-    balance: pd.DataFrame,
-    positions: pd.DataFrame,
-    markets: pd.DataFrame,
+    balance: DataFrame[BalanceSchema],
+    positions: DataFrame[PositionsSchema],
+    markets: DataFrame[MarketSchema],
     base_column: str = "base",
     code_column: str = "code",
     amount_column: str = "amount",
@@ -45,11 +52,18 @@ def calculate_delta_exposure(
         1  ETH  12.345678
         2  USDT  1000.00
 
+    Raises:
+        pandera.errors.SchemaError: If any DataFrame doesn't match its schema
+            - balance must match BalanceSchema
+            - positions must match PositionsSchema
+            - markets must match MarketSchema
+
     Notes:
         - For positions, 'long' side is treated as positive exposure
         - For positions, 'short' side is treated as negative exposure
         - Amounts are converted using contractSize for derivatives
         - Balance must have either 'base' column (margin) or 'code' column (spot)
+        - Input validation performed via Pandera schemas
     """
     # Prepare positions with amounts
     positions_calc = positions.merge(
