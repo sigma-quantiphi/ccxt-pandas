@@ -21,7 +21,6 @@ from ccxt_pandas.wrappers.schemas.borrow_rates_schema import (
 )
 from ccxt_pandas.wrappers.schemas.currency_schema import CurrencySchema
 from ccxt_pandas.wrappers.schemas.deposit_withdraw_fees_schema import DepositWithdrawFeesSchema
-from ccxt_pandas.wrappers.schemas.deposits_withdrawals_schema import DepositsWithdrawalsSchema
 from ccxt_pandas.wrappers.schemas.funding_history_schema import FundingHistorySchema
 from ccxt_pandas.wrappers.schemas.funding_intervals_schema import FundingIntervalsSchema
 from ccxt_pandas.wrappers.schemas.funding_rate_schema import FundingRateSchema
@@ -45,6 +44,7 @@ from ccxt_pandas.wrappers.schemas.positions_history_schema import PositionsHisto
 from ccxt_pandas.wrappers.schemas.tickers_schema import TickersSchema
 from ccxt_pandas.wrappers.schemas.trade_schema import MyTradesSchema, TradeSchema
 from ccxt_pandas.wrappers.schemas.trading_fees_schema import TradingFeesSchema
+from ccxt_pandas.wrappers.schemas.transactions_schema import TransactionsSchema
 from ccxt_pandas.wrappers.schemas.transfers_schema import TransfersSchema
 from ccxt_pandas.wrappers.schemas.volatility_history_schema import VolatilityHistorySchema
 
@@ -58,7 +58,6 @@ __all__ = [
     "CrossBorrowRatesSchema",
     "CurrencySchema",
     "DepositWithdrawFeesSchema",
-    "DepositsWithdrawalsSchema",
     "OrderBookSchema",
     "TickersSchema",
     "TradeSchema",
@@ -82,6 +81,7 @@ __all__ = [
     "PositionsSchema",
     "PositionsHistorySchema",
     "TradingFeesSchema",
+    "TransactionsSchema",
     "TransfersSchema",
     "VolatilityHistorySchema",
 ]
