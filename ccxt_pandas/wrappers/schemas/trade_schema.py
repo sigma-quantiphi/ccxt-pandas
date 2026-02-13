@@ -1,4 +1,4 @@
-"""Trade data schema for public trades."""
+"""Trade data schemas for public and user trades."""
 
 from typing import Optional
 
@@ -51,3 +51,38 @@ class TradeSchema(BaseExchangeSchema):
         nullable=True, title="Fees", description="Fee information (can be dict or list)"
     )
     # Note: exchange field comes from BaseExchangeSchema (Optional)
+
+
+class MyTradesSchema(TradeSchema):
+    """User trades (my trades) data schema.
+
+    Used by methods like fetch_my_trades, fetch_order_trades.
+
+    Returns the authenticated user's trade history including fees and order references.
+    Inherits all fields from TradeSchema and adds:
+    - order (order ID that generated the trade)
+    - takerOrMaker (whether trade was taker or maker)
+    - fee_currency (currency in which fee was charged)
+    - fee_cost (fee amount)
+
+    The fees field is also required (overriding the optional in TradeSchema).
+    """
+
+    # Additional required fields for user trades
+    order: Series[str] = pa.Field(
+        title="Order ID", description="Order ID that generated this trade"
+    )
+    takerOrMaker: Series[str] = pa.Field(
+        isin=["taker", "maker"], title="Taker or Maker", description="Whether trade was taker or maker"
+    )
+    fee_currency: Series[str] = pa.Field(
+        title="Fee Currency", description="Currency in which fee was charged"
+    )
+    fee_cost: Series[float] = pa.Field(
+        ge=0, title="Fee Cost", description="Fee amount charged"
+    )
+
+    # Override fees to make it required for user trades
+    fees: Series[object] = pa.Field(
+        title="Fees", description="Fee details (dict or list)"
+    )

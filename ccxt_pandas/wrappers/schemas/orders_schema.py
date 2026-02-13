@@ -1,4 +1,6 @@
-"""Open orders data schema."""
+"""Orders data schema."""
+
+from typing import Optional
 
 import pandas as pd
 import pandera.pandas as pa
@@ -7,13 +9,14 @@ from pandera.typing import Series
 from ccxt_pandas.wrappers.schemas.base_schemas import BaseExchangeSchema
 
 
-class OpenOrdersSchema(BaseExchangeSchema):
-    """Open orders data schema.
+class OrdersSchema(BaseExchangeSchema):
+    """Orders data schema.
 
-    Used by methods like fetch_open_orders, fetch_open_order.
+    Used by methods like fetch_open_orders, fetch_closed_orders, fetch_canceled_orders.
 
-    Returns currently open (unfilled or partially filled) orders.
-    This serves as the base schema for order fetching operations.
+    Returns order information for both open and closed orders. Fields like
+    clientOrderId, lastTradeTimestamp, timeInForce, and average are optional
+    as they may not be present in open orders.
     """
 
     # Required fields
@@ -70,5 +73,19 @@ class OpenOrdersSchema(BaseExchangeSchema):
     )
     fee_currency: Series[str] = pa.Field(
         title="Fee Currency", description="Currency in which fee was charged"
+    )
+
+    # Optional fields (present in closed orders, may not be in open orders)
+    clientOrderId: Optional[Series[str]] = pa.Field(
+        nullable=True, title="Client Order ID", description="User-defined order identifier"
+    )
+    lastTradeTimestamp: Optional[Series[pd.Timestamp]] = pa.Field(
+        nullable=True, title="Last Trade Timestamp", description="Timestamp of last trade execution"
+    )
+    timeInForce: Optional[Series[str]] = pa.Field(
+        nullable=True, title="Time In Force", description="Order time in force (e.g., GTC, IOC, FOK)"
+    )
+    average: Optional[Series[float]] = pa.Field(
+        ge=0, nullable=True, title="Average", description="Average fill price"
     )
     # Note: exchange field comes from BaseExchangeSchema (Optional)
