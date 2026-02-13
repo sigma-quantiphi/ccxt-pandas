@@ -15,6 +15,7 @@ from ccxt_pandas.wrappers.schemas.accounts_schema import AccountsSchema
 from ccxt_pandas.wrappers.schemas.balance_schema import BalanceSchema
 from ccxt_pandas.wrappers.schemas.base_schemas import BaseExchangeSchema
 from ccxt_pandas.wrappers.schemas.bids_asks_schema import BidsAsksSchema
+from ccxt_pandas.wrappers.schemas.borrow_interest_schema import BorrowInterestSchema
 from ccxt_pandas.wrappers.schemas.borrow_rates_schema import (
     CrossBorrowRatesSchema,
     IsolatedBorrowRatesSchema,
@@ -62,6 +63,7 @@ __all__ = [
     "TickersSchema",
     "TradeSchema",
     "BidsAsksSchema",
+    "BorrowInterestSchema",
     "FundingHistorySchema",
     "FundingIntervalsSchema",
     "FundingRateSchema",
