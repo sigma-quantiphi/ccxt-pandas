@@ -19,7 +19,9 @@ class OrderSchema(BaseExchangeSchema):
     )
     symbol: str = pa.Field(description="Unified CCXT market symbol")
     side: str = pa.Field(isin=["buy", "sell"])
-    type: str = pa.Field(isin=["limit", "market", "stop_loss", "take_profit"])
+    type: str = pa.Field(
+        isin=["limit", "market", "stop_loss", "take_profit", "LIMIT_MAKER"]
+    )
     amount: Optional[float] = pa.Field(gt=0)
     price: Optional[float] = pa.Field(ge=0, nullable=True, default=None)
     params: Optional[dict] = pa.Field(nullable=True, default=None)

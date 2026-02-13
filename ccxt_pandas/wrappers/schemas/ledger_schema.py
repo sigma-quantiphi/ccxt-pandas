@@ -23,9 +23,7 @@ class LedgerSchema(BaseExchangeSchema, FeeFieldsMixin):
     direction: Series[str] = pa.Field(
         isin=["in", "out"], title="Direction", description="Direction: 'in' or 'out'"
     )
-    account: Series[str] = pa.Field(
-        title="Account", description="Account identifier"
-    )
+    account: Series[str] = pa.Field(title="Account", description="Account identifier")
     referenceId: Series[str] = pa.Field(
         title="Reference ID", description="ID of trade, transaction, etc."
     )
@@ -35,9 +33,7 @@ class LedgerSchema(BaseExchangeSchema, FeeFieldsMixin):
     type: Series[str] = pa.Field(
         title="Type", description="Reference type (e.g., trade, deposit, withdrawal)"
     )
-    currency: Series[str] = pa.Field(
-        title="Currency", description="Currency code"
-    )
+    currency: Series[str] = pa.Field(title="Currency", description="Currency code")
     amount: Series[float] = pa.Field(
         ge=0, title="Amount", description="Amount (excluding fee)"
     )

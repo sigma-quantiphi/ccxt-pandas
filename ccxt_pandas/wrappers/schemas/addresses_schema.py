@@ -20,7 +20,8 @@ class AddressesSchema(BaseExchangeSchema):
     # Required fields
     currency: Series[str] = pa.Field(title="Currency", description="Currency code")
     network: Series[str] = pa.Field(
-        title="Network", description="Deposit/withdraw network (e.g., ERC20, TRC20, BSC20)"
+        title="Network",
+        description="Deposit/withdraw network (e.g., ERC20, TRC20, BSC20)",
     )
     address: Series[str] = pa.Field(
         title="Address", description="Deposit address for the currency"
