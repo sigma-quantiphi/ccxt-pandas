@@ -22,6 +22,7 @@ from ccxt_pandas.wrappers.schemas.funding_history_schema import FundingHistorySc
 from ccxt_pandas.wrappers.schemas.funding_rate_schema import FundingRateSchema
 from ccxt_pandas.wrappers.schemas.funding_rate_history_schema import FundingRateHistorySchema
 from ccxt_pandas.wrappers.schemas.greeks_schema import GreeksSchema
+from ccxt_pandas.wrappers.schemas.isolated_borrow_rates_schema import IsolatedBorrowRatesSchema
 from ccxt_pandas.wrappers.schemas.last_prices_schema import LastPricesSchema
 from ccxt_pandas.wrappers.schemas.liquidations_schema import LiquidationsSchema
 from ccxt_pandas.wrappers.schemas.long_short_ratio_schema import LongShortRatioSchema
@@ -58,6 +59,7 @@ __all__ = [
     "FundingRateSchema",
     "FundingRateHistorySchema",
     "GreeksSchema",
+    "IsolatedBorrowRatesSchema",
     "LastPricesSchema",
     "LiquidationsSchema",
     "LongShortRatioSchema",
