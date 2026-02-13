@@ -23,6 +23,7 @@ from ccxt_pandas.wrappers.schemas.liquidations_schema import LiquidationsSchema
 from ccxt_pandas.wrappers.schemas.long_short_ratio_schema import LongShortRatioSchema
 from ccxt_pandas.wrappers.schemas.mark_prices_schema import MarkPricesSchema
 from ccxt_pandas.wrappers.schemas.market_schema import MarketSchema
+from ccxt_pandas.wrappers.schemas.my_trades_schema import MyTradesSchema
 from ccxt_pandas.wrappers.schemas.ohlcv_schema import OHLCVSchema
 from ccxt_pandas.wrappers.schemas.open_interest_history_schema import OpenInterestHistorySchema
 from ccxt_pandas.wrappers.schemas.order_schema import OrderSchema
@@ -49,6 +50,7 @@ __all__ = [
     "LiquidationsSchema",
     "LongShortRatioSchema",
     "MarkPricesSchema",
+    "MyTradesSchema",
     "OpenInterestHistorySchema",
     "VolatilityHistorySchema",
 ]
