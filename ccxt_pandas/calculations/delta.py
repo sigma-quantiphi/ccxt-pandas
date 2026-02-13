@@ -1,6 +1,6 @@
 """Delta hedging calculations for portfolio management."""
 
-from typing import Optional
+from typing import Literal, Optional
 
 import pandas as pd
 import pandera as pa
@@ -16,8 +16,7 @@ def calculate_delta_exposure(
     balance: DataFrame[BalanceSchema],
     positions: DataFrame[PositionsSchema],
     markets: DataFrame[MarketSchema],
-    base_column: str = "base",
-    code_column: str = "code",
+    balance_amount: Literal["free", "used", "total"] = "total",
     amount_column: str = "amount",
 ) -> pd.DataFrame:
     """Calculate net delta exposure across spot, swap, and futures positions.
@@ -26,17 +25,16 @@ def calculate_delta_exposure(
     the total exposure in each base currency, useful for delta hedging strategies.
 
     Args:
-        balance: Balance DataFrame from fetch_balance (must have 'code' and 'amount' columns).
-            For spot balances, use 'code' column. For margin balances, ensure 'base' is present.
+        balance: Balance DataFrame from fetch_balance (must have 'code' column and
+            balance amount columns: 'free', 'used', 'total').
         positions: Positions DataFrame from fetch_positions (must have 'symbol', 'contracts',
             'contractSize', and 'side' columns).
         markets: Markets DataFrame from load_markets (must have 'symbol' and 'base' columns).
-        base_column: Column name for base currency (default: 'base').
-        code_column: Column name for currency code in balance (default: 'code').
-        amount_column: Column name for amount/quantity (default: 'amount').
+        balance_amount: Which balance amount to use - 'free', 'used', or 'total' (default: 'total').
+        amount_column: Output column name for amount/quantity (default: 'amount').
 
     Returns:
-        DataFrame with columns: [base_column, amount_column]
+        DataFrame with columns: ['base', amount_column]
         showing net exposure in each base currency.
 
     Example:
@@ -62,12 +60,12 @@ def calculate_delta_exposure(
         - For positions, 'long' side is treated as positive exposure
         - For positions, 'short' side is treated as negative exposure
         - Amounts are converted using contractSize for derivatives
-        - Balance must have either 'base' column (margin) or 'code' column (spot)
+        - Balance uses 'code' column (currency code) which is renamed to 'base'
         - Input validation performed via Pandera schemas
     """
     # Prepare positions with amounts
     positions_calc = positions.merge(
-        markets[["symbol", base_column]], on="symbol", how="left"
+        markets[["symbol", "base"]], on="symbol", how="left"
     )
 
     # Calculate signed amount based on side (long = positive, short = negative)
@@ -76,20 +74,19 @@ def calculate_delta_exposure(
     )
     positions_calc[amount_column] *= positions_calc["contractSize"]
 
-    # Prepare balance DataFrame
-    # If balance has 'code' column (spot), rename to 'base' for consistency
+    # Prepare balance DataFrame - rename code to base and select balance amount
     balance_calc = balance.copy()
-    if code_column in balance_calc.columns and base_column not in balance_calc.columns:
-        balance_calc = balance_calc.rename(columns={code_column: base_column})
+    balance_calc = balance_calc.rename(
+        columns={"code": "base", balance_amount: amount_column}
+    )[["base", amount_column]]
 
-    # Select only base and amount columns for concatenation
-    positions_for_concat = positions_calc[[base_column, amount_column]]
-    balance_for_concat = balance_calc[[base_column, amount_column]]
+    # Select only base and amount columns from positions
+    positions_for_concat = positions_calc[["base", amount_column]]
 
     # Concatenate and sum by base currency
     delta = (
-        pd.concat([balance_for_concat, positions_for_concat], ignore_index=True)
-        .groupby(base_column, as_index=False)[amount_column]
+        pd.concat([balance_calc, positions_for_concat], ignore_index=True)
+        .groupby("base", as_index=False)[amount_column]
         .sum()
     )
 
