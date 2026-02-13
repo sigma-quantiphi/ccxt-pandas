@@ -22,12 +22,6 @@ class TickersSchema(BaseExchangeSchema):
     symbol: Series[str] = pa.Field(
         unique=True, title="Symbol", description="Trading pair"
     )
-    close: Series[float] = pa.Field(
-        ge=0, title="Close", description="Last closing price"
-    )
-    last: Series[float] = pa.Field(
-        ge=0, title="Last", description="Last traded price"
-    )
 
     # Optional timestamp fields
     timestamp: Optional[Series[pd.Timestamp]] = pa.Field(
@@ -38,20 +32,26 @@ class TickersSchema(BaseExchangeSchema):
     )
 
     # Optional price fields
+    open: Optional[Series[float]] = pa.Field(
+        ge=0, nullable=True, title="Open", description="24h opening price"
+    )
     high: Optional[Series[float]] = pa.Field(
         ge=0, nullable=True, title="High", description="24h highest price"
     )
     low: Optional[Series[float]] = pa.Field(
         ge=0, nullable=True, title="Low", description="24h lowest price"
     )
+    close: Optional[Series[float]] = pa.Field(
+        ge=0, nullable=True, title="Close", description="Last closing price"
+    )
+    last: Optional[Series[float]] = pa.Field(
+        ge=0, nullable=True, title="Last", description="Last traded price"
+    )
     bid: Optional[Series[float]] = pa.Field(
         ge=0, nullable=True, title="Bid", description="Best bid price"
     )
     ask: Optional[Series[float]] = pa.Field(
         ge=0, nullable=True, title="Ask", description="Best ask price"
-    )
-    open: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, title="Open", description="24h opening price"
     )
     vwap: Optional[Series[float]] = pa.Field(
         ge=0, nullable=True, title="VWAP", description="Volume weighted average price"
