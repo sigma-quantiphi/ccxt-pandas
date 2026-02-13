@@ -36,6 +36,7 @@ from ccxt_pandas.wrappers.schemas.positions_schema import PositionsSchema
 from ccxt_pandas.wrappers.schemas.positions_history_schema import PositionsHistorySchema
 from ccxt_pandas.wrappers.schemas.tickers_schema import TickersSchema
 from ccxt_pandas.wrappers.schemas.trade_schema import MyTradesSchema, TradeSchema
+from ccxt_pandas.wrappers.schemas.trading_fees_schema import TradingFeesSchema
 from ccxt_pandas.wrappers.schemas.transfers_schema import TransfersSchema
 from ccxt_pandas.wrappers.schemas.volatility_history_schema import VolatilityHistorySchema
 
@@ -66,6 +67,7 @@ __all__ = [
     "OrdersSchema",
     "PositionsSchema",
     "PositionsHistorySchema",
+    "TradingFeesSchema",
     "TransfersSchema",
     "VolatilityHistorySchema",
 ]
