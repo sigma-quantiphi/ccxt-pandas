@@ -140,6 +140,15 @@ bulk_order_methods = {
     "edit_orders_ws",
 }
 symbol_order_methods = {"cancel_orders_for_symbols"}
+orders_methods = {
+    "create_order",
+    "edit_order",
+    "cancel_order",
+    "create_orders",
+    "edit_orders",
+    "cancel_orders",
+    "cancel_orders_for_symbols",
+}
 standard_dataframe_methods = add_camel_case_methods(standard_dataframe_methods)
 markets_dataframe_methods = add_camel_case_methods(markets_dataframe_methods)
 currencies_dataframe_methods = add_camel_case_methods(currencies_dataframe_methods)
@@ -151,6 +160,7 @@ dict_methods = add_camel_case_methods(dict_methods)
 single_order_methods = add_camel_case_methods(single_order_methods)
 bulk_order_methods = add_camel_case_methods(bulk_order_methods)
 symbol_order_methods = add_camel_case_methods(symbol_order_methods)
+orders_methods = add_camel_case_methods(orders_methods)
 dataframe_methods = (
     standard_dataframe_methods
     | markets_dataframe_methods
@@ -159,6 +169,7 @@ dataframe_methods = (
     | ohlcv_dataframe_methods
     | ohlcv_symbols_dataframe_methods
     | orderbook_dataframe_methods
+    | orderbooks_dataframe_methods
     | orders_dataframe_methods
 )
 modified_methods = dataframe_methods | dict_methods

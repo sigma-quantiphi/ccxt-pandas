@@ -20,7 +20,7 @@ class FundingRateSchema(BaseExchangeSchema):
 
     # Required fields
     symbol: Series[str] = pa.Field(
-        title="Symbol", description="Trading pair"
+        unique=True, title="Symbol", description="Trading pair"
     )
     fundingRate: Series[float] = pa.Field(
         title="Funding Rate", description="Current funding rate"

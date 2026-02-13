@@ -80,3 +80,7 @@ from ccxt_pandas import CCXTPandasExchange, AsyncCCXTPandasExchange
 ```
 
 These are the only two public exports.
+
+## Planning
+
+When creating or updating a plan, always save it to `.claude/plan/plan.md`. This ensures the plan persists across sessions and can be referenced later.

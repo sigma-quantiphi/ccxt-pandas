@@ -18,7 +18,7 @@ class BidsAsksSchema(BaseExchangeSchema):
 
     # Required fields
     symbol: Series[str] = pa.Field(
-        title="Symbol", description="Trading pair"
+        unique=True, title="Symbol", description="Trading pair"
     )
     # Bid/ask can be null if orderbook is empty
     bid: Series[float] = pa.Field(
