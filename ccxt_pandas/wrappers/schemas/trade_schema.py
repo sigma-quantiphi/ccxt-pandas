@@ -62,8 +62,6 @@ class MyTradesSchema(TradeSchema, FeeFieldsMixin):
     Inherits all fields from TradeSchema and FeeFieldsMixin, and adds:
     - order (order ID that generated the trade)
     - takerOrMaker (whether trade was taker or maker)
-
-    The fees field and fee fields are required (overriding the optional in parent classes).
     """
 
     # Additional required fields for user trades
@@ -72,12 +70,4 @@ class MyTradesSchema(TradeSchema, FeeFieldsMixin):
     )
     takerOrMaker: Series[str] = pa.Field(
         isin=["taker", "maker"], title="Taker or Maker", description="Whether trade was taker or maker"
-    )
-
-    # Override fee fields to make them required for user trades
-    fee_currency: Series[str] = pa.Field(
-        title="Fee Currency", description="Currency in which fee was charged"
-    )
-    fee_cost: Series[float] = pa.Field(
-        ge=0, title="Fee Cost", description="Fee amount charged"
     )
