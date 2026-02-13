@@ -14,7 +14,7 @@ class GreeksSchema(BaseExchangeSchema):
 
     Used by methods like fetch_all_greeks, fetch_greeks.
 
-    Returns option Greeks (delta, gamma, theta, vega) and related pricing data.
+    Returns option Greeks (delta, gamma, vega, theta, rho) and related pricing data.
     """
 
     # Required fields
@@ -37,6 +37,9 @@ class GreeksSchema(BaseExchangeSchema):
     # Optional Greeks
     theta: Optional[Series[float]] = pa.Field(
         nullable=True, title="Theta", description="Option theta (time decay)"
+    )
+    rho: Optional[Series[float]] = pa.Field(
+        nullable=True, title="Rho", description="Option rho (interest rate sensitivity)"
     )
 
     # Optional implied volatility
