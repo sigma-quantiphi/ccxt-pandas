@@ -27,6 +27,7 @@ from ccxt_pandas.wrappers.schemas.ohlcv_schema import OHLCVSchema
 from ccxt_pandas.wrappers.schemas.open_interest_history_schema import OpenInterestHistorySchema
 from ccxt_pandas.wrappers.schemas.order_schema import OrderSchema
 from ccxt_pandas.wrappers.schemas.order_book_schema import OrderBookSchema
+from ccxt_pandas.wrappers.schemas.tickers_schema import TickersSchema
 from ccxt_pandas.wrappers.schemas.trade_schema import TradeSchema
 
 __all__ = [
@@ -37,6 +38,7 @@ __all__ = [
     "MarketSchema",
     "CurrencySchema",
     "OrderBookSchema",
+    "TickersSchema",
     "TradeSchema",
     "BidsAsksSchema",
     "FundingRateSchema",
