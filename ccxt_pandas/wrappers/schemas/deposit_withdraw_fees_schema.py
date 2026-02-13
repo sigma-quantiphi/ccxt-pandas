@@ -24,16 +24,16 @@ class DepositWithdrawFeesSchema(BaseExchangeSchema):
     network: Series[str] = pa.Field(
         title="Network", description="Network identifier (e.g., ERC20, TRC20)"
     )
+    withdraw_fee: Series[float] = pa.Field(
+        ge=0, title="Withdraw Fee", description="Withdrawal fee amount"
+    )
     network_withdraw_fee: Series[float] = pa.Field(
         ge=0, title="Network Withdraw Fee", description="Withdrawal fee for this network"
     )
-    network_withdraw_percentage: Series[bool] = pa.Field(
-        title="Network Withdraw Percentage", description="Whether network withdrawal fee is percentage-based"
-    )
 
-    # Optional fields
-    withdraw_fee: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, title="Withdraw Fee", description="General withdrawal fee"
+    # Optional fields (not present in all exchanges)
+    network_withdraw_percentage: Optional[Series[bool]] = pa.Field(
+        nullable=True, title="Network Withdraw Percentage", description="Whether network withdrawal fee is percentage-based"
     )
     withdraw_percentage: Optional[Series[bool]] = pa.Field(
         nullable=True, title="Withdraw Percentage", description="Whether withdrawal fee is percentage-based"
