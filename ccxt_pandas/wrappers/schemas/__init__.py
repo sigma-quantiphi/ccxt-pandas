@@ -21,6 +21,9 @@ from ccxt_pandas.wrappers.schemas.borrow_rates_schema import (
     IsolatedBorrowRatesSchema,
 )
 from ccxt_pandas.wrappers.schemas.currency_schema import CurrencySchema
+from ccxt_pandas.wrappers.schemas.deposit_addresses_schema import (
+    DepositAddressesSchema,
+)
 from ccxt_pandas.wrappers.schemas.deposit_withdraw_fees_schema import (
     DepositWithdrawFeesSchema,
 )
@@ -68,6 +71,7 @@ __all__ = [
     "MarketSchema",
     "CrossBorrowRatesSchema",
     "CurrencySchema",
+    "DepositAddressesSchema",
     "DepositWithdrawFeesSchema",
     "OrderBookSchema",
     "TickersSchema",
