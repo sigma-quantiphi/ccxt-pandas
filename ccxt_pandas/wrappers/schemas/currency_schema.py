@@ -13,62 +13,75 @@ class CurrencySchema(BaseExchangeSchema):
 
     Used by methods like fetch_currencies, fetch_deposit_withdraw_fees.
 
-    ID and code are required. Network information is optional as it may
-    be expanded into separate rows per network.
+    Returns currency information including deposit/withdrawal capabilities
+    and network-specific details.
     """
 
-    # Core currency fields (required)
+    # Required fields
     id: Series[str] = pa.Field(
-        unique=True, description="Exchange-specific currency ID"
+        unique=True, title="Currency ID", description="Exchange-specific currency ID"
     )
     code: Series[str] = pa.Field(
-        description="Unified currency code"
+        title="Currency Code", description="Unified currency code (e.g., BTC, ETH)"
     )
-    name: Optional[Series[str]] = pa.Field(
-        nullable=True, description="Currency full name"
+    precision: Series[float] = pa.Field(
+        ge=0, title="Precision", description="Currency precision (decimal places)"
     )
-    active: Optional[Series[bool]] = pa.Field(
-        nullable=True, description="Whether currency is active"
+    type: Series[str] = pa.Field(
+        title="Type", description="Currency type"
+    )
+    name: Series[str] = pa.Field(
+        title="Name", description="Currency full name"
+    )
+    network: Series[str] = pa.Field(
+        title="Network", description="Network identifier (e.g., ERC20, TRC20, BEP20)"
+    )
+    network_id: Series[str] = pa.Field(
+        title="Network ID", description="Exchange-specific network identifier"
+    )
+    network_precision: Series[float] = pa.Field(
+        ge=0, title="Network Precision", description="Network precision (decimal places)"
     )
 
-    # Network fields (when network info is present)
-    network: Optional[Series[str]] = pa.Field(
-        nullable=True, description="Network identifier (e.g., ERC20, TRC20)"
+    # Optional boolean fields
+    active: Optional[Series[bool]] = pa.Field(
+        nullable=True, title="Active", description="Whether currency is active for trading"
     )
-    network_fee: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, description="Withdrawal fee on this network"
+    deposit: Optional[Series[bool]] = pa.Field(
+        nullable=True, title="Deposit Enabled", description="Whether deposits are enabled"
     )
-    network_limits_deposit_min: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, description="Minimum deposit amount"
-    )
-    network_limits_deposit_max: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, description="Maximum deposit amount"
-    )
-    network_limits_withdraw_min: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, description="Minimum withdrawal amount"
-    )
-    network_limits_withdraw_max: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, description="Maximum withdrawal amount"
-    )
-    network_precision: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, description="Network precision (decimal places)"
+    withdraw: Optional[Series[bool]] = pa.Field(
+        nullable=True, title="Withdraw Enabled", description="Whether withdrawals are enabled"
     )
     network_deposit: Optional[Series[bool]] = pa.Field(
-        nullable=True, description="Whether deposits are enabled"
+        nullable=True, title="Network Deposit Enabled", description="Whether deposits are enabled on this network"
     )
     network_withdraw: Optional[Series[bool]] = pa.Field(
-        nullable=True, description="Whether withdrawals are enabled"
+        nullable=True, title="Network Withdraw Enabled", description="Whether withdrawals are enabled on this network"
+    )
+    network_active: Optional[Series[bool]] = pa.Field(
+        nullable=True, title="Network Active", description="Whether network is active"
     )
 
-    # Precision fields
-    precision: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, description="Currency precision (decimal places)"
+    # Optional fee fields
+    fee: Optional[Series[float]] = pa.Field(
+        ge=0, nullable=True, title="Fee", description="General fee amount"
+    )
+    network_fee: Optional[Series[float]] = pa.Field(
+        ge=0, nullable=True, title="Network Fee", description="Withdrawal fee on this network"
     )
 
-    # Fee fields (for deposit_withdraw_fees)
-    deposit: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, description="Deposit fee"
+    # Optional limits fields (dot notation for nested structure)
+    limits_withdraw_min: Optional[Series[float]] = pa.Field(
+        ge=0, nullable=True, title="Withdraw Min", description="Minimum withdrawal amount", alias="limits_withdraw.min"
     )
-    withdraw: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, description="Withdrawal fee"
+    limits_deposit_min: Optional[Series[float]] = pa.Field(
+        ge=0, nullable=True, title="Deposit Min", description="Minimum deposit amount", alias="limits_deposit.min"
     )
+    network_limits_deposit_min: Optional[Series[float]] = pa.Field(
+        ge=0, nullable=True, title="Network Deposit Min", description="Minimum deposit amount on this network", alias="network_limits_deposit.min"
+    )
+    network_limits_withdraw_min: Optional[Series[float]] = pa.Field(
+        ge=0, nullable=True, title="Network Withdraw Min", description="Minimum withdrawal amount on this network", alias="network_limits_withdraw.min"
+    )
+    # Note: exchange field comes from BaseExchangeSchema (Optional)
