@@ -9,7 +9,11 @@ from ccxt_pandas.wrappers.async_ccxt_pandas_multi_exchange import (
     AsyncCCXTPandasMultiExchange,
 )
 from ccxt_pandas.wrappers.models import ExchangeClientConfig
-from ccxt_pandas.calculations import calculate_delta_exposure
+from ccxt_pandas.calculations import (
+    calculate_delta_exposure,
+    aggregate_trades,
+    calculate_realized_pnl,
+)
 
 __all__ = [
     "CCXTPandasExchange",
@@ -20,4 +24,6 @@ __all__ = [
     "AsyncCCXTPandasMultiExchange",
     "ExchangeClientConfig",
     "calculate_delta_exposure",
+    "aggregate_trades",
+    "calculate_realized_pnl",
 ]

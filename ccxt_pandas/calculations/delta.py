@@ -53,14 +53,14 @@ def calculate_delta_exposure(
     """
     # Prepare positions with amounts
     positions_calc = positions.merge(
-        markets[[\"symbol\", base_column]], on=\"symbol\", how=\"left\"
+        markets[["symbol", base_column]], on="symbol", how="left"
     )
 
     # Calculate signed amount based on side (long = positive, short = negative)
-    positions_calc[amount_column] = positions_calc[\"contracts\"].where(
-        positions_calc[\"side\"] == \"long\", other=-positions_calc[\"contracts\"]
+    positions_calc[amount_column] = positions_calc["contracts"].where(
+        positions_calc["side"] == "long", other=-positions_calc["contracts"]
     )
-    positions_calc[amount_column] *= positions_calc[\"contractSize\"]
+    positions_calc[amount_column] *= positions_calc["contractSize"]
 
     # Prepare balance DataFrame
     # If balance has 'code' column (spot), rename to 'base' for consistency
