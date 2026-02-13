@@ -62,20 +62,11 @@ class OrdersSchema(BaseExchangeSchema):
     trades: Series[object] = pa.Field(
         title="Trades", description="List of trades that filled this order"
     )
-    reduceOnly: Series[bool] = pa.Field(
-        title="Reduce Only", description="Whether order is reduce-only (derivatives)"
-    )
     fees: Series[object] = pa.Field(
         title="Fees", description="Fee details (list of dicts)"
     )
-    fee_cost: Series[float] = pa.Field(
-        ge=0, title="Fee Cost", description="Total fee amount"
-    )
-    fee_currency: Series[str] = pa.Field(
-        title="Fee Currency", description="Currency in which fee was charged"
-    )
 
-    # Optional fields (present in closed orders, may not be in open orders)
+    # Optional fields (vary by exchange and order state)
     clientOrderId: Optional[Series[str]] = pa.Field(
         nullable=True, title="Client Order ID", description="User-defined order identifier"
     )
@@ -87,5 +78,17 @@ class OrdersSchema(BaseExchangeSchema):
     )
     average: Optional[Series[float]] = pa.Field(
         ge=0, nullable=True, title="Average", description="Average fill price"
+    )
+    reduceOnly: Optional[Series[bool]] = pa.Field(
+        nullable=True, title="Reduce Only", description="Whether order is reduce-only (derivatives)"
+    )
+    postOnly: Optional[Series[bool]] = pa.Field(
+        nullable=True, title="Post Only", description="Whether order is post-only (maker-only)"
+    )
+    fee_cost: Optional[Series[float]] = pa.Field(
+        ge=0, nullable=True, title="Fee Cost", description="Total fee amount"
+    )
+    fee_currency: Optional[Series[str]] = pa.Field(
+        nullable=True, title="Fee Currency", description="Currency in which fee was charged"
     )
     # Note: exchange field comes from BaseExchangeSchema (Optional)
