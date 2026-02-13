@@ -15,14 +15,16 @@ from ccxt_pandas.wrappers.schemas.accounts_schema import AccountsSchema
 from ccxt_pandas.wrappers.schemas.balance_schema import BalanceSchema
 from ccxt_pandas.wrappers.schemas.base_schemas import BaseExchangeSchema
 from ccxt_pandas.wrappers.schemas.bids_asks_schema import BidsAsksSchema
-from ccxt_pandas.wrappers.schemas.cross_borrow_rates_schema import CrossBorrowRatesSchema
+from ccxt_pandas.wrappers.schemas.borrow_rates_schema import (
+    CrossBorrowRatesSchema,
+    IsolatedBorrowRatesSchema,
+)
 from ccxt_pandas.wrappers.schemas.currency_schema import CurrencySchema
 from ccxt_pandas.wrappers.schemas.deposit_withdraw_fees_schema import DepositWithdrawFeesSchema
 from ccxt_pandas.wrappers.schemas.funding_history_schema import FundingHistorySchema
 from ccxt_pandas.wrappers.schemas.funding_rate_schema import FundingRateSchema
 from ccxt_pandas.wrappers.schemas.funding_rate_history_schema import FundingRateHistorySchema
 from ccxt_pandas.wrappers.schemas.greeks_schema import GreeksSchema
-from ccxt_pandas.wrappers.schemas.isolated_borrow_rates_schema import IsolatedBorrowRatesSchema
 from ccxt_pandas.wrappers.schemas.last_prices_schema import LastPricesSchema
 from ccxt_pandas.wrappers.schemas.liquidations_schema import LiquidationsSchema
 from ccxt_pandas.wrappers.schemas.long_short_ratio_schema import LongShortRatioSchema
