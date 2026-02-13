@@ -37,6 +37,7 @@ from ccxt_pandas.wrappers.schemas.open_interest_history_schema import OpenIntere
 from ccxt_pandas.wrappers.schemas.order_schema import OrderSchema
 from ccxt_pandas.wrappers.schemas.orders_schema import OrdersSchema
 from ccxt_pandas.wrappers.schemas.order_book_schema import OrderBookSchema
+from ccxt_pandas.wrappers.schemas.portfolios_schema import PortfoliosSchema
 from ccxt_pandas.wrappers.schemas.positions_schema import PositionsSchema
 from ccxt_pandas.wrappers.schemas.positions_history_schema import PositionsHistorySchema
 from ccxt_pandas.wrappers.schemas.tickers_schema import TickersSchema
@@ -73,6 +74,7 @@ __all__ = [
     "MyTradesSchema",
     "OpenInterestHistorySchema",
     "OrdersSchema",
+    "PortfoliosSchema",
     "PositionsSchema",
     "PositionsHistorySchema",
     "TradingFeesSchema",
