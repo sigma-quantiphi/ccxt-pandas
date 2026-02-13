@@ -1,5 +1,7 @@
 """Liquidations data schema."""
 
+from typing import Optional
+
 import pandas as pd
 import pandera.pandas as pa
 from pandera.typing import Series
@@ -29,16 +31,24 @@ class LiquidationsSchema(BaseExchangeSchema):
         title="Side",
         description="Liquidation side: 'buy' or 'sell'",
     )
-    baseValue: Series[float] = pa.Field(
-        ge=0, title="Base Value", description="Liquidation value in base currency"
-    )
-    quoteValue: Series[float] = pa.Field(
-        ge=0, title="Quote Value", description="Liquidation value in quote currency"
-    )
     timestamp: Series[pd.Timestamp] = pa.Field(
         title="Timestamp", description="Liquidation timestamp"
     )
     datetime: Series[pd.Timestamp] = pa.Field(
         title="Datetime", description="Liquidation datetime (alias)"
+    )
+
+    # Optional fields (not present in all exchanges)
+    baseValue: Optional[Series[float]] = pa.Field(
+        ge=0,
+        nullable=True,
+        title="Base Value",
+        description="Liquidation value in base currency",
+    )
+    quoteValue: Optional[Series[float]] = pa.Field(
+        ge=0,
+        nullable=True,
+        title="Quote Value",
+        description="Liquidation value in quote currency",
     )
     # Note: exchange field comes from BaseExchangeSchema (Optional)
