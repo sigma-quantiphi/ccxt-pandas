@@ -18,9 +18,7 @@ class BalanceSchema(BaseExchangeSchema):
     depending on the exchange response format.
     """
 
-    symbol: Series[str] = pa.Field(
-        title="Symbol", description="Currency symbol/code"
-    )
+    symbol: Series[str] = pa.Field(title="Symbol", description="Currency symbol/code")
     free: Optional[Series[float]] = pa.Field(
         ge=0, nullable=True, title="Free", description="Available balance"
     )
@@ -39,7 +37,9 @@ class BalanceSchema(BaseExchangeSchema):
         nullable=True, title="Base", description="Base currency (when symbol is a pair)"
     )
     quote: Optional[Series[str]] = pa.Field(
-        nullable=True, title="Quote", description="Quote currency (when symbol is a pair)"
+        nullable=True,
+        title="Quote",
+        description="Quote currency (when symbol is a pair)",
     )
     timestamp: Optional[Series[pd.Timestamp]] = pa.Field(
         nullable=True, title="Timestamp", description="Balance snapshot timestamp"

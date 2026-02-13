@@ -17,9 +17,7 @@ class LiquidationsSchema(BaseExchangeSchema):
     """
 
     # Required fields
-    symbol: Series[str] = pa.Field(
-        title="Symbol", description="Trading pair"
-    )
+    symbol: Series[str] = pa.Field(title="Symbol", description="Trading pair")
     contracts: Series[float] = pa.Field(
         ge=0, title="Contracts", description="Number of contracts liquidated"
     )
@@ -27,7 +25,9 @@ class LiquidationsSchema(BaseExchangeSchema):
         ge=0, title="Price", description="Liquidation price"
     )
     side: Series[str] = pa.Field(
-        isin=["buy", "sell"], title="Side", description="Liquidation side: 'buy' or 'sell'"
+        isin=["buy", "sell"],
+        title="Side",
+        description="Liquidation side: 'buy' or 'sell'",
     )
     baseValue: Series[float] = pa.Field(
         ge=0, title="Base Value", description="Liquidation value in base currency"

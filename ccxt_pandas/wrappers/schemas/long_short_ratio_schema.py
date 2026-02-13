@@ -16,9 +16,7 @@ class LongShortRatioSchema(BaseExchangeSchema):
     """
 
     # Required fields
-    symbol: Series[str] = pa.Field(
-        title="Symbol", description="Trading pair"
-    )
+    symbol: Series[str] = pa.Field(title="Symbol", description="Trading pair")
     timestamp: Series[pd.Timestamp] = pa.Field(
         title="Timestamp", description="Long/short ratio timestamp"
     )
@@ -26,6 +24,8 @@ class LongShortRatioSchema(BaseExchangeSchema):
         title="Datetime", description="Long/short ratio datetime (alias)"
     )
     longShortRatio: Series[float] = pa.Field(
-        ge=0, title="Long/Short Ratio", description="Ratio of long positions to short positions"
+        ge=0,
+        title="Long/Short Ratio",
+        description="Ratio of long positions to short positions",
     )
     # Note: exchange field comes from BaseExchangeSchema (Optional)

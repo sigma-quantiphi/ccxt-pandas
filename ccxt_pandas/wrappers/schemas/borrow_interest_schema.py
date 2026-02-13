@@ -30,7 +30,9 @@ class BorrowInterestSchema(BaseExchangeSchema):
         ge=0, title="Interest Rate", description="Borrow interest rate"
     )
     amountBorrowed: Series[float] = pa.Field(
-        ge=0, title="Amount Borrowed", description="Amount of currency that was borrowed"
+        ge=0,
+        title="Amount Borrowed",
+        description="Amount of currency that was borrowed",
     )
     timestamp: Series[pd.Timestamp] = pa.Field(
         title="Timestamp", description="Timestamp when interest was charged"

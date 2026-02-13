@@ -17,12 +17,8 @@ class FundingHistorySchema(BaseExchangeSchema):
     """
 
     # Required fields
-    symbol: Series[str] = pa.Field(
-        title="Symbol", description="Trading pair"
-    )
-    code: Series[str] = pa.Field(
-        title="Code", description="Currency code (e.g., USDT)"
-    )
+    symbol: Series[str] = pa.Field(title="Symbol", description="Trading pair")
+    code: Series[str] = pa.Field(title="Code", description="Currency code (e.g., USDT)")
     timestamp: Series[pd.Timestamp] = pa.Field(
         title="Timestamp", description="Funding payment timestamp"
     )
@@ -33,6 +29,7 @@ class FundingHistorySchema(BaseExchangeSchema):
         title="Funding ID", description="Unique funding payment identifier"
     )
     amount: Series[float] = pa.Field(
-        title="Amount", description="Funding amount (negative if paid, positive if received)"
+        title="Amount",
+        description="Funding amount (negative if paid, positive if received)",
     )
     # Note: exchange field comes from BaseExchangeSchema (Optional)

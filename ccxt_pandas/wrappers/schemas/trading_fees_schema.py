@@ -15,13 +15,7 @@ class TradingFeesSchema(BaseExchangeSchema):
     """
 
     # Required fields
-    symbol: Series[str] = pa.Field(
-        title="Symbol", description="Trading pair"
-    )
-    maker: Series[float] = pa.Field(
-        ge=0, title="Maker", description="Maker fee rate"
-    )
-    taker: Series[float] = pa.Field(
-        ge=0, title="Taker", description="Taker fee rate"
-    )
+    symbol: Series[str] = pa.Field(title="Symbol", description="Trading pair")
+    maker: Series[float] = pa.Field(ge=0, title="Maker", description="Maker fee rate")
+    taker: Series[float] = pa.Field(ge=0, title="Taker", description="Taker fee rate")
     # Note: exchange field comes from BaseExchangeSchema (Optional)

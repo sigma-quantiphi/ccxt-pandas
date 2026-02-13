@@ -18,9 +18,7 @@ class OpenInterestHistorySchema(BaseExchangeSchema):
     """
 
     # Required fields
-    symbol: Series[str] = pa.Field(
-        title="Symbol", description="Trading pair"
-    )
+    symbol: Series[str] = pa.Field(title="Symbol", description="Trading pair")
     openInterestAmount: Series[float] = pa.Field(
         ge=0, title="Open Interest Amount", description="Open interest in base currency"
     )
@@ -30,12 +28,18 @@ class OpenInterestHistorySchema(BaseExchangeSchema):
         ge=0, nullable=True, title="Base Volume", description="Volume in base currency"
     )
     quoteVolume: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, title="Quote Volume", description="Volume in quote currency"
+        ge=0,
+        nullable=True,
+        title="Quote Volume",
+        description="Volume in quote currency",
     )
 
     # Optional open interest value
     openInterestValue: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, title="Open Interest Value", description="Open interest in quote currency value"
+        ge=0,
+        nullable=True,
+        title="Open Interest Value",
+        description="Open interest in quote currency value",
     )
 
     # Optional timestamps

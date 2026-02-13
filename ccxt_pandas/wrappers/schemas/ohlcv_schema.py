@@ -21,21 +21,13 @@ class OHLCVSchema(BaseExchangeSchema):
     timestamp: Series[pd.Timestamp] = pa.Field(
         title="Timestamp", description="Opening time (UTC)"
     )
-    open: Series[float] = pa.Field(
-        ge=0, title="Open", description="Opening price"
-    )
-    high: Series[float] = pa.Field(
-        ge=0, title="High", description="Highest price"
-    )
-    low: Series[float] = pa.Field(
-        ge=0, title="Low", description="Lowest price"
-    )
-    close: Series[float] = pa.Field(
-        ge=0, title="Close", description="Closing price"
-    )
-    volume: Series[float] = pa.Field(
-        ge=0, title="Volume", description="Volume"
-    )
+    open: Series[float] = pa.Field(ge=0, title="Open", description="Opening price")
+    high: Series[float] = pa.Field(ge=0, title="High", description="Highest price")
+    low: Series[float] = pa.Field(ge=0, title="Low", description="Lowest price")
+    close: Series[float] = pa.Field(ge=0, title="Close", description="Closing price")
+    volume: Series[float] = pa.Field(ge=0, title="Volume", description="Volume")
     symbol: Optional[Series[str]] = pa.Field(
-        nullable=True, title="Symbol", description="Trading pair (optional for single-symbol queries)"
+        nullable=True,
+        title="Symbol",
+        description="Trading pair (optional for single-symbol queries)",
     )

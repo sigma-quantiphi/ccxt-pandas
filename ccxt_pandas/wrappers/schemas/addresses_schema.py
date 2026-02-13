@@ -1,4 +1,4 @@
-"""Deposit addresses data schema."""
+"""Addresses data schema."""
 
 from typing import Optional
 
@@ -8,8 +8,8 @@ from pandera.typing import Series
 from ccxt_pandas.wrappers.schemas.base_schemas import BaseExchangeSchema
 
 
-class DepositAddressesSchema(BaseExchangeSchema):
-    """Deposit addresses data schema.
+class AddressesSchema(BaseExchangeSchema):
+    """Addresses data schema.
 
     Used by methods like fetch_deposit_addresses.
 

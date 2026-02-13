@@ -20,9 +20,7 @@ class OrdersSchema(BaseExchangeSchema, FeeFieldsMixin):
     """
 
     # Required fields
-    id: Series[str] = pa.Field(
-        title="Order ID", description="Unique order identifier"
-    )
+    id: Series[str] = pa.Field(title="Order ID", description="Unique order identifier")
     timestamp: Series[pd.Timestamp] = pa.Field(
         title="Timestamp", description="Order creation timestamp"
     )
@@ -32,27 +30,19 @@ class OrdersSchema(BaseExchangeSchema, FeeFieldsMixin):
     lastUpdateTimestamp: Series[pd.Timestamp] = pa.Field(
         title="Last Update Timestamp", description="Last order update timestamp"
     )
-    symbol: Series[str] = pa.Field(
-        title="Symbol", description="Trading pair"
-    )
+    symbol: Series[str] = pa.Field(title="Symbol", description="Trading pair")
     type: Series[str] = pa.Field(
         title="Type", description="Order type (e.g., limit, market)"
     )
     side: Series[str] = pa.Field(
         isin=["buy", "sell"], title="Side", description="Order side: 'buy' or 'sell'"
     )
-    price: Series[float] = pa.Field(
-        ge=0, title="Price", description="Order price"
-    )
+    price: Series[float] = pa.Field(ge=0, title="Price", description="Order price")
     cost: Series[float] = pa.Field(
         ge=0, title="Cost", description="Total cost (filled amount * price)"
     )
-    amount: Series[float] = pa.Field(
-        ge=0, title="Amount", description="Order amount"
-    )
-    filled: Series[float] = pa.Field(
-        ge=0, title="Filled", description="Filled amount"
-    )
+    amount: Series[float] = pa.Field(ge=0, title="Amount", description="Order amount")
+    filled: Series[float] = pa.Field(ge=0, title="Filled", description="Filled amount")
     remaining: Series[float] = pa.Field(
         ge=0, title="Remaining", description="Remaining amount to be filled"
     )
@@ -68,22 +58,32 @@ class OrdersSchema(BaseExchangeSchema, FeeFieldsMixin):
 
     # Optional fields (vary by exchange and order state)
     clientOrderId: Optional[Series[str]] = pa.Field(
-        nullable=True, title="Client Order ID", description="User-defined order identifier"
+        nullable=True,
+        title="Client Order ID",
+        description="User-defined order identifier",
     )
     lastTradeTimestamp: Optional[Series[pd.Timestamp]] = pa.Field(
-        nullable=True, title="Last Trade Timestamp", description="Timestamp of last trade execution"
+        nullable=True,
+        title="Last Trade Timestamp",
+        description="Timestamp of last trade execution",
     )
     timeInForce: Optional[Series[str]] = pa.Field(
-        nullable=True, title="Time In Force", description="Order time in force (e.g., GTC, IOC, FOK)"
+        nullable=True,
+        title="Time In Force",
+        description="Order time in force (e.g., GTC, IOC, FOK)",
     )
     average: Optional[Series[float]] = pa.Field(
         ge=0, nullable=True, title="Average", description="Average fill price"
     )
     reduceOnly: Optional[Series[bool]] = pa.Field(
-        nullable=True, title="Reduce Only", description="Whether order is reduce-only (derivatives)"
+        nullable=True,
+        title="Reduce Only",
+        description="Whether order is reduce-only (derivatives)",
     )
     postOnly: Optional[Series[bool]] = pa.Field(
-        nullable=True, title="Post Only", description="Whether order is post-only (maker-only)"
+        nullable=True,
+        title="Post Only",
+        description="Whether order is post-only (maker-only)",
     )
     # Note: fee_currency, fee_cost, fee_rate come from FeeFieldsMixin (Optional)
     # Note: exchange field comes from BaseExchangeSchema (Optional)

@@ -38,18 +38,12 @@ class IsolatedBorrowRatesSchema(BaseExchangeSchema):
     """
 
     # Required fields
-    symbol: Series[str] = pa.Field(
-        title="Symbol", description="Trading pair"
-    )
-    base: Series[str] = pa.Field(
-        title="Base", description="Base currency"
-    )
+    symbol: Series[str] = pa.Field(title="Symbol", description="Trading pair")
+    base: Series[str] = pa.Field(title="Base", description="Base currency")
     baseRate: Series[float] = pa.Field(
         ge=0, title="Base Rate", description="Borrow interest rate for base currency"
     )
-    quote: Series[str] = pa.Field(
-        title="Quote", description="Quote currency"
-    )
+    quote: Series[str] = pa.Field(title="Quote", description="Quote currency")
     quoteRate: Series[float] = pa.Field(
         ge=0, title="Quote Rate", description="Borrow interest rate for quote currency"
     )

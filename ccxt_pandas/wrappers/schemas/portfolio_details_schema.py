@@ -16,18 +16,14 @@ class PortfolioDetailsSchema(BaseExchangeSchema):
     """
 
     # Required fields
-    currency: Series[str] = pa.Field(
-        title="Currency", description="Currency code"
-    )
+    currency: Series[str] = pa.Field(title="Currency", description="Currency code")
     available_balance: Series[float] = pa.Field(
         ge=0, title="Available Balance", description="Available balance amount"
     )
     hold_amount: Series[int] = pa.Field(
         ge=0, title="Hold Amount", description="Amount on hold"
     )
-    wallet_name: Series[str] = pa.Field(
-        title="Wallet Name", description="Wallet name"
-    )
+    wallet_name: Series[str] = pa.Field(title="Wallet Name", description="Wallet name")
     account_id: Series[str] = pa.Field(
         title="Account ID", description="Account identifier"
     )
@@ -44,13 +40,19 @@ class PortfolioDetailsSchema(BaseExchangeSchema):
         ge=0, title="Available to Trade Fiat", description="Available to trade in fiat"
     )
     available_to_trade_crypto: Series[float] = pa.Field(
-        ge=0, title="Available to Trade Crypto", description="Available to trade in crypto"
+        ge=0,
+        title="Available to Trade Crypto",
+        description="Available to trade in crypto",
     )
     available_to_transfer_fiat: Series[float] = pa.Field(
-        ge=0, title="Available to Transfer Fiat", description="Available to transfer in fiat"
+        ge=0,
+        title="Available to Transfer Fiat",
+        description="Available to transfer in fiat",
     )
     available_to_transfer_crypto: Series[float] = pa.Field(
-        ge=0, title="Available to Transfer Crypto", description="Available to transfer in crypto"
+        ge=0,
+        title="Available to Transfer Crypto",
+        description="Available to transfer in crypto",
     )
     allocation: Series[float] = pa.Field(
         ge=0, title="Allocation", description="Portfolio allocation percentage"
@@ -68,11 +70,10 @@ class PortfolioDetailsSchema(BaseExchangeSchema):
         ge=0, title="Average Entry Price", description="Average entry price"
     )
     average_entry_price_currency: Series[str] = pa.Field(
-        title="Average Entry Price Currency", description="Currency of average entry price"
+        title="Average Entry Price Currency",
+        description="Currency of average entry price",
     )
-    asset_uuid: Series[str] = pa.Field(
-        title="Asset UUID", description="Asset UUID"
-    )
+    asset_uuid: Series[str] = pa.Field(title="Asset UUID", description="Asset UUID")
     unrealized_pnl: Series[float] = pa.Field(
         title="Unrealized PnL", description="Unrealized profit and loss"
     )

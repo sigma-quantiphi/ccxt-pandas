@@ -32,16 +32,18 @@ class TransactionsSchema(BaseExchangeSchema, FeeFieldsMixin):
         title="Datetime", description="Transaction datetime (alias)"
     )
     type: Series[str] = pa.Field(
-        isin=["deposit", "withdrawal"], title="Type", description="Transaction type: 'deposit' or 'withdrawal'"
+        isin=["deposit", "withdrawal"],
+        title="Type",
+        description="Transaction type: 'deposit' or 'withdrawal'",
     )
     amount: Series[float] = pa.Field(
         ge=0, title="Amount", description="Transaction amount (excluding fee)"
     )
-    currency: Series[str] = pa.Field(
-        title="Currency", description="Currency code"
-    )
+    currency: Series[str] = pa.Field(title="Currency", description="Currency code")
     status: Series[str] = pa.Field(
-        isin=["ok", "failed", "canceled", "pending"], title="Status", description="Transaction status"
+        isin=["ok", "failed", "canceled", "pending"],
+        title="Status",
+        description="Transaction status",
     )
 
     # Optional fields
@@ -64,7 +66,9 @@ class TransactionsSchema(BaseExchangeSchema, FeeFieldsMixin):
         nullable=True, title="Tag To", description="Tag/memo/payment_id for receiver"
     )
     updated: Optional[Series[pd.Timestamp]] = pa.Field(
-        nullable=True, title="Updated", description="Timestamp of most recent status change"
+        nullable=True,
+        title="Updated",
+        description="Timestamp of most recent status change",
     )
     comment: Optional[Series[str]] = pa.Field(
         nullable=True, title="Comment", description="User-defined comment or message"

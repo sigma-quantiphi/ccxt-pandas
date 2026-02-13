@@ -72,7 +72,10 @@ class GreeksSchema(BaseExchangeSchema):
         ge=0, nullable=True, title="Last Price", description="Last trade price"
     )
     underlyingPrice: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, title="Underlying Price", description="Underlying asset price"
+        ge=0,
+        nullable=True,
+        title="Underlying Price",
+        description="Underlying asset price",
     )
 
     # Optional timestamps
@@ -80,6 +83,8 @@ class GreeksSchema(BaseExchangeSchema):
         nullable=True, title="Timestamp", description="Greeks calculation timestamp"
     )
     datetime: Optional[Series[pd.Timestamp]] = pa.Field(
-        nullable=True, title="Datetime", description="Greeks calculation datetime (alias)"
+        nullable=True,
+        title="Datetime",
+        description="Greeks calculation datetime (alias)",
     )
     # Note: exchange field comes from BaseExchangeSchema (Optional)

@@ -46,7 +46,9 @@ async def main():
     orders["amount"] *= 2
     orders = await pandas_exchange.edit_order_from_dataframe(orders=orders)
     print(orders)
-    cancel_response = await pandas_exchange.cancel_order_from_dataframe(orders=orders[["id", "symbol"]])
+    cancel_response = await pandas_exchange.cancel_order_from_dataframe(
+        orders=orders[["id", "symbol"]]
+    )
     print(cancel_response)
     orders = await pandas_exchange.create_orders_from_dataframe(orders=ohlcv)
     print(orders)
@@ -57,7 +59,9 @@ async def main():
     await asyncio.sleep(3)
     orders = await pandas_exchange.edit_orders_from_dataframe(orders=orders)
     print(orders)
-    cancel_response = await pandas_exchange.cancel_orders_from_dataframe(orders=orders[["id", "symbol"]])
+    cancel_response = await pandas_exchange.cancel_orders_from_dataframe(
+        orders=orders[["id", "symbol"]]
+    )
     print(cancel_response)
     orders = await pandas_exchange.create_orders_from_dataframe(orders=ohlcv)
     print(orders)

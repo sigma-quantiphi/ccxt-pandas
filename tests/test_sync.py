@@ -134,6 +134,13 @@ def test_fetch_trading_fees(binance_authenticated_exchange):
     assert isinstance(data, pd.DataFrame)
 
 
+# def test_fetch_transaction_fees(okx_authenticated_exchange):
+#     data = okx_authenticated_exchange.fetch_transaction_fees()
+#     print(data)
+#     print(data.dtypes)
+#     assert isinstance(data, pd.DataFrame)
+
+
 def test_fetch_transfers(binance_authenticated_exchange):
     data = binance_authenticated_exchange.fetch_transfers()
     print(data)
@@ -153,6 +160,34 @@ def test_fetch_deposit_withdraw_fees(binance_authenticated_exchange):
     print(data)
     print(data.dtypes)
     assert isinstance(data, pd.DataFrame)
+
+
+def test_fetch_deposits(binance_authenticated_exchange):
+    data = binance_authenticated_exchange.fetch_deposits()
+    print(data)
+    print(data.dtypes)
+    assert isinstance(data, pd.DataFrame)
+
+
+def test_fetch_withdrawals(binance_authenticated_exchange):
+    data = binance_authenticated_exchange.fetch_withdrawals()
+    print(data)
+    print(data.dtypes)
+    assert isinstance(data, pd.DataFrame)
+
+
+def test_fetch_deposit_addresses(coinbase_exchange):
+    data = coinbase_exchange.fetch_deposit_addresses()
+    print(data)
+    print(data.dtypes)
+    assert isinstance(data, pd.DataFrame)
+
+
+# def test_fetch_deposits_withdrawals(coinbase_exchange):
+#     data = coinbase_exchange.fetch_deposits_withdrawals()
+#     print(data)
+#     print(data.dtypes)
+#     assert isinstance(data, pd.DataFrame)
 
 
 def test_fetch_ticker(sandbox_exchange):
@@ -219,6 +254,20 @@ def test_mark_prices(sandbox_exchange):
 
 def test_fetch_markets(sandbox_exchange):
     data = sandbox_exchange.fetch_markets()
+    print(data)
+    print(data.dtypes)
+    assert isinstance(data, pd.DataFrame)
+
+
+def test_fetch_cross_borrow_rates(okx_authenticated_exchange):
+    data = okx_authenticated_exchange.fetch_cross_borrow_rates()
+    print(data)
+    print(data.dtypes)
+    assert isinstance(data, pd.DataFrame)
+
+
+def test_fetch_borrow_interest(okx_authenticated_exchange):
+    data = okx_authenticated_exchange.fetch_borrow_interest()
     print(data)
     print(data.dtypes)
     assert isinstance(data, pd.DataFrame)
@@ -473,7 +522,9 @@ def test_create_order(okx_authenticated_exchange):
     data = okx_authenticated_exchange.fetch_order(id=data["id"], symbol=spot_symbol)
     print(data)
     assert isinstance(data, pd.DataFrame)
-    data = okx_authenticated_exchange.cancel_order(id=data["id"].values[0], symbol=spot_symbol)
+    data = okx_authenticated_exchange.cancel_order(
+        id=data["id"].values[0], symbol=spot_symbol
+    )
     print(data)
     assert isinstance(data, pd.DataFrame)
 

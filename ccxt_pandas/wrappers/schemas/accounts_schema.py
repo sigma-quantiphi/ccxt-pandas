@@ -16,10 +16,6 @@ class AccountsSchema(BaseExchangeSchema):
     """
 
     # Required fields
-    id: Series[str] = pa.Field(
-        title="Account ID", description="Account identifier"
-    )
-    type: Series[str] = pa.Field(
-        title="Type", description="Account type"
-    )
+    id: Series[str] = pa.Field(title="Account ID", description="Account identifier")
+    type: Series[str] = pa.Field(title="Type", description="Account type")
     # Note: exchange field comes from BaseExchangeSchema (Optional)

@@ -57,7 +57,10 @@ class TickersSchema(BaseExchangeSchema):
         ge=0, nullable=True, title="VWAP", description="Volume weighted average price"
     )
     previousClose: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, title="Previous Close", description="Previous closing price"
+        ge=0,
+        nullable=True,
+        title="Previous Close",
+        description="Previous closing price",
     )
     average: Optional[Series[float]] = pa.Field(
         ge=0, nullable=True, title="Average", description="Average price"
@@ -68,7 +71,10 @@ class TickersSchema(BaseExchangeSchema):
         ge=0, nullable=True, title="Mark Price", description="Mark price (derivatives)"
     )
     indexPrice: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, title="Index Price", description="Index price (derivatives)"
+        ge=0,
+        nullable=True,
+        title="Index Price",
+        description="Index price (derivatives)",
     )
 
     # Optional change fields
@@ -81,10 +87,16 @@ class TickersSchema(BaseExchangeSchema):
 
     # Optional volume fields
     baseVolume: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, title="Base Volume", description="24h volume in base currency"
+        ge=0,
+        nullable=True,
+        title="Base Volume",
+        description="24h volume in base currency",
     )
     quoteVolume: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, title="Quote Volume", description="24h volume in quote currency"
+        ge=0,
+        nullable=True,
+        title="Quote Volume",
+        description="24h volume in quote currency",
     )
     bidVolume: Optional[Series[float]] = pa.Field(
         ge=0, nullable=True, title="Bid Volume", description="Volume at best bid"

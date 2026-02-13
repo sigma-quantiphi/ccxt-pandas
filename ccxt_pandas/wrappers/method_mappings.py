@@ -2,6 +2,7 @@ from ccxt_pandas.utils.utils import add_camel_case_methods
 
 standard_dataframe_methods = {
     "fetch_accounts",
+    "fetch_account_positions",
     "fetch_portfolio_details",
     "fetch_portfolios",
     "cancel_all_orders",
@@ -42,7 +43,6 @@ standard_dataframe_methods = {
     "fetch_positions_risk",
     "fetch_settlement_history",
     "fetch_trades",
-    "fetch_transaction_fees",
     "fetch_transfers",
     "fetch_volatility_history",
     "fetch_withdrawals",
@@ -70,6 +70,7 @@ markets_dataframe_methods = {
     "fetch_option_chain",
     "fetch_tickers",
     "fetch_trading_fees",
+    # "fetch_transaction_fees",
     "load_markets",
     "watch_bids_asks",
     "watch_funding_rates",

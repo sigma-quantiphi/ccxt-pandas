@@ -22,16 +22,28 @@ class BidsAsksSchema(BaseExchangeSchema):
     )
     # Bid/ask can be null if orderbook is empty
     bid: Series[float] = pa.Field(
-        ge=0, nullable=True, title="Bid", description="Best bid price (null if orderbook empty)"
+        ge=0,
+        nullable=True,
+        title="Bid",
+        description="Best bid price (null if orderbook empty)",
     )
     bidVolume: Series[float] = pa.Field(
-        ge=0, nullable=True, title="Bid Volume", description="Volume at best bid (null if orderbook empty)"
+        ge=0,
+        nullable=True,
+        title="Bid Volume",
+        description="Volume at best bid (null if orderbook empty)",
     )
     ask: Series[float] = pa.Field(
-        ge=0, nullable=True, title="Ask", description="Best ask price (null if orderbook empty)"
+        ge=0,
+        nullable=True,
+        title="Ask",
+        description="Best ask price (null if orderbook empty)",
     )
     askVolume: Series[float] = pa.Field(
-        ge=0, nullable=True, title="Ask Volume", description="Volume at best ask (null if orderbook empty)"
+        ge=0,
+        nullable=True,
+        title="Ask Volume",
+        description="Volume at best ask (null if orderbook empty)",
     )
 
     # Optional ticker fields
@@ -63,15 +75,24 @@ class BidsAsksSchema(BaseExchangeSchema):
         ge=0, nullable=True, title="Average", description="Average price"
     )
     baseVolume: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, title="Base Volume", description="24h volume in base currency"
+        ge=0,
+        nullable=True,
+        title="Base Volume",
+        description="24h volume in base currency",
     )
     quoteVolume: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, title="Quote Volume", description="24h volume in quote currency"
+        ge=0,
+        nullable=True,
+        title="Quote Volume",
+        description="24h volume in quote currency",
     )
     markPrice: Optional[Series[float]] = pa.Field(
         ge=0, nullable=True, title="Mark Price", description="Mark price (derivatives)"
     )
     indexPrice: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, title="Index Price", description="Index price (derivatives)"
+        ge=0,
+        nullable=True,
+        title="Index Price",
+        description="Index price (derivatives)",
     )
     # Note: exchange field comes from BaseExchangeSchema (Optional)

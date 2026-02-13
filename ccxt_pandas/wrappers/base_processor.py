@@ -43,7 +43,7 @@ possible_depth_meta = ["symbol", "timestamp", "datetime", "nonce", "exchange", "
 @dataclass
 class BaseProcessor:
     """
-    CCXTProcessor is a parent class for handling preprocessing of API responses into pandas DataFrames.
+    BaseProcessor is a parent class for handling preprocessing of API responses into pandas DataFrames.
 
     This class includes methods to:
     - Convert timestamps into datetime objects.
@@ -117,6 +117,7 @@ class BaseProcessor:
     numeric_fields: tuple = field(
         repr=False,
         default=(
+            "amountBorrowed",
             "ask",
             "askImpliedVolatility",
             "askPrice",
@@ -148,6 +149,7 @@ class BaseProcessor:
             "exercisePrice",
             "fee",  # Potential remove?
             "fee_cost",
+            "fee_rate",
             "free",
             "freeze",
             "fundingRate",
@@ -156,6 +158,7 @@ class BaseProcessor:
             "indexPrice",
             "initialMargin",
             "initialMarginPercentage",
+            "interest",
             "interestRate",
             "last",
             "lastPrice",

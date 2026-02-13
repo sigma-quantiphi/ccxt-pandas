@@ -16,9 +16,7 @@ class FundingIntervalsSchema(BaseExchangeSchema):
     """
 
     # Required fields
-    symbol: Series[str] = pa.Field(
-        title="Symbol", description="Trading pair"
-    )
+    symbol: Series[str] = pa.Field(title="Symbol", description="Trading pair")
     interval: Series[str] = pa.Field(
         title="Interval", description="Funding payment interval (e.g., 8h, 4h, 1h)"
     )

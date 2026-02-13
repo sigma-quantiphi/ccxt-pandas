@@ -34,7 +34,10 @@ class FundingRateSchema(BaseExchangeSchema):
         ge=0, nullable=True, title="Index Price", description="Current index price"
     )
     estimatedSettlePrice: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, title="Est. Settle Price", description="Estimated settlement price"
+        ge=0,
+        nullable=True,
+        title="Est. Settle Price",
+        description="Estimated settlement price",
     )
 
     # Optional rate fields
@@ -56,22 +59,32 @@ class FundingRateSchema(BaseExchangeSchema):
         nullable=True, title="Datetime", description="Current datetime (alias)"
     )
     fundingTimestamp: Optional[Series[pd.Timestamp]] = pa.Field(
-        nullable=True, title="Funding Timestamp", description="Current funding timestamp"
+        nullable=True,
+        title="Funding Timestamp",
+        description="Current funding timestamp",
     )
     fundingDatetime: Optional[Series[pd.Timestamp]] = pa.Field(
-        nullable=True, title="Funding Datetime", description="Current funding datetime (alias)"
+        nullable=True,
+        title="Funding Datetime",
+        description="Current funding datetime (alias)",
     )
     nextFundingTimestamp: Optional[Series[pd.Timestamp]] = pa.Field(
         nullable=True, title="Next Funding Time", description="Next funding timestamp"
     )
     nextFundingDatetime: Optional[Series[pd.Timestamp]] = pa.Field(
-        nullable=True, title="Next Funding Datetime", description="Next funding datetime (alias)"
+        nullable=True,
+        title="Next Funding Datetime",
+        description="Next funding datetime (alias)",
     )
     previousFundingTimestamp: Optional[Series[pd.Timestamp]] = pa.Field(
-        nullable=True, title="Prev Funding Time", description="Previous funding timestamp"
+        nullable=True,
+        title="Prev Funding Time",
+        description="Previous funding timestamp",
     )
     previousFundingDatetime: Optional[Series[pd.Timestamp]] = pa.Field(
-        nullable=True, title="Prev Funding Datetime", description="Previous funding datetime (alias)"
+        nullable=True,
+        title="Prev Funding Datetime",
+        description="Previous funding datetime (alias)",
     )
 
     # Optional metadata

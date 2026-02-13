@@ -61,7 +61,9 @@ orders = pandas_exchange.edit_order_from_dataframe(
     orders=orders,
 )
 print(orders)
-cancel_response = pandas_exchange.cancel_order_from_dataframe(orders=orders[["id", "symbol"]])
+cancel_response = pandas_exchange.cancel_order_from_dataframe(
+    orders=orders[["id", "symbol"]]
+)
 print(cancel_response)
 
 # Multi order endpoints
@@ -76,7 +78,9 @@ print(orders)
 orders["price"] *= 1.1
 orders = pandas_exchange.edit_orders_from_dataframe(orders=orders)
 print(orders)
-cancel_response = pandas_exchange.cancel_orders_from_dataframe(orders=orders[["id", "symbol"]])
+cancel_response = pandas_exchange.cancel_orders_from_dataframe(
+    orders=orders[["id", "symbol"]]
+)
 print(cancel_response)
 
 # Cancel all orders

@@ -22,11 +22,11 @@ class PositionsHistorySchema(BaseExchangeSchema):
     id: Series[str] = pa.Field(
         title="Position ID", description="Unique position identifier"
     )
-    symbol: Series[str] = pa.Field(
-        title="Symbol", description="Trading pair"
-    )
+    symbol: Series[str] = pa.Field(title="Symbol", description="Trading pair")
     marginMode: Series[str] = pa.Field(
-        isin=["cross", "isolated"], title="Margin Mode", description="Margin mode: 'cross' or 'isolated'"
+        isin=["cross", "isolated"],
+        title="Margin Mode",
+        description="Margin mode: 'cross' or 'isolated'",
     )
     entryPrice: Series[float] = pa.Field(
         ge=0, title="Entry Price", description="Average entry price of the position"
@@ -41,7 +41,9 @@ class PositionsHistorySchema(BaseExchangeSchema):
         ge=0, title="Last Price", description="Last price when position was closed"
     )
     side: Series[str] = pa.Field(
-        isin=["long", "short"], title="Side", description="Position side: 'long' or 'short'"
+        isin=["long", "short"],
+        title="Side",
+        description="Position side: 'long' or 'short'",
     )
     hedged: Series[bool] = pa.Field(
         title="Hedged", description="Whether position was in hedge mode"
@@ -64,6 +66,9 @@ class PositionsHistorySchema(BaseExchangeSchema):
 
     # Optional fields
     initialMarginPercentage: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, title="Initial Margin %", description="Initial margin percentage"
+        ge=0,
+        nullable=True,
+        title="Initial Margin %",
+        description="Initial margin percentage",
     )
     # Note: exchange field comes from BaseExchangeSchema (Optional)

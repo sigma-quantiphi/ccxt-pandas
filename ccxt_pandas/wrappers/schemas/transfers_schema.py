@@ -38,7 +38,5 @@ class TransfersSchema(BaseExchangeSchema):
     toAccount: Series[str] = pa.Field(
         title="To Account", description="Destination account type"
     )
-    code: Series[str] = pa.Field(
-        title="Code", description="Currency code"
-    )
+    code: Series[str] = pa.Field(title="Code", description="Currency code")
     # Note: exchange field comes from BaseExchangeSchema (Optional)

@@ -19,9 +19,7 @@ class FundingRateHistorySchema(BaseExchangeSchema):
     """
 
     # Required fields
-    symbol: Series[str] = pa.Field(
-        title="Symbol", description="Trading pair"
-    )
+    symbol: Series[str] = pa.Field(title="Symbol", description="Trading pair")
     fundingRate: Series[float] = pa.Field(
         title="Funding Rate", description="Historical funding rate"
     )
@@ -46,6 +44,8 @@ class FundingRateHistorySchema(BaseExchangeSchema):
         nullable=True, title="Next Funding Time", description="Next funding timestamp"
     )
     nextFundingDatetime: Optional[Series[pd.Timestamp]] = pa.Field(
-        nullable=True, title="Next Funding Datetime", description="Next funding datetime (alias)"
+        nullable=True,
+        title="Next Funding Datetime",
+        description="Next funding datetime (alias)",
     )
     # Note: exchange field comes from BaseExchangeSchema (Optional)

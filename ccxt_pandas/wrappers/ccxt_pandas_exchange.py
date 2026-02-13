@@ -223,9 +223,7 @@ class CCXTPandasExchange(CCXTPandasExchangeTyped):
             **kwargs,
         )
 
-    def edit_order_from_dataframe(
-        self, orders: pd.DataFrame, **kwargs
-    ) -> pd.DataFrame:
+    def edit_order_from_dataframe(self, orders: pd.DataFrame, **kwargs) -> pd.DataFrame:
         base_call = self._make_base_call("edit_order")
         return self._function_handler.loop_through_orders(
             function=base_call,

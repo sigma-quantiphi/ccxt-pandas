@@ -16,11 +16,11 @@ class LeveragesSchema(BaseExchangeSchema):
     """
 
     # Required fields
-    symbol: Series[str] = pa.Field(
-        title="Symbol", description="Trading pair"
-    )
+    symbol: Series[str] = pa.Field(title="Symbol", description="Trading pair")
     marginMode: Series[str] = pa.Field(
-        isin=["cross", "isolated"], title="Margin Mode", description="Margin mode: 'cross' or 'isolated'"
+        isin=["cross", "isolated"],
+        title="Margin Mode",
+        description="Margin mode: 'cross' or 'isolated'",
     )
     longLeverage: Series[int] = pa.Field(
         ge=1, title="Long Leverage", description="Maximum leverage for long positions"

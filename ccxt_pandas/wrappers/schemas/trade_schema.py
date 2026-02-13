@@ -27,21 +27,15 @@ class TradeSchema(BaseExchangeSchema):
     )
 
     # Core trade fields (all required)
-    symbol: Series[str] = pa.Field(
-        title="Symbol", description="Trading pair"
-    )
+    symbol: Series[str] = pa.Field(title="Symbol", description="Trading pair")
     id: Series[str] = pa.Field(
         unique=True, title="Trade ID", description="Unique trade identifier"
     )
     side: Series[str] = pa.Field(
         isin=["buy", "sell"], title="Side", description="Trade side: 'buy' or 'sell'"
     )
-    price: Series[float] = pa.Field(
-        ge=0, title="Price", description="Trade price"
-    )
-    amount: Series[float] = pa.Field(
-        ge=0, title="Amount", description="Trade amount"
-    )
+    price: Series[float] = pa.Field(ge=0, title="Price", description="Trade price")
+    amount: Series[float] = pa.Field(ge=0, title="Amount", description="Trade amount")
     cost: Series[float] = pa.Field(
         ge=0, title="Cost", description="Trade cost (price * amount)"
     )
@@ -69,5 +63,7 @@ class MyTradesSchema(TradeSchema, FeeFieldsMixin):
         title="Order ID", description="Order ID that generated this trade"
     )
     takerOrMaker: Series[str] = pa.Field(
-        isin=["taker", "maker"], title="Taker or Maker", description="Whether trade was taker or maker"
+        isin=["taker", "maker"],
+        title="Taker or Maker",
+        description="Whether trade was taker or maker",
     )

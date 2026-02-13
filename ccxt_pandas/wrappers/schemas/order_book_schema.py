@@ -22,10 +22,16 @@ class OrderBookSchema(BaseExchangeSchema):
         ge=0, nullable=True, title="Price", description="Price level"
     )
     qty: Series[float] = pa.Field(
-        ge=0, nullable=True, title="Quantity", description="Quantity at this price level"
+        ge=0,
+        nullable=True,
+        title="Quantity",
+        description="Quantity at this price level",
     )
     side: Series[str] = pa.Field(
-        nullable=True, isin=["bids", "asks"], title="Side", description="Side: 'bids' or 'asks'"
+        nullable=True,
+        isin=["bids", "asks"],
+        title="Side",
+        description="Side: 'bids' or 'asks'",
     )
     symbol: Optional[Series[str]] = pa.Field(
         nullable=True, title="Symbol", description="Trading pair"
