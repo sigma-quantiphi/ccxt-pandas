@@ -1,38 +1,19 @@
 """Trade analysis and PnL calculation utilities."""
 
-from typing import List, Optional, Union
+from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
+import pandera as pa
+from pandera.typing import DataFrame
+
+from ccxt_pandas.wrappers.schemas.trade_schema import MyTradesSchema
 
 
-def _validate_dataframe(
-    df: pd.DataFrame, required_columns: List[str], function_name: str
-) -> None:
-    """Validate that DataFrame has required columns.
-
-    Args:
-        df: DataFrame to validate
-        required_columns: List of required column names
-        function_name: Name of calling function (for error messages)
-
-    Raises:
-        TypeError: If df is not a DataFrame
-        ValueError: If required columns are missing
-    """
-    if not isinstance(df, pd.DataFrame):
-        raise TypeError(f"{function_name}: Expected DataFrame, got {type(df)}")
-
-    missing = set(required_columns) - set(df.columns)
-    if missing:
-        raise ValueError(
-            f"{function_name}: Missing required columns: {sorted(missing)}"
-        )
-
-
+@pa.check_types
 def aggregate_trades(
-    trades: pd.DataFrame,
-    group_by: Union[List[str], tuple] = ("symbol", "side"),
+    trades: DataFrame[MyTradesSchema],
+    group_by: Union[list[str], tuple] = ("symbol", "side"),
     freq: Optional[str] = None,
     include_fees: bool = True,
 ) -> pd.DataFrame:
@@ -79,24 +60,15 @@ def aggregate_trades(
         >>> hourly = aggregate_trades(trades, freq="1H")
 
     Raises:
-        ValueError: If required columns are missing
-        TypeError: If trades is not a DataFrame
+        pandera.errors.SchemaError: If trades DataFrame doesn't match MyTradesSchema
 
     Notes:
         - If trades is empty, returns empty DataFrame with correct columns
         - signed_amount: positive for buys, negative for sells
         - signed_cost: positive for buys, negative for sells
         - If 'side' is in group_by, it's converted to Categorical for proper ordering
+        - Input validation performed via Pandera MyTradesSchema
     """
-    # Validate required columns
-    required = ["amount", "cost", "side"]
-    if freq:
-        required.append("timestamp")
-    if include_fees and "fee_cost" in trades.columns:
-        required.append("fee_cost")
-
-    _validate_dataframe(trades, required, "aggregate_trades")
-
     # Handle empty DataFrame
     if trades.empty:
         result_columns = list(group_by) + [
@@ -148,9 +120,10 @@ def aggregate_trades(
     return result
 
 
+@pa.check_types
 def calculate_realized_pnl(
-    trades: pd.DataFrame,
-    group_by: Union[List[str], tuple] = ("symbol",),
+    trades: DataFrame[MyTradesSchema],
+    group_by: Union[list[str], tuple] = ("symbol",),
     freq: Optional[str] = None,
     include_totals: bool = False,
 ) -> pd.DataFrame:
@@ -203,8 +176,7 @@ def calculate_realized_pnl(
         >>> pnl = calculate_realized_pnl(trades, include_totals=True)
 
     Raises:
-        ValueError: If required columns are missing
-        TypeError: If trades is not a DataFrame
+        pandera.errors.SchemaError: If trades DataFrame doesn't match MyTradesSchema
 
     Notes:
         - Only calculates PnL for trades that have both buys and sells
@@ -212,14 +184,8 @@ def calculate_realized_pnl(
         - Fees are not included in PnL calculation (shown separately)
         - Price calculations handle division by zero (returns 0)
         - If trades is empty, returns empty DataFrame with correct columns
+        - Input validation performed via Pandera MyTradesSchema
     """
-    # Validate required columns
-    required = ["symbol", "side", "amount", "cost"]
-    if freq:
-        required.append("timestamp")
-
-    _validate_dataframe(trades, required, "calculate_realized_pnl")
-
     # Handle empty DataFrame
     if trades.empty:
         base_columns = list(group_by) + [
