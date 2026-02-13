@@ -17,6 +17,7 @@ from ccxt_pandas.wrappers.schemas.base_schemas import BaseExchangeSchema
 from ccxt_pandas.wrappers.schemas.bids_asks_schema import BidsAsksSchema
 from ccxt_pandas.wrappers.schemas.cross_borrow_rates_schema import CrossBorrowRatesSchema
 from ccxt_pandas.wrappers.schemas.currency_schema import CurrencySchema
+from ccxt_pandas.wrappers.schemas.deposit_withdraw_fees_schema import DepositWithdrawFeesSchema
 from ccxt_pandas.wrappers.schemas.funding_rate_schema import FundingRateSchema
 from ccxt_pandas.wrappers.schemas.funding_rate_history_schema import FundingRateHistorySchema
 from ccxt_pandas.wrappers.schemas.greeks_schema import GreeksSchema
@@ -45,6 +46,7 @@ __all__ = [
     "MarketSchema",
     "CrossBorrowRatesSchema",
     "CurrencySchema",
+    "DepositWithdrawFeesSchema",
     "OrderBookSchema",
     "TickersSchema",
     "TradeSchema",
