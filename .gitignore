@@ -3,7 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 .idea/
-.claude/
+
+# Claude Code - ignore local settings but allow shared skills
+.claude/*
+!.claude/skills/
 
 # C extensions
 *.so
