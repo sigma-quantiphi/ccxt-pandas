@@ -11,6 +11,7 @@ All schemas inherit from BaseExchangeSchema and use permissive validation
 (most fields optional, strict=False) to handle exchange-specific variations.
 """
 
+from ccxt_pandas.wrappers.schemas.accounts_schema import AccountsSchema
 from ccxt_pandas.wrappers.schemas.balance_schema import BalanceSchema
 from ccxt_pandas.wrappers.schemas.base_schemas import BaseExchangeSchema
 from ccxt_pandas.wrappers.schemas.bids_asks_schema import BidsAsksSchema
@@ -35,6 +36,7 @@ from ccxt_pandas.wrappers.schemas.trade_schema import TradeSchema
 from ccxt_pandas.wrappers.schemas.volatility_history_schema import VolatilityHistorySchema
 
 __all__ = [
+    "AccountsSchema",
     "BaseExchangeSchema",
     "OrderSchema",
     "OHLCVSchema",
