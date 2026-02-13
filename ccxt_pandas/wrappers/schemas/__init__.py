@@ -16,10 +16,11 @@ from ccxt_pandas.wrappers.schemas.base_schemas import BaseExchangeSchema
 from ccxt_pandas.wrappers.schemas.bids_asks_schema import BidsAsksSchema
 from ccxt_pandas.wrappers.schemas.currency_schema import CurrencySchema
 from ccxt_pandas.wrappers.schemas.funding_rate_schema import FundingRateSchema
+from ccxt_pandas.wrappers.schemas.funding_rate_history_schema import FundingRateHistorySchema
 from ccxt_pandas.wrappers.schemas.market_schema import MarketSchema
 from ccxt_pandas.wrappers.schemas.ohlcv_schema import OHLCVSchema
 from ccxt_pandas.wrappers.schemas.order_schema import OrderSchema
-from ccxt_pandas.wrappers.schemas.orderbook_schema import OrderBookSchema
+from ccxt_pandas.wrappers.schemas.order_book_schema import OrderBookSchema
 from ccxt_pandas.wrappers.schemas.trade_schema import TradeSchema
 
 __all__ = [
@@ -33,4 +34,5 @@ __all__ = [
     "TradeSchema",
     "BidsAsksSchema",
     "FundingRateSchema",
+    "FundingRateHistorySchema",
 ]
