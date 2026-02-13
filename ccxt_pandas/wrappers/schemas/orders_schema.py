@@ -6,10 +6,10 @@ import pandas as pd
 import pandera.pandas as pa
 from pandera.typing import Series
 
-from ccxt_pandas.wrappers.schemas.base_schemas import BaseExchangeSchema
+from ccxt_pandas.wrappers.schemas.base_schemas import BaseExchangeSchema, FeeFieldsMixin
 
 
-class OrdersSchema(BaseExchangeSchema):
+class OrdersSchema(BaseExchangeSchema, FeeFieldsMixin):
     """Orders data schema.
 
     Used by methods like fetch_open_orders, fetch_closed_orders, fetch_canceled_orders.
@@ -85,10 +85,5 @@ class OrdersSchema(BaseExchangeSchema):
     postOnly: Optional[Series[bool]] = pa.Field(
         nullable=True, title="Post Only", description="Whether order is post-only (maker-only)"
     )
-    fee_cost: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, title="Fee Cost", description="Total fee amount"
-    )
-    fee_currency: Optional[Series[str]] = pa.Field(
-        nullable=True, title="Fee Currency", description="Currency in which fee was charged"
-    )
+    # Note: fee_currency, fee_cost, fee_rate come from FeeFieldsMixin (Optional)
     # Note: exchange field comes from BaseExchangeSchema (Optional)

@@ -6,10 +6,10 @@ import pandas as pd
 import pandera.pandas as pa
 from pandera.typing import Series
 
-from ccxt_pandas.wrappers.schemas.base_schemas import BaseExchangeSchema
+from ccxt_pandas.wrappers.schemas.base_schemas import BaseExchangeSchema, FeeFieldsMixin
 
 
-class TransactionsSchema(BaseExchangeSchema):
+class TransactionsSchema(BaseExchangeSchema, FeeFieldsMixin):
     """Transactions data schema.
 
     Used by methods like fetch_deposits, fetch_withdrawals, fetch_deposits_withdrawals.
@@ -69,13 +69,5 @@ class TransactionsSchema(BaseExchangeSchema):
     comment: Optional[Series[str]] = pa.Field(
         nullable=True, title="Comment", description="User-defined comment or message"
     )
-    fee_currency: Optional[Series[str]] = pa.Field(
-        nullable=True, title="Fee Currency", description="Currency in which fee was charged"
-    )
-    fee_cost: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, title="Fee Cost", description="Fee amount charged"
-    )
-    fee_rate: Optional[Series[float]] = pa.Field(
-        ge=0, nullable=True, title="Fee Rate", description="Fee rate (approximately fee_cost / amount)"
-    )
+    # Note: fee_currency, fee_cost, fee_rate come from FeeFieldsMixin (Optional)
     # Note: exchange field comes from BaseExchangeSchema (Optional)

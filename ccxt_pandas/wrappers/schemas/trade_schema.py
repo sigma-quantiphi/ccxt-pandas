@@ -6,7 +6,7 @@ import pandas as pd
 import pandera.pandas as pa
 from pandera.typing import Series
 
-from ccxt_pandas.wrappers.schemas.base_schemas import BaseExchangeSchema
+from ccxt_pandas.wrappers.schemas.base_schemas import BaseExchangeSchema, FeeFieldsMixin
 
 
 class TradeSchema(BaseExchangeSchema):
@@ -31,7 +31,7 @@ class TradeSchema(BaseExchangeSchema):
         title="Symbol", description="Trading pair"
     )
     id: Series[str] = pa.Field(
-        title="Trade ID", description="Unique trade identifier"
+        unique=True, title="Trade ID", description="Unique trade identifier"
     )
     side: Series[str] = pa.Field(
         isin=["buy", "sell"], title="Side", description="Trade side: 'buy' or 'sell'"
@@ -53,19 +53,17 @@ class TradeSchema(BaseExchangeSchema):
     # Note: exchange field comes from BaseExchangeSchema (Optional)
 
 
-class MyTradesSchema(TradeSchema):
+class MyTradesSchema(TradeSchema, FeeFieldsMixin):
     """User trades (my trades) data schema.
 
     Used by methods like fetch_my_trades, fetch_order_trades.
 
     Returns the authenticated user's trade history including fees and order references.
-    Inherits all fields from TradeSchema and adds:
+    Inherits all fields from TradeSchema and FeeFieldsMixin, and adds:
     - order (order ID that generated the trade)
     - takerOrMaker (whether trade was taker or maker)
-    - fee_currency (currency in which fee was charged)
-    - fee_cost (fee amount)
 
-    The fees field is also required (overriding the optional in TradeSchema).
+    The fees field and fee fields are required (overriding the optional in parent classes).
     """
 
     # Additional required fields for user trades
@@ -75,14 +73,16 @@ class MyTradesSchema(TradeSchema):
     takerOrMaker: Series[str] = pa.Field(
         isin=["taker", "maker"], title="Taker or Maker", description="Whether trade was taker or maker"
     )
+
+    # Override to make fees required for user trades
+    fees: Series[object] = pa.Field(
+        title="Fees", description="Fee details (dict or list)"
+    )
+
+    # Override fee fields to make them required for user trades
     fee_currency: Series[str] = pa.Field(
         title="Fee Currency", description="Currency in which fee was charged"
     )
     fee_cost: Series[float] = pa.Field(
         ge=0, title="Fee Cost", description="Fee amount charged"
-    )
-
-    # Override fees to make it required for user trades
-    fees: Series[object] = pa.Field(
-        title="Fees", description="Fee details (dict or list)"
     )
