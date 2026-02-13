@@ -1,19 +1,20 @@
 """Delta hedging calculations for portfolio management."""
 
-from typing import Literal, Optional
+from typing import Literal, Union
 
 import pandas as pd
 import pandera as pa
 from pandera.typing import DataFrame
 
 from ccxt_pandas.wrappers.schemas.balance_schema import BalanceSchema
+from ccxt_pandas.wrappers.schemas.margins_balance_schema import MarginsBalanceSchema
 from ccxt_pandas.wrappers.schemas.market_schema import MarketSchema
 from ccxt_pandas.wrappers.schemas.positions_schema import PositionsSchema
 
 
 @pa.check_types
 def calculate_delta_exposure(
-    balance: DataFrame[BalanceSchema],
+    balance: Union[DataFrame[BalanceSchema], DataFrame[MarginsBalanceSchema]],
     positions: DataFrame[PositionsSchema],
     markets: DataFrame[MarketSchema],
     balance_amount: Literal["free", "used", "total"] = "total",
@@ -24,9 +25,13 @@ def calculate_delta_exposure(
     This function combines spot balances with derivatives positions to calculate
     the total exposure in each base currency, useful for delta hedging strategies.
 
+    Supports both spot balances (BalanceSchema) and margin balances (MarginsBalanceSchema).
+
     Args:
-        balance: Balance DataFrame from fetch_balance (must have 'code' column and
-            balance amount columns: 'free', 'used', 'total').
+        balance: Balance DataFrame from fetch_balance. Can be either:
+            - BalanceSchema: Spot balances with 'code', 'free', 'used', 'total' columns
+            - MarginsBalanceSchema: Margin balances with 'symbol', 'base', 'base_free',
+              'base_used', 'base_total' columns
         positions: Positions DataFrame from fetch_positions (must have 'symbol', 'contracts',
             'contractSize', and 'side' columns).
         markets: Markets DataFrame from load_markets (must have 'symbol' and 'base' columns).
@@ -40,6 +45,8 @@ def calculate_delta_exposure(
     Example:
         >>> import ccxt_pandas as cpd
         >>> exchange = cpd.CCXTPandasExchange(ccxt.binance())
+
+        >>> # Spot balances
         >>> balance = exchange.fetch_balance()
         >>> positions = exchange.fetch_positions()
         >>> markets = exchange.load_markets()
@@ -50,9 +57,13 @@ def calculate_delta_exposure(
         1  ETH  12.345678
         2  USDT  1000.00
 
+        >>> # Margin balances (also supported)
+        >>> margin_balance = exchange.fetch_balance()  # In margin mode
+        >>> delta = calculate_delta_exposure(margin_balance, positions, markets)
+
     Raises:
         pandera.errors.SchemaError: If any DataFrame doesn't match its schema
-            - balance must match BalanceSchema
+            - balance must match BalanceSchema or MarginsBalanceSchema
             - positions must match PositionsSchema
             - markets must match MarketSchema
 
@@ -60,7 +71,9 @@ def calculate_delta_exposure(
         - For positions, 'long' side is treated as positive exposure
         - For positions, 'short' side is treated as negative exposure
         - Amounts are converted using contractSize for derivatives
-        - Balance uses 'code' column (currency code) which is renamed to 'base'
+        - Spot balances: uses 'code' column (currency code) renamed to 'base'
+        - Margin balances: uses 'base' column directly and 'base_*' amount columns
+        - Automatically detects balance type based on columns present
         - Input validation performed via Pandera schemas
     """
     # Prepare positions with amounts
@@ -74,11 +87,28 @@ def calculate_delta_exposure(
     )
     positions_calc[amount_column] *= positions_calc["contractSize"]
 
-    # Prepare balance DataFrame - rename code to base and select balance amount
+    # Prepare balance DataFrame - handle both spot and margin balances
     balance_calc = balance.copy()
-    balance_calc = balance_calc.rename(
-        columns={"code": "base", balance_amount: amount_column}
-    )[["base", amount_column]]
+
+    # Detect balance type and prepare accordingly
+    if "code" in balance_calc.columns:
+        # BalanceSchema (spot balances)
+        # Rename: code -> base, {balance_amount} -> amount_column
+        balance_calc = balance_calc.rename(
+            columns={"code": "base", balance_amount: amount_column}
+        )[["base", amount_column]]
+    elif "symbol" in balance_calc.columns:
+        # MarginsBalanceSchema (margin balances)
+        # Use 'base' column directly, select base_{balance_amount} -> amount_column
+        margin_amount_col = f"base_{balance_amount}"
+        balance_calc = balance_calc.rename(columns={margin_amount_col: amount_column})[
+            ["base", amount_column]
+        ]
+    else:
+        raise ValueError(
+            "Balance DataFrame must have either 'code' column (BalanceSchema) "
+            "or 'symbol' column (MarginsBalanceSchema)"
+        )
 
     # Select only base and amount columns from positions
     positions_for_concat = positions_calc[["base", amount_column]]
