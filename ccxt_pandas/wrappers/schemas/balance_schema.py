@@ -14,11 +14,11 @@ class BalanceSchema(BaseExchangeSchema):
 
     Used by methods like fetch_balance, watch_balance.
 
-    Symbol is required (currency code). Balance amounts may be null
+    Code is required (currency code). Balance amounts may be null
     depending on the exchange response format.
     """
 
-    symbol: Series[str] = pa.Field(title="Symbol", description="Currency symbol/code")
+    code: Series[str] = pa.Field(title="Code", description="Currency code")
     free: Optional[Series[float]] = pa.Field(
         ge=0, nullable=True, title="Free", description="Available balance"
     )
@@ -34,12 +34,12 @@ class BalanceSchema(BaseExchangeSchema):
 
     # These fields appear in some exchange formats
     base: Optional[Series[str]] = pa.Field(
-        nullable=True, title="Base", description="Base currency (when symbol is a pair)"
+        nullable=True, title="Base", description="Base currency (when code is a pair)"
     )
     quote: Optional[Series[str]] = pa.Field(
         nullable=True,
         title="Quote",
-        description="Quote currency (when symbol is a pair)",
+        description="Quote currency (when code is a pair)",
     )
     timestamp: Optional[Series[pd.Timestamp]] = pa.Field(
         nullable=True, title="Timestamp", description="Balance snapshot timestamp"
