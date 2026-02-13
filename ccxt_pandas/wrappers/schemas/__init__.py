@@ -28,6 +28,7 @@ from ccxt_pandas.wrappers.schemas.ohlcv_schema import OHLCVSchema
 from ccxt_pandas.wrappers.schemas.open_interest_history_schema import OpenInterestHistorySchema
 from ccxt_pandas.wrappers.schemas.order_schema import OrderSchema
 from ccxt_pandas.wrappers.schemas.order_book_schema import OrderBookSchema
+from ccxt_pandas.wrappers.schemas.positions_schema import PositionsSchema
 from ccxt_pandas.wrappers.schemas.tickers_schema import TickersSchema
 from ccxt_pandas.wrappers.schemas.trade_schema import TradeSchema
 from ccxt_pandas.wrappers.schemas.volatility_history_schema import VolatilityHistorySchema
@@ -52,5 +53,6 @@ __all__ = [
     "MarkPricesSchema",
     "MyTradesSchema",
     "OpenInterestHistorySchema",
+    "PositionsSchema",
     "VolatilityHistorySchema",
 ]
