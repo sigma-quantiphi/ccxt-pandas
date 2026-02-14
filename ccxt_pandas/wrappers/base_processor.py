@@ -14,10 +14,12 @@ Attributes:
 """
 
 from dataclasses import dataclass, field
-from typing import Union, Literal
+from typing import Union, Literal, Optional, Type
+import warnings
 
 import ccxt
 import pandas as pd
+import pandera as pa
 
 from ccxt_pandas.wrappers.method_mappings import (
     standard_dataframe_methods,
@@ -30,6 +32,7 @@ from ccxt_pandas.wrappers.method_mappings import (
     orders_dataframe_methods,
     ohlcv_symbols_dataframe_methods,
     dict_methods,
+    get_method_schema,
 )
 from ccxt_pandas.wrappers.schemas.order_schema import OrderSchema
 from ccxt_pandas.utils.pandas_utils import (
@@ -86,6 +89,8 @@ class BaseProcessor:
     cost_out_of_range: Literal["warn", "clip"] = "warn"
     amount_out_of_range: Literal["warn", "clip"] = "warn"
     price_out_of_range: Literal["warn", "clip"] = "warn"
+    validate_schemas: bool = False
+    strict_validation: bool = False
     int_to_datetime_fields: tuple = field(
         repr=False,
         default=(
@@ -330,8 +335,58 @@ class BaseProcessor:
             data["account"] = self.account_name
         return data
 
+    def _validate_dataframe(
+        self, df: pd.DataFrame, schema: Optional[Type[pa.DataFrameModel]] = None
+    ) -> pd.DataFrame:
+        """Validate DataFrame against Pandera schema if validation enabled.
+
+        Args:
+            df: DataFrame to validate
+            schema: Pandera schema class to validate against
+
+        Returns:
+            Validated DataFrame (or original if validation disabled/failed)
+
+        Raises:
+            pandera.errors.SchemaError: If strict_validation=True and validation fails
+        """
+        if not schema or not self.validate_schemas:
+            return df
+
+        if df.empty:
+            # For empty DataFrames, return with schema columns if possible
+            try:
+                schema_columns = list(schema.to_schema().columns.keys())
+                return pd.DataFrame(columns=schema_columns)
+            except:
+                return df
+
+        try:
+            # Validate with lazy=True to collect all errors
+            validated_df = schema.validate(df, lazy=True)
+            return validated_df
+        except pa.errors.SchemaErrors as e:
+            # Multiple validation errors
+            error_msg = f"Schema validation failed for {schema.__name__}:\n{e}"
+            if self.strict_validation:
+                raise pa.errors.SchemaError(error_msg)
+            else:
+                warnings.warn(error_msg, UserWarning, stacklevel=3)
+                return df
+        except pa.errors.SchemaError as e:
+            # Single validation error
+            error_msg = f"Schema validation failed for {schema.__name__}: {e}"
+            if self.strict_validation:
+                raise
+            else:
+                warnings.warn(error_msg, UserWarning, stacklevel=3)
+                return df
+
     def response_to_dataframe(
-        self, data: list | dict, column_names: tuple = None
+        self,
+        data: list | dict,
+        column_names: tuple = None,
+        schema: Optional[Type[pa.DataFrameModel]] = None,
     ) -> pd.DataFrame:
         """
         Convert a list of dictionaries into a pandas DataFrame and preprocess it.
@@ -339,18 +394,25 @@ class BaseProcessor:
         Args:
             data (list): Raw data returned from the API.
             column_names (tuple, optional): Column names for the DataFrame.
+            schema (Type[pa.DataFrameModel], optional): Pandera schema for validation.
         Returns:
             pd.DataFrame: A preprocessed DataFrame.
         """
         data = pd.DataFrame(data=data)
         if column_names:
             data.columns = column_names
-        return self.preprocess_dataframe(data)
+        data = self.preprocess_dataframe(data)
+        return self._validate_dataframe(data, schema)
 
-    def markets_to_dataframe(self, data: dict) -> pd.DataFrame:
-        return self.preprocess_dataframe(pd.DataFrame.from_dict(data, orient="index"))
+    def markets_to_dataframe(
+        self, data: dict, schema: Optional[Type[pa.DataFrameModel]] = None
+    ) -> pd.DataFrame:
+        df = self.preprocess_dataframe(pd.DataFrame.from_dict(data, orient="index"))
+        return self._validate_dataframe(df, schema)
 
-    def currencies_to_dataframe(self, data: dict) -> pd.DataFrame:
+    def currencies_to_dataframe(
+        self, data: dict, schema: Optional[Type[pa.DataFrameModel]] = None
+    ) -> pd.DataFrame:
         data = (
             pd.DataFrame(data)
             .transpose()
@@ -374,16 +436,19 @@ class BaseProcessor:
                 .rename(columns={"index": "network"})
             )
             data = data.merge(networks)
-        return self.preprocess_dataframe(
+        df = self.preprocess_dataframe(
             data.drop(columns=["networks", "network_info", "fees"], errors="ignore")
         )
+        return self._validate_dataframe(df, schema)
 
-    def balance_to_dataframe(self, data: dict) -> pd.DataFrame:
+    def balance_to_dataframe(
+        self, data: dict, schema: Optional[Type[pa.DataFrameModel]] = None
+    ) -> pd.DataFrame:
         if "total" in data:
-            df = pd.DataFrame(data={"symbol": list(data["total"].keys())})
+            df = pd.DataFrame(data={"code": list(data["total"].keys())})
             for column in ["free", "used", "total", "debt"]:
                 if column in data:
-                    df[column] = df["symbol"].map(data[column])
+                    df[column] = df["code"].map(data[column])
         else:
             df = pd.DataFrame(data={"symbol": data.keys()})
             df = df[~df["symbol"].isin(["info", "timestamp", "datetime"])].reset_index(
@@ -403,14 +468,18 @@ class BaseProcessor:
             df["timestamp"] = data["timestamp"]
         if "datetime" in data:
             df["datetime"] = data["datetime"]
-        return self.preprocess_dataframe(df)
+        df = self.preprocess_dataframe(df)
+        return self._validate_dataframe(df, schema)
 
-    def order_book_to_dataframe(self, data: Union[dict, list]) -> pd.DataFrame:
+    def order_book_to_dataframe(
+        self, data: Union[dict, list], schema: Optional[Type[pa.DataFrameModel]] = None
+    ) -> pd.DataFrame:
         """
         Convert order book data into a pandas DataFrame.
 
         Args:
             data (Union[dict, list]): Raw order book data from the API.
+            schema (Type[pa.DataFrameModel], optional): Pandera schema for validation.
 
         Returns:
             pd.DataFrame: A preprocessed order book DataFrame.
@@ -436,9 +505,11 @@ class BaseProcessor:
         )
         if not data.empty:
             data = self.preprocess_dataframe(data)
-        return data
+        return self._validate_dataframe(data, schema)
 
-    def order_books_to_dataframe(self, data: dict) -> pd.DataFrame:
+    def order_books_to_dataframe(
+        self, data: dict, schema: Optional[Type[pa.DataFrameModel]] = None
+    ) -> pd.DataFrame:
         """
         Convert order book data for multiple symbols into a unified pandas DataFrame.
 
@@ -446,6 +517,7 @@ class BaseProcessor:
             data (dict): A dictionary containing order book data for multiple symbols.
                          Each key is a symbol, and the value is the corresponding
                          order book data.
+            schema (Type[pa.DataFrameModel], optional): Pandera schema for validation.
 
         Returns:
             pd.DataFrame: A preprocessed DataFrame containing combined order book information
@@ -453,7 +525,7 @@ class BaseProcessor:
         """
         df = []
         for symbol, symbol_data in data.items():
-            symbol_data = self.order_book_to_dataframe(symbol_data)
+            symbol_data = self.order_book_to_dataframe(symbol_data, schema=schema)
             if not symbol_data.empty:
                 symbol_data["symbol"] = symbol
                 df.append(symbol_data.copy())
@@ -461,29 +533,38 @@ class BaseProcessor:
             return pd.DataFrame()
         return pd.concat(df, ignore_index=True)
 
-    def ohlcv_to_dataframe(self, data: list, symbol: str | None = None) -> pd.DataFrame:
+    def ohlcv_to_dataframe(
+        self,
+        data: list,
+        symbol: str | None = None,
+        schema: Optional[Type[pa.DataFrameModel]] = None,
+    ) -> pd.DataFrame:
         """
         Convert OHLCV data into a pandas DataFrame.
 
         Args:
             data (list): List containing OHLCV data.
             symbol (str | None): The trading pair (e.g., "BTC/USDT") associated with the OHLCV data, if applicable.
+            schema (Type[pa.DataFrameModel], optional): Pandera schema for validation.
 
         Returns:
             pd.DataFrame: A preprocessed OHLCV DataFrame.
         """
-        data = self.response_to_dataframe(data, column_names=self.ohlcv_fields)
+        data = self.response_to_dataframe(data, column_names=self.ohlcv_fields, schema=schema)
         if symbol:
             data["symbol"] = symbol
         return data
 
-    def ohlcv_symbols_to_dataframe(self, data: dict) -> pd.DataFrame:
+    def ohlcv_symbols_to_dataframe(
+        self, data: dict, schema: Optional[Type[pa.DataFrameModel]] = None
+    ) -> pd.DataFrame:
         """
         Convert OHLCV data for multiple trading pairs into a pandas DataFrame.
 
         Args:
             data (dict): Dictionary containing OHLCV data, where keys are symbols
                          and sub-keys are timeframes.
+            schema (Type[pa.DataFrameModel], optional): Pandera schema for validation.
 
         Returns:
             pd.DataFrame: A preprocessed DataFrame containing OHLCV data with symbol
@@ -492,19 +573,22 @@ class BaseProcessor:
         full_data = []
         for symbol, timeframes in data.items():
             for timeframe, ohlcv_data in timeframes.items():
-                df = self.ohlcv_to_dataframe(data=ohlcv_data, symbol=symbol)
+                df = self.ohlcv_to_dataframe(data=ohlcv_data, symbol=symbol, schema=schema)
                 df["timeframe"] = timeframe
                 full_data.append(df.copy())
         if not full_data:
             return pd.DataFrame()
         return pd.concat(full_data, ignore_index=True)
 
-    def orders_to_dataframe(self, data: list) -> pd.DataFrame:
+    def orders_to_dataframe(
+        self, data: list, schema: Optional[Type[pa.DataFrameModel]] = None
+    ) -> pd.DataFrame:
         """
         Convert order data into a pandas DataFrame.
 
         Args:
             data (list): A list of order dictionaries.
+            schema (Type[pa.DataFrameModel], optional): Pandera schema for validation.
 
         Returns:
             pd.DataFrame: A preprocessed orders DataFrame.
@@ -544,7 +628,8 @@ class BaseProcessor:
             )
             if not trades.empty:
                 orders = orders.drop(columns=["trades"]).merge(trades, how="outer")
-        return self.preprocess_dataframe(orders)
+        orders = self.preprocess_dataframe(orders)
+        return self._validate_dataframe(orders, schema)
 
     def orders_to_dict(self, orders: pd.DataFrame, exchange: ccxt.Exchange) -> list:
         """
@@ -580,24 +665,27 @@ class BaseProcessor:
     def preprocess_outputs(
         self, method_name: str, result: dict | list, symbol: str | None = None
     ) -> dict | list | pd.DataFrame:
+        # Get schema for this method
+        schema = get_method_schema(method_name)
+
         if method_name in standard_dataframe_methods:
-            result = self.response_to_dataframe(data=result)
+            result = self.response_to_dataframe(data=result, schema=schema)
         elif method_name in markets_dataframe_methods:
-            result = self.markets_to_dataframe(data=result)
+            result = self.markets_to_dataframe(data=result, schema=schema)
         elif method_name in currencies_dataframe_methods:
-            result = self.currencies_to_dataframe(data=result)
+            result = self.currencies_to_dataframe(data=result, schema=schema)
         elif method_name in balance_dataframe_methods:
-            result = self.balance_to_dataframe(data=result)
+            result = self.balance_to_dataframe(data=result, schema=schema)
         elif method_name in ohlcv_dataframe_methods:
-            result = self.ohlcv_to_dataframe(data=result, symbol=symbol)
+            result = self.ohlcv_to_dataframe(data=result, symbol=symbol, schema=schema)
         elif method_name in orderbook_dataframe_methods:
-            result = self.order_book_to_dataframe(data=result)
+            result = self.order_book_to_dataframe(data=result, schema=schema)
         elif method_name in orderbooks_dataframe_methods:
-            result = self.order_books_to_dataframe(data=result)
+            result = self.order_books_to_dataframe(data=result, schema=schema)
         elif method_name in orders_dataframe_methods:
-            result = self.orders_to_dataframe(data=result)
+            result = self.orders_to_dataframe(data=result, schema=schema)
         elif method_name in ohlcv_symbols_dataframe_methods:
-            result = self.ohlcv_symbols_to_dataframe(data=result)
+            result = self.ohlcv_symbols_to_dataframe(data=result, schema=schema)
         elif method_name in dict_methods:
             result = self.preprocess_dict(data=result)
         return result

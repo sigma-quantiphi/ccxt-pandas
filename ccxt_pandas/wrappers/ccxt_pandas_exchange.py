@@ -68,6 +68,8 @@ class CCXTPandasExchange(CCXTPandasExchangeTyped):
     cost_out_of_range: Literal["warn", "clip"] = "warn"
     amount_out_of_range: Literal["warn", "clip"] = "warn"
     price_out_of_range: Literal["warn", "clip"] = "warn"
+    validate_schemas: bool = False
+    strict_validation: bool = False
     _ccxt_processor: BaseProcessor = field(default_factory=BaseProcessor)
     _function_handler: FunctionHandler = field(default_factory=FunctionHandler)
     _signature_cache: dict = field(default_factory=dict)
@@ -83,6 +85,8 @@ class CCXTPandasExchange(CCXTPandasExchangeTyped):
             cost_out_of_range=self.cost_out_of_range,
             amount_out_of_range=self.amount_out_of_range,
             price_out_of_range=self.price_out_of_range,
+            validate_schemas=self.validate_schemas,
+            strict_validation=self.strict_validation,
         )
         self._function_handler = FunctionHandler(errors=self.errors)
 
