@@ -175,6 +175,7 @@ def _collect_used_imports(code: str) -> str:
 
         # Collect all schema names used
         import re
+
         schema_pattern = r"DataFrame\[(\w+)\]"
         schemas = sorted(set(re.findall(schema_pattern, code)))
         if schemas:

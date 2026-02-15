@@ -20,9 +20,7 @@ class BalanceSchema(BaseExchangeSchema):
 
     # Required fields
     code: Series[str] = pa.Field(title="Code", description="Currency code")
-    free: Series[float] = pa.Field(
-        ge=0, title="Free", description="Available balance"
-    )
+    free: Series[float] = pa.Field(ge=0, title="Free", description="Available balance")
     used: Series[float] = pa.Field(
         ge=0, title="Used", description="Balance in open orders"
     )

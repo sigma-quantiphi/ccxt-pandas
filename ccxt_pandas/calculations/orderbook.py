@@ -313,14 +313,15 @@ def calculate_vwap_by_depth(
     return vwap
 
 
-def calculate_mid_price(
+def calculate_mid_price_and_spread(
     data: pd.DataFrame,
     price_col: str = "price",
     by_exchange: bool = False,
 ) -> pd.DataFrame:
-    """Calculate mid price from order book for all symbols.
+    """Calculate mid price, spread, and relative spread from order book for all symbols.
 
-    Computes (best_bid + best_ask) / 2 for each symbol (and optionally exchange).
+    Computes best bid/ask, mid price, absolute spread, and relative spread for each
+    symbol (and optionally exchange) using pandas pivot for efficient calculation.
 
     Args:
         data: Order book DataFrame (should be sorted)
@@ -328,7 +329,8 @@ def calculate_mid_price(
         by_exchange: Include exchange in grouping (default: False)
 
     Returns:
-        DataFrame with 'mid_price' column, indexed by symbol (and optionally exchange)
+        DataFrame with columns: bid, ask, mid_price, spread, relative_spread
+        Indexed by symbol (and optionally exchange)
 
     Examples:
         >>> orderbook = pd.DataFrame({
@@ -337,92 +339,43 @@ def calculate_mid_price(
         ...     'price': [99.5, 100.5, 1800, 1820],
         ...     'qty': [10, 10, 5, 5]
         ... })
-        >>> calculate_mid_price(orderbook)
-                   mid_price
+        >>> result = calculate_mid_price_and_spread(orderbook)
+        >>> print(result)
+                    bid     ask  mid_price  spread  relative_spread
         symbol
-        BTC/USDT      100.0
-        ETH/USDT     1810.0
+        BTC/USDT   99.5   100.5      100.0     1.0         0.010000
+        ETH/USDT  1800.0  1820.0     1810.0    20.0         0.011050
 
-    Notes:
-        - Order book should be sorted first (use sort_orderbook)
-        - Groups by symbol (and optionally exchange)
-        - Takes first row of each side as best bid/ask
-    """
-    group_cols = ["exchange", "symbol"] if by_exchange and "exchange" in data.columns else ["symbol"]
+        >>> # Access specific columns
+        >>> result['mid_price']
+        symbol
+        BTC/USDT     100.0
+        ETH/USDT    1810.0
 
-    # Get best bid and ask for each group (first row when sorted)
-    bids = data[data["side"].isin(["bids", "buy"])].groupby(group_cols)[price_col].first()
-    asks = data[data["side"].isin(["asks", "sell"])].groupby(group_cols)[price_col].first()
-
-    # Calculate mid price
-    result = pd.DataFrame({
-        "best_bid": bids,
-        "best_ask": asks,
-    })
-    result["mid_price"] = (result["best_bid"] + result["best_ask"]) / 2
-
-    return result[["mid_price"]]
-
-
-def calculate_spread(
-    data: pd.DataFrame,
-    price_col: str = "price",
-    relative: bool = False,
-    by_exchange: bool = False,
-) -> pd.DataFrame:
-    """Calculate bid-ask spread from order book for all symbols.
-
-    Computes best_ask - best_bid for each symbol (and optionally exchange).
-    Can return absolute spread or relative spread (as percentage of mid price).
-
-    Args:
-        data: Order book DataFrame (should be sorted)
-        price_col: Name of price column (default: 'price')
-        relative: Return as percentage of mid price (default: False)
-        by_exchange: Include exchange in grouping (default: False)
-
-    Returns:
-        DataFrame with 'spread' column, indexed by symbol (and optionally exchange)
-
-    Examples:
-        >>> orderbook = pd.DataFrame({
-        ...     'symbol': ['BTC/USDT', 'BTC/USDT', 'ETH/USDT', 'ETH/USDT'],
-        ...     'side': ['bids', 'asks', 'bids', 'asks'],
-        ...     'price': [99.5, 100.5, 1800, 1820],
-        ...     'qty': [10, 10, 5, 5]
-        ... })
-        >>> calculate_spread(orderbook)
-                   spread
+        >>> result['spread']
         symbol
         BTC/USDT     1.0
         ETH/USDT    20.0
 
-        >>> calculate_spread(orderbook, relative=True)
-                      spread
-        symbol
-        BTC/USDT    0.010000
-        ETH/USDT    0.011050
-
     Notes:
-        - Absolute spread = best_ask - best_bid
-        - Relative spread = (best_ask - best_bid) / mid_price
         - Order book should be sorted first (use sort_orderbook)
+        - Uses pandas pivot for efficient calculation
+        - mid_price = (bid + ask) / 2
+        - spread = ask - bid (absolute)
+        - relative_spread = spread / mid_price (as decimal, multiply by 100 for %)
         - Tighter spreads indicate higher liquidity
     """
-    group_cols = ["exchange", "symbol"] if by_exchange and "exchange" in data.columns else ["symbol"]
-
-    # Get best bid and ask for each group (first row when sorted)
-    bids = data[data["side"].isin(["bids", "buy"])].groupby(group_cols)[price_col].first()
-    asks = data[data["side"].isin(["asks", "sell"])].groupby(group_cols)[price_col].first()
-
-    result = pd.DataFrame({
-        "best_bid": bids,
-        "best_ask": asks,
-    })
-    result["spread"] = result["best_ask"] - result["best_bid"]
-
-    if relative:
-        mid_price = (result["best_bid"] + result["best_ask"]) / 2
-        result["spread"] = result["spread"] / mid_price
-
-    return result[["spread"]]
+    group_cols = (
+        ["exchange", "symbol"]
+        if by_exchange and "exchange" in data.columns
+        else ["symbol"]
+    )
+    result = data.copy()
+    result["side"] = result["side"].map({"asks": "ask", "bids": "bid"})
+    result = result.drop_duplicates(subset=group_cols + ["side"], keep="first").pivot(
+        index=group_cols, columns="side", values=price_col
+    )
+    result["mid_price"] = (result["bid"] + result["ask"]) / 2
+    result["spread"] = result["ask"] - result["bid"]
+    result["relative_spread"] = result["spread"] / result["mid_price"]
+    return result[["bid", "ask", "mid_price", "spread", "relative_spread"]]

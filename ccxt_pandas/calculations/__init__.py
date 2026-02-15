@@ -11,9 +11,8 @@ from ccxt_pandas.calculations.trades import (
     calculate_realized_pnl,
 )
 from ccxt_pandas.calculations.orderbook import (
-    calculate_mid_price,
+    calculate_mid_price_and_spread,
     calculate_notional,
-    calculate_spread,
     calculate_vwap_by_depth,
     create_mirrored_sides,
     is_ask_side,
@@ -28,9 +27,8 @@ __all__ = [
     "calculate_realized_pnl",
     "floor_series",
     "ceil_series",
-    "calculate_mid_price",
+    "calculate_mid_price_and_spread",
     "calculate_notional",
-    "calculate_spread",
     "calculate_vwap_by_depth",
     "create_mirrored_sides",
     "is_ask_side",

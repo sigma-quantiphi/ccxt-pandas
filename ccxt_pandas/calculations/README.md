@@ -151,9 +151,9 @@ print(vwap)
 
 ---
 
-### `calculate_mid_price()`
+### `calculate_mid_price_and_spread()`
 
-Calculate mid price from order book for all symbols (average of best bid and best ask).
+Calculate mid price, spread, and relative spread from order book for all symbols in one efficient operation.
 
 **Parameters:**
 - `data`: Order book DataFrame (should be sorted)
@@ -161,58 +161,8 @@ Calculate mid price from order book for all symbols (average of best bid and bes
 - `by_exchange`: Include exchange in grouping (default: `False`)
 
 **Returns:**
-- DataFrame with `'mid_price'` column, indexed by symbol (and optionally exchange)
-
-**Example:**
-
-```python
-import ccxt
-import ccxt_pandas as cpd
-
-exchange = cpd.CCXTPandasExchange(ccxt.binance())
-orderbook = exchange.fetch_order_book('BTC/USDT')
-sorted_ob = cpd.sort_orderbook(orderbook)
-
-mid = cpd.calculate_mid_price(sorted_ob)
-print(mid)
-#            mid_price
-# symbol
-# BTC/USDT   66666.00
-
-# Multiple symbols
-symbols = ['BTC/USDT', 'ETH/USDT', 'SOL/USDT']
-orderbooks = [exchange.fetch_order_book(s) for s in symbols]
-combined = pd.concat(orderbooks)
-sorted_ob = cpd.sort_orderbook(combined)
-mid = cpd.calculate_mid_price(sorted_ob)
-print(mid)
-#            mid_price
-# symbol
-# BTC/USDT   66666.00
-# ETH/USDT    3500.00
-# SOL/USDT     100.00
-```
-
-**Use cases:**
-- Fair value estimation across multiple symbols
-- Spread calculation baseline
-- Mark price alternative
-- Cross-exchange arbitrage comparison
-
----
-
-### `calculate_spread()`
-
-Calculate bid-ask spread from order book for all symbols.
-
-**Parameters:**
-- `data`: Order book DataFrame (should be sorted)
-- `price_col`: Name of price column (default: `'price'`)
-- `relative`: Return as percentage of mid price (default: `False`)
-- `by_exchange`: Include exchange in grouping (default: `False`)
-
-**Returns:**
-- DataFrame with `'spread'` column, indexed by symbol (and optionally exchange)
+- DataFrame with columns: `bid`, `ask`, `mid_price`, `spread`, `relative_spread`
+- Indexed by symbol (and optionally exchange)
 
 **Example:**
 
@@ -228,30 +178,50 @@ orderbooks = [exchange.fetch_order_book(s) for s in symbols]
 combined = pd.concat(orderbooks)
 sorted_ob = cpd.sort_orderbook(combined)
 
-# Absolute spread
-spread_abs = cpd.calculate_spread(sorted_ob)
-print(spread_abs)
-#            spread
+# Calculate all metrics at once
+result = cpd.calculate_mid_price_and_spread(sorted_ob)
+print(result)
+#              bid      ask  mid_price  spread  relative_spread
+# symbol
+# BTC/USDT  66665.0  66666.0   66665.5     1.0         0.000015
+# ETH/USDT   3499.5   3500.0    3499.8     0.5         0.000143
+# SOL/USDT     99.99    100.0      100.0     0.01        0.000100
+
+# Access specific columns
+print(result['mid_price'])
+# symbol
+# BTC/USDT    66665.5
+# ETH/USDT     3499.8
+# SOL/USDT      100.0
+
+print(result['spread'])
 # symbol
 # BTC/USDT     1.00
 # ETH/USDT     0.50
 # SOL/USDT     0.01
 
-# Relative spread (as percentage of mid price)
-spread_rel = cpd.calculate_spread(sorted_ob, relative=True)
-print(spread_rel * 100)  # Convert to percentage
-#            spread
+# Relative spread as percentage
+print(result['relative_spread'] * 100)
 # symbol
-# BTC/USDT    0.015
-# ETH/USDT    0.014
-# SOL/USDT    0.010
+# BTC/USDT    0.0015
+# ETH/USDT    0.0143
+# SOL/USDT    0.0100
 ```
 
+**Output columns:**
+- `bid`: Best bid price
+- `ask`: Best ask price
+- `mid_price`: (bid + ask) / 2
+- `spread`: ask - bid (absolute)
+- `relative_spread`: spread / mid_price (as decimal)
+
 **Use cases:**
-- Liquidity assessment across symbols - tighter spreads = more liquid
-- Trading cost estimation - minimum cost to round-trip
-- Exchange comparison - which has better pricing?
-- Market making feasibility - is the spread wide enough?
+- **Liquidity assessment**: Tighter spreads = more liquid markets
+- **Trading cost estimation**: Minimum cost to round-trip a trade
+- **Fair value**: Mid price as fair market value
+- **Exchange comparison**: Which exchange has better pricing?
+- **Market making**: Is the spread wide enough to be profitable?
+- **Slippage estimation**: Use spread as baseline slippage
 
 ---
 

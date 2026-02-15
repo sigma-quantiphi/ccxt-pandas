@@ -550,7 +550,9 @@ class BaseProcessor:
         Returns:
             pd.DataFrame: A preprocessed OHLCV DataFrame.
         """
-        data = self.response_to_dataframe(data, column_names=self.ohlcv_fields, schema=schema)
+        data = self.response_to_dataframe(
+            data, column_names=self.ohlcv_fields, schema=schema
+        )
         if symbol:
             data["symbol"] = symbol
         return data
@@ -573,7 +575,9 @@ class BaseProcessor:
         full_data = []
         for symbol, timeframes in data.items():
             for timeframe, ohlcv_data in timeframes.items():
-                df = self.ohlcv_to_dataframe(data=ohlcv_data, symbol=symbol, schema=schema)
+                df = self.ohlcv_to_dataframe(
+                    data=ohlcv_data, symbol=symbol, schema=schema
+                )
                 df["timeframe"] = timeframe
                 full_data.append(df.copy())
         if not full_data:
