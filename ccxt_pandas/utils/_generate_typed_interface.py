@@ -5,7 +5,11 @@ from typing import Callable, Literal, Union, get_args, get_origin
 import ccxt
 import ccxt.pro as ccxt_pro
 
-from ccxt_pandas.wrappers.method_mappings import dataframe_methods, modified_methods
+from ccxt_pandas.wrappers.method_mappings import (
+    dataframe_methods,
+    modified_methods,
+    get_method_schema,
+)
 
 # Build reverse lookup from ccxt.base.types for known type aliases
 _CCXT_TYPE_ALIASES: dict[str, str] = {}
@@ -110,7 +114,16 @@ def get_signature_with_custom_types(
         params.append("cache: bool = False")
     params.extend(tail_params)
 
-    base_type = "pd.DataFrame" if method_name in dataframe_methods else "dict"
+    # Determine return type - use Pandera schema types if available
+    if method_name in dataframe_methods:
+        schema = get_method_schema(method_name)
+        if schema:
+            base_type = f"DataFrame[{schema.__name__}]"
+        else:
+            base_type = "pd.DataFrame"
+    else:
+        base_type = "dict"
+
     if is_async:
         return_type = f"Awaitable[{base_type}] | list[Awaitable[{base_type}]]"
     else:
@@ -155,6 +168,23 @@ def _collect_used_imports(code: str) -> str:
             ccxt_types.append(alias)
     if ccxt_types:
         lines.append(f"from ccxt.base.types import {', '.join(ccxt_types)}")
+
+    # Pandera imports - only if DataFrame[Schema] is used
+    if "DataFrame[" in code:
+        lines.append("from pandera.typing import DataFrame")
+
+        # Collect all schema names used
+        import re
+        schema_pattern = r"DataFrame\[(\w+)\]"
+        schemas = sorted(set(re.findall(schema_pattern, code)))
+        if schemas:
+            # Import all used schemas
+            lines.append(f"from ccxt_pandas.wrappers.schemas import (")
+            for i, schema in enumerate(schemas):
+                comma = "," if i < len(schemas) - 1 else ""
+                lines.append(f"    {schema}{comma}")
+            lines.append(")")
+
     lines.append("import pandas as pd")
     return "\n".join(lines) + "\n"
 

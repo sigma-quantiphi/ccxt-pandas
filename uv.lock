@@ -320,7 +320,7 @@ requires-dist = [
     { name = "furo", marker = "extra == 'docs'", specifier = ">=2024.8.6,<2025.0.0" },
     { name = "orjson", specifier = ">=3.0.0,<4.0.0" },
     { name = "pandas", extras = ["computation", "output-formatting", "parquet", "performance"], specifier = ">=2.2.3,<4.0.0" },
-    { name = "pandera", specifier = ">=0.22.1,<1.0.0" },
+    { name = "pandera", specifier = ">=0.29.0,<1.0.0" },
     { name = "pydantic", specifier = ">=2.0.0,<3.0.0" },
     { name = "python-dotenv", specifier = ">=1.0.0" },
     { name = "sphinx", marker = "extra == 'docs'", specifier = ">=8.2.3,<9.0.0" },
@@ -1302,7 +1302,7 @@ performance = [
 
 [[package]]
 name = "pandera"
-version = "0.26.1"
+version = "0.29.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "packaging" },
@@ -1311,9 +1311,9 @@ dependencies = [
     { name = "typing-extensions" },
     { name = "typing-inspect" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ff/0b/bb312b98a92b00ff48e869e2769ce5ca6c7bc4ec793a429d450dc3c9bba2/pandera-0.26.1.tar.gz", hash = "sha256:81a55a6429770d31b3bf4c3e8e1096a38296bd3009f9eca5780fad3c3c17fd82", size = 560263, upload-time = "2025-08-26T17:06:30.907Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/80/ee/8e0d40dad2c0947b933fc9c0959b2c17cc3419ccdf50df683216f37a3f96/pandera-0.29.0.tar.gz", hash = "sha256:06bc4fc1e4ff02534dd44482a9bc704fb2e58fe3fbb11be906aa714f7f5ec801", size = 575324, upload-time = "2026-01-29T02:49:36.891Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/db/3b/91622e08086a6be44d2c0f34947d94c5282b53d217003d3ba390ee2d174b/pandera-0.26.1-py3-none-any.whl", hash = "sha256:1ff5b70556ce2f85c6b27e8fbe835a1761972f4d05f6548b4686b0db26ecb73b", size = 292907, upload-time = "2025-08-26T17:06:29.193Z" },
+    { url = "https://files.pythonhosted.org/packages/75/7b/03299e4ccc5e3cfb0f9e234207ac43ef08b3ba6c4c2882c890e550ceadba/pandera-0.29.0-py3-none-any.whl", hash = "sha256:b3b25d6c00d7c100fbab96aff0e81e52d3dae543a880d24135cca705fa97c516", size = 295876, upload-time = "2026-01-29T02:49:34.812Z" },
 ]
 
 [[package]]
