@@ -100,6 +100,344 @@ pnl = cpd.calculate_realized_pnl(trades, include_totals=True)
 
 ---
 
+## Order Book Analysis
+
+### `calculate_vwap_by_depth()`
+
+Calculate Volume-Weighted Average Price (VWAP) at various depth levels. Useful for estimating market impact and slippage.
+
+**Parameters:**
+- `df`: Order book DataFrame with price, qty, symbol, and side columns
+- `depths`: List of notional depths to calculate VWAP for (e.g., `[1000, 5000, 10000]`)
+- `group_by`: Columns to group by (default: `['symbol', 'side']` + `'exchange'` if present)
+- `price_col`: Name of price column (default: `'price'`)
+- `qty_col`: Name of quantity column (default: `'qty'`)
+
+**Returns:**
+- DataFrame with columns: `[*group_by, depth, qty, notional, price]` where `'price'` is the VWAP
+
+**Example:**
+
+```python
+import ccxt
+import ccxt_pandas as cpd
+
+exchange = cpd.CCXTPandasExchange(ccxt.binance())
+orderbook = exchange.fetch_order_book('BTC/USDT')
+
+# Sort the order book first
+sorted_ob = cpd.sort_orderbook(orderbook)
+
+# Calculate VWAP for buying $1,000, $5,000, and $10,000 worth
+vwap = cpd.calculate_vwap_by_depth(sorted_ob, depths=[1000, 5000, 10000])
+print(vwap)
+#     symbol  side   depth      qty  notional     price
+# 0  BTC/USDT  asks  1000.0    0.015    1000.0  66666.67
+# 1  BTC/USDT  asks  5000.0    0.075    5000.0  66666.67
+# 2  BTC/USDT  asks 10000.0    0.150   10000.0  66667.50
+```
+
+**How it works:**
+1. Calculates cumulative notional within each group
+2. For each depth level, includes all levels where cumulative notional - current notional ≤ depth
+3. Adjusts the last level for partial fills
+4. Calculates VWAP as total notional / total quantity
+
+**Use cases:**
+- Market impact analysis - what price will I get for a large order?
+- Slippage estimation - how much worse than best price?
+- Liquidity assessment - is there enough depth at good prices?
+- Order size optimization - find optimal size before excessive slippage
+
+---
+
+### `calculate_mid_price()`
+
+Calculate mid price from order book (average of best bid and best ask).
+
+**Parameters:**
+- `df`: Order book DataFrame (should be sorted)
+- `symbol`: Filter to specific symbol (optional)
+- `exchange`: Filter to specific exchange (optional)
+- `price_col`: Name of price column (default: `'price'`)
+
+**Returns:**
+- Mid price as float
+
+**Example:**
+
+```python
+import ccxt
+import ccxt_pandas as cpd
+
+exchange = cpd.CCXTPandasExchange(ccxt.binance())
+orderbook = exchange.fetch_order_book('BTC/USDT')
+
+mid = cpd.calculate_mid_price(orderbook)
+print(f"Mid price: ${mid:.2f}")
+# Mid price: $66666.00
+```
+
+**Use cases:**
+- Fair value estimation
+- Spread calculation baseline
+- Mark price alternative
+- Cross-exchange arbitrage comparison
+
+---
+
+### `calculate_spread()`
+
+Calculate bid-ask spread from order book.
+
+**Parameters:**
+- `df`: Order book DataFrame (should be sorted)
+- `symbol`: Filter to specific symbol (optional)
+- `exchange`: Filter to specific exchange (optional)
+- `price_col`: Name of price column (default: `'price'`)
+- `relative`: Return as percentage of mid price (default: `False`)
+
+**Returns:**
+- Spread as float (absolute or relative)
+
+**Example:**
+
+```python
+import ccxt
+import ccxt_pandas as cpd
+
+exchange = cpd.CCXTPandasExchange(ccxt.binance())
+orderbook = exchange.fetch_order_book('BTC/USDT')
+
+# Absolute spread
+spread_abs = cpd.calculate_spread(orderbook)
+print(f"Spread: ${spread_abs:.2f}")
+# Spread: $1.00
+
+# Relative spread (as percentage)
+spread_rel = cpd.calculate_spread(orderbook, relative=True)
+print(f"Spread: {spread_rel*100:.3f}%")
+# Spread: 0.015%
+```
+
+**Use cases:**
+- Liquidity assessment - tighter spreads = more liquid
+- Trading cost estimation - minimum cost to round-trip
+- Exchange comparison - which has better pricing?
+- Market making feasibility - is the spread wide enough?
+
+---
+
+### `sort_orderbook()`
+
+Sort order book by symbol, side, and price levels. Ensures best bid (highest price) and best ask (lowest price) appear first.
+
+**Parameters:**
+- `df`: Order book DataFrame with `'symbol'`, `'side'`, and price columns
+- `by_symbol`: Include symbol in sort (default: `True`)
+- `by_exchange`: Include exchange in sort (default: `False`)
+- `price_col`: Name of price column (default: `'price'`)
+
+**Returns:**
+- Sorted DataFrame with best prices first
+
+**Example:**
+
+```python
+import ccxt
+import ccxt_pandas as cpd
+
+exchange = cpd.CCXTPandasExchange(ccxt.binance())
+orderbook = exchange.fetch_order_book('BTC/USDT')
+
+# Sort the order book
+sorted_ob = cpd.sort_orderbook(orderbook)
+print(sorted_ob.head())
+#     symbol  side     price     qty
+# 0  BTC/USDT  bids  66665.0  0.5000  <- Best bid (highest)
+# 1  BTC/USDT  bids  66664.0  1.2000
+# 2  BTC/USDT  asks  66666.0  0.3000  <- Best ask (lowest)
+# 3  BTC/USDT  asks  66667.0  0.8000
+```
+
+**Use cases:**
+- Prepare order book for analysis (always sort first!)
+- Find best bid/ask prices
+- Calculate spreads and depth metrics
+- Visualize order book levels
+
+---
+
+### `calculate_notional()`
+
+Calculate notional value (price × quantity) for order book levels.
+
+**Parameters:**
+- `df`: DataFrame with price and quantity columns
+- `price_col`: Name of price column (default: `'price'`)
+- `qty_col`: Name of quantity column (default: `'qty'`)
+
+**Returns:**
+- Series with notional values
+
+**Example:**
+
+```python
+import ccxt
+import ccxt_pandas as cpd
+import pandas as pd
+
+orderbook = pd.DataFrame({
+    'price': [100, 101, 102],
+    'qty': [1.5, 2.0, 1.0]
+})
+
+notional = cpd.calculate_notional(orderbook)
+print(notional)
+# 0    150.0
+# 1    202.0
+# 2    102.0
+```
+
+**Use cases:**
+- Calculate order book depth in dollar terms
+- VWAP calculations
+- Liquidity analysis
+
+---
+
+### `signed_price()`
+
+Calculate signed price based on side. Multiplies price by +1 for asks/sell, -1 for bids/buy. Useful for sorting order books.
+
+**Parameters:**
+- `df`: DataFrame with `'side'` and price columns
+- `price_col`: Name of price column (default: `'price'`)
+
+**Returns:**
+- Series with signed prices
+
+**Example:**
+
+```python
+import pandas as pd
+import ccxt_pandas as cpd
+
+orderbook = pd.DataFrame({
+    'side': ['bids', 'asks', 'bids'],
+    'price': [99.5, 100.5, 99.0]
+})
+
+signed = cpd.signed_price(orderbook)
+print(signed)
+# 0    -99.5
+# 1    100.5
+# 2    -99.0
+```
+
+**Use cases:**
+- Order book sorting (best bid and best ask both sort first)
+- Spread calculations
+- Distance from mid calculations
+
+---
+
+### `side_sign()`
+
+Get directional sign for order book sides. Returns +1 for asks/sell, -1 for bids/buy.
+
+**Parameters:**
+- `df`: DataFrame with `'side'` column
+
+**Returns:**
+- Series with +1 for asks/sell, -1 for bids/buy
+
+**Example:**
+
+```python
+import pandas as pd
+import ccxt_pandas as cpd
+
+orderbook = pd.DataFrame({'side': ['bids', 'asks', 'bids']})
+signs = cpd.side_sign(orderbook)
+print(signs)
+# 0   -1
+# 1    1
+# 2   -1
+```
+
+**Use cases:**
+- Signed calculations (prices, quantities)
+- Direction-aware aggregations
+
+---
+
+### `is_ask_side()`
+
+Identify ask side rows in order book. Handles both order book format (`'asks'`/`'bids'`) and order format (`'sell'`/`'buy'`).
+
+**Parameters:**
+- `df`: DataFrame with `'side'` column
+
+**Returns:**
+- Boolean Series where `True` indicates ask/sell side
+
+**Example:**
+
+```python
+import pandas as pd
+import ccxt_pandas as cpd
+
+orderbook = pd.DataFrame({'side': ['bids', 'asks', 'buy', 'sell']})
+is_ask = cpd.is_ask_side(orderbook)
+print(is_ask)
+# 0    False
+# 1     True
+# 2    False
+# 3     True
+```
+
+**Use cases:**
+- Filter to one side of the order book
+- Side-specific calculations
+- Validation checks
+
+---
+
+### `create_mirrored_sides()`
+
+Create mirrored order book sides for testing or simulation. Takes a DataFrame and duplicates it for each side.
+
+**Parameters:**
+- `df`: DataFrame with order data (price, qty, etc.)
+- `sides`: Tuple of side values to create (default: `("buy", "sell")`)
+
+**Returns:**
+- DataFrame with rows duplicated for each side
+
+**Example:**
+
+```python
+import pandas as pd
+import ccxt_pandas as cpd
+
+orders = pd.DataFrame({'price': [100, 101], 'qty': [1.0, 2.0]})
+mirrored = cpd.create_mirrored_sides(orders)
+print(mirrored)
+#    price  qty  side
+# 0    100  1.0   buy
+# 1    101  2.0   buy
+# 2    100  1.0  sell
+# 3    101  2.0  sell
+```
+
+**Use cases:**
+- Creating symmetric order books for testing
+- Simulating market making scenarios
+- Testing spread strategies
+
+---
+
 ## Delta Hedging
 
 ### `calculate_delta_exposure()`
