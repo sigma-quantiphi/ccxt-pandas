@@ -13,14 +13,49 @@
   - Includes schemas for: OHLCV, orders, trades, positions, balances, tickers, and more
   - `FeeFieldsMixin` for consistent fee field handling across schemas
   - Schemas use data-driven approach based on real exchange responses
+  - **New schemas**: `LedgerSchema`, `AddressesSchema`, `MarginsBalanceSchema`
+- **Schema Validation Integration** (opt-in):
+  - Added `validate_schemas` parameter to `CCXTPandasExchange` and `AsyncCCXTPandasExchange` (default: `False`)
+  - Added `strict_validation` parameter for fail-fast vs. warning-only validation (default: `False`)
+  - Automatic schema mapping for 60+ methods via `method_mappings.get_method_schema()`
+  - Validation occurs after DataFrame conversion in `BaseProcessor`
+  - Lazy loading with caching to avoid circular dependencies
+- **Pandera Type Hints**:
+  - Type stubs now use `DataFrame[SchemaName]` from `pandera.typing`
+  - IDE autocomplete shows expected DataFrame structure for all methods
+  - Example: `fetch_balance() -> DataFrame[BalanceSchema]`
+  - Auto-imports Pandera schemas in generated type stubs
+  - Regenerate with: `uv run python ccxt_pandas/utils/_generate_typed_interface.py`
+- **Order Book Analysis Functions** (9 new functions in `ccxt_pandas.calculations.orderbook`):
+  - `calculate_vwap_by_depth()`: VWAP at various notional depths with partial fill support
+  - `calculate_mid_price()`: Average of best bid/ask
+  - `calculate_spread()`: Absolute or relative bid-ask spread
+  - `sort_orderbook()`: Sort by symbol, side, and price (best prices first)
+  - `calculate_notional()`: Price × quantity
+  - `signed_price()`: Signed prices for sorting (+1 asks, -1 bids)
+  - `side_sign()`: Directional sign for order book sides
+  - `is_ask_side()`: Identify ask/sell rows (handles both formats)
+  - `create_mirrored_sides()`: Create symmetric order book sides for testing
+  - All functions support both `'asks'/'bids'` and `'buy'/'sell'` formats
+- **Calculations Module Enhancements**:
+  - Moved `floor_series()` and `ceil_series()` to `ccxt_pandas.calculations.precision`
+  - All trade analysis functions now use `@pa.check_types` for automatic Pandera validation
+  - `calculate_delta_exposure()` now supports both `BalanceSchema` and `MarginsBalanceSchema`
 
 ### Changed
 - Updated `.gitignore` to allow `.claude/skills/` directory while ignoring other Claude Code local files
+- **Breaking**: Split `BalanceSchema` into two schemas:
+  - `BalanceSchema`: For spot balances (uses `code` field)
+  - `MarginsBalanceSchema`: For margin balances (uses `symbol` field with `base_*` and `quote_*` columns)
+- Replaced manual DataFrame validation with `@pa.check_types` decorator in calculations module
+- Made `side`, `baseValue`, and `quoteValue` optional in `LiquidationsSchema`
 
 ### Documentation
 - Added Claude Code Integration section to README.md
 - Added Claude Code Skill section to CLAUDE.md
 - Created `.claude/skills/README.md` with usage instructions
+- Added comprehensive order book analysis documentation in `ccxt_pandas/calculations/README.md`
+- All orderbook functions include detailed docstrings with examples and use cases
 
 ## v0.13.0
 - Renaming project to `CCXT-Pandas` for clearer link between Pandas & CCXT.
