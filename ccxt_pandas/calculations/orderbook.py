@@ -6,7 +6,7 @@ import pandas as pd
 
 
 def create_mirrored_sides(
-    df: pd.DataFrame, sides: tuple[str, str] = ("buy", "sell")
+    data: pd.DataFrame, sides: tuple[str, str] = ("buy", "sell")
 ) -> pd.DataFrame:
     """Create mirrored order book sides for testing or simulation.
 
@@ -14,7 +14,7 @@ def create_mirrored_sides(
     synthetic order books or testing strategies with symmetric orders.
 
     Args:
-        df: DataFrame with order data (price, qty, etc.)
+        data: DataFrame with order data (price, qty, etc.)
         sides: Tuple of side values to create (default: ("buy", "sell"))
 
     Returns:
@@ -38,19 +38,19 @@ def create_mirrored_sides(
     """
     dfs = []
     for side in sides:
-        side_df = df.copy()
+        side_df = data.copy()
         side_df["side"] = side
         dfs.append(side_df)
     return pd.concat(dfs, ignore_index=True)
 
 
-def is_ask_side(df: pd.DataFrame) -> pd.Series:
+def is_ask_side(data: pd.DataFrame) -> pd.Series:
     """Identify ask side rows in order book.
 
     Handles both order book format ('asks'/'bids') and order format ('sell'/'buy').
 
     Args:
-        df: DataFrame with 'side' column
+        data: DataFrame with 'side' column
 
     Returns:
         Boolean Series where True indicates ask/sell side
@@ -75,16 +75,16 @@ def is_ask_side(df: pd.DataFrame) -> pd.Series:
         - Returns False for 'bids' or 'buy'
     """
     # Handle both orderbook sides (asks/bids) and order sides (sell/buy)
-    return df["side"].isin(["asks", "sell"])
+    return data["side"].isin(["asks", "sell"])
 
 
-def side_sign(df: pd.DataFrame) -> pd.Series:
+def side_sign(data: pd.DataFrame) -> pd.Series:
     """Get directional sign for order book sides.
 
     Returns +1 for asks/sell (taking liquidity), -1 for bids/buy (providing liquidity).
 
     Args:
-        df: DataFrame with 'side' column
+        data: DataFrame with 'side' column
 
     Returns:
         Series with +1 for asks/sell, -1 for bids/buy
@@ -101,17 +101,17 @@ def side_sign(df: pd.DataFrame) -> pd.Series:
         - Useful for signed price calculations
         - Convention: asks = +1, bids = -1
     """
-    return 2 * is_ask_side(df).astype(int) - 1
+    return 2 * is_ask_side(data).astype(int) - 1
 
 
-def signed_price(df: pd.DataFrame, price_col: str = "price") -> pd.Series:
+def signed_price(data: pd.DataFrame, price_col: str = "price") -> pd.Series:
     """Calculate signed price based on side.
 
     Multiplies price by side sign (+1 for asks, -1 for bids), useful for
     sorting order books or calculating spreads.
 
     Args:
-        df: DataFrame with 'side' and price columns
+        data: DataFrame with 'side' and price columns
         price_col: Name of price column (default: 'price')
 
     Returns:
@@ -132,11 +132,11 @@ def signed_price(df: pd.DataFrame, price_col: str = "price") -> pd.Series:
         - Asks get positive prices
         - Useful for sorting: best bid (highest) and best ask (lowest) both sort first
     """
-    return side_sign(df) * df[price_col]
+    return side_sign(data) * data[price_col]
 
 
 def sort_orderbook(
-    df: pd.DataFrame,
+    data: pd.DataFrame,
     by_symbol: bool = True,
     by_exchange: bool = False,
     price_col: str = "price",
@@ -147,7 +147,7 @@ def sort_orderbook(
     first within each symbol/exchange group.
 
     Args:
-        df: Order book DataFrame with 'symbol', 'side', and price columns
+        data: Order book DataFrame with 'symbol', 'side', and price columns
         by_symbol: Include symbol in sort (default: True)
         by_exchange: Include exchange in sort (default: False)
         price_col: Name of price column (default: 'price')
@@ -171,7 +171,7 @@ def sort_orderbook(
         - Best ask = lowest ask price = least positive signed price
         - Reset index after sort (ignore_index=True)
     """
-    result = df.copy()
+    result = data.copy()
     result["_signed_price"] = signed_price(result, price_col)
 
     sort_cols = []
@@ -186,12 +186,12 @@ def sort_orderbook(
 
 
 def calculate_notional(
-    df: pd.DataFrame, price_col: str = "price", qty_col: str = "qty"
+    data: pd.DataFrame, price_col: str = "price", qty_col: str = "qty"
 ) -> pd.Series:
     """Calculate notional value (price × quantity).
 
     Args:
-        df: DataFrame with price and quantity columns
+        data: DataFrame with price and quantity columns
         price_col: Name of price column (default: 'price')
         qty_col: Name of quantity column (default: 'qty')
 
@@ -210,11 +210,11 @@ def calculate_notional(
         - Represents total value at each price level
         - Used in VWAP and depth calculations
     """
-    return df[price_col] * df[qty_col]
+    return data[price_col] * data[qty_col]
 
 
 def calculate_vwap_by_depth(
-    df: pd.DataFrame,
+    data: pd.DataFrame,
     depths: Union[list, tuple, set],
     group_by: Optional[list[str]] = None,
     price_col: str = "price",
@@ -226,7 +226,7 @@ def calculate_vwap_by_depth(
     notional depth. Useful for estimating market impact and slippage.
 
     Args:
-        df: Order book DataFrame with price, qty, symbol, and side columns
+        data: Order book DataFrame with price, qty, symbol, and side columns
         depths: List of notional depths to calculate VWAP for (e.g., [1000, 5000, 10000])
         group_by: Columns to group by (default: ['symbol', 'side'] + 'exchange' if present)
         price_col: Name of price column (default: 'price')
@@ -260,10 +260,10 @@ def calculate_vwap_by_depth(
     """
     if group_by is None:
         group_by = ["symbol", "side"]
-        if "exchange" in df.columns:
+        if "exchange" in data.columns:
             group_by.append("exchange")
 
-    result = df.copy()
+    result = data.copy()
 
     # Calculate notional value at each level
     result["notional"] = calculate_notional(result, price_col, qty_col)
@@ -314,7 +314,7 @@ def calculate_vwap_by_depth(
 
 
 def calculate_mid_price(
-    df: pd.DataFrame,
+    data: pd.DataFrame,
     symbol: Optional[str] = None,
     exchange: Optional[str] = None,
     price_col: str = "price",
@@ -322,7 +322,7 @@ def calculate_mid_price(
     """Calculate mid price from order book (average of best bid and best ask).
 
     Args:
-        df: Order book DataFrame (must be sorted)
+        data: Order book DataFrame (must be sorted)
         symbol: Filter to specific symbol (optional)
         exchange: Filter to specific exchange (optional)
         price_col: Name of price column (default: 'price')
@@ -345,7 +345,7 @@ def calculate_mid_price(
         - Returns (best_bid + best_ask) / 2
         - Raises error if either side is missing
     """
-    filtered = df.copy()
+    filtered = data.copy()
 
     if symbol is not None:
         filtered = filtered[filtered["symbol"] == symbol]
@@ -366,7 +366,7 @@ def calculate_mid_price(
 
 
 def calculate_spread(
-    df: pd.DataFrame,
+    data: pd.DataFrame,
     symbol: Optional[str] = None,
     exchange: Optional[str] = None,
     price_col: str = "price",
@@ -375,7 +375,7 @@ def calculate_spread(
     """Calculate bid-ask spread from order book.
 
     Args:
-        df: Order book DataFrame (must be sorted)
+        data: Order book DataFrame (must be sorted)
         symbol: Filter to specific symbol (optional)
         exchange: Filter to specific exchange (optional)
         price_col: Name of price column (default: 'price')
@@ -401,7 +401,7 @@ def calculate_spread(
         - Relative spread = (best_ask - best_bid) / mid_price
         - Order book should be sorted first
     """
-    filtered = df.copy()
+    filtered = data.copy()
 
     if symbol is not None:
         filtered = filtered[filtered["symbol"] == symbol]
