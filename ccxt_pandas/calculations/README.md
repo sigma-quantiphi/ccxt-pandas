@@ -153,16 +153,15 @@ print(vwap)
 
 ### `calculate_mid_price()`
 
-Calculate mid price from order book (average of best bid and best ask).
+Calculate mid price from order book for all symbols (average of best bid and best ask).
 
 **Parameters:**
-- `df`: Order book DataFrame (should be sorted)
-- `symbol`: Filter to specific symbol (optional)
-- `exchange`: Filter to specific exchange (optional)
+- `data`: Order book DataFrame (should be sorted)
 - `price_col`: Name of price column (default: `'price'`)
+- `by_exchange`: Include exchange in grouping (default: `False`)
 
 **Returns:**
-- Mid price as float
+- DataFrame with `'mid_price'` column, indexed by symbol (and optionally exchange)
 
 **Example:**
 
@@ -172,14 +171,30 @@ import ccxt_pandas as cpd
 
 exchange = cpd.CCXTPandasExchange(ccxt.binance())
 orderbook = exchange.fetch_order_book('BTC/USDT')
+sorted_ob = cpd.sort_orderbook(orderbook)
 
-mid = cpd.calculate_mid_price(orderbook)
-print(f"Mid price: ${mid:.2f}")
-# Mid price: $66666.00
+mid = cpd.calculate_mid_price(sorted_ob)
+print(mid)
+#            mid_price
+# symbol
+# BTC/USDT   66666.00
+
+# Multiple symbols
+symbols = ['BTC/USDT', 'ETH/USDT', 'SOL/USDT']
+orderbooks = [exchange.fetch_order_book(s) for s in symbols]
+combined = pd.concat(orderbooks)
+sorted_ob = cpd.sort_orderbook(combined)
+mid = cpd.calculate_mid_price(sorted_ob)
+print(mid)
+#            mid_price
+# symbol
+# BTC/USDT   66666.00
+# ETH/USDT    3500.00
+# SOL/USDT     100.00
 ```
 
 **Use cases:**
-- Fair value estimation
+- Fair value estimation across multiple symbols
 - Spread calculation baseline
 - Mark price alternative
 - Cross-exchange arbitrage comparison
@@ -188,17 +203,16 @@ print(f"Mid price: ${mid:.2f}")
 
 ### `calculate_spread()`
 
-Calculate bid-ask spread from order book.
+Calculate bid-ask spread from order book for all symbols.
 
 **Parameters:**
-- `df`: Order book DataFrame (should be sorted)
-- `symbol`: Filter to specific symbol (optional)
-- `exchange`: Filter to specific exchange (optional)
+- `data`: Order book DataFrame (should be sorted)
 - `price_col`: Name of price column (default: `'price'`)
 - `relative`: Return as percentage of mid price (default: `False`)
+- `by_exchange`: Include exchange in grouping (default: `False`)
 
 **Returns:**
-- Spread as float (absolute or relative)
+- DataFrame with `'spread'` column, indexed by symbol (and optionally exchange)
 
 **Example:**
 
@@ -207,21 +221,34 @@ import ccxt
 import ccxt_pandas as cpd
 
 exchange = cpd.CCXTPandasExchange(ccxt.binance())
-orderbook = exchange.fetch_order_book('BTC/USDT')
+
+# Multiple symbols
+symbols = ['BTC/USDT', 'ETH/USDT', 'SOL/USDT']
+orderbooks = [exchange.fetch_order_book(s) for s in symbols]
+combined = pd.concat(orderbooks)
+sorted_ob = cpd.sort_orderbook(combined)
 
 # Absolute spread
-spread_abs = cpd.calculate_spread(orderbook)
-print(f"Spread: ${spread_abs:.2f}")
-# Spread: $1.00
+spread_abs = cpd.calculate_spread(sorted_ob)
+print(spread_abs)
+#            spread
+# symbol
+# BTC/USDT     1.00
+# ETH/USDT     0.50
+# SOL/USDT     0.01
 
-# Relative spread (as percentage)
-spread_rel = cpd.calculate_spread(orderbook, relative=True)
-print(f"Spread: {spread_rel*100:.3f}%")
-# Spread: 0.015%
+# Relative spread (as percentage of mid price)
+spread_rel = cpd.calculate_spread(sorted_ob, relative=True)
+print(spread_rel * 100)  # Convert to percentage
+#            spread
+# symbol
+# BTC/USDT    0.015
+# ETH/USDT    0.014
+# SOL/USDT    0.010
 ```
 
 **Use cases:**
-- Liquidity assessment - tighter spreads = more liquid
+- Liquidity assessment across symbols - tighter spreads = more liquid
 - Trading cost estimation - minimum cost to round-trip
 - Exchange comparison - which has better pricing?
 - Market making feasibility - is the spread wide enough?

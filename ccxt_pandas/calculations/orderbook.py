@@ -315,113 +315,114 @@ def calculate_vwap_by_depth(
 
 def calculate_mid_price(
     data: pd.DataFrame,
-    symbol: Optional[str] = None,
-    exchange: Optional[str] = None,
     price_col: str = "price",
-) -> float:
-    """Calculate mid price from order book (average of best bid and best ask).
+    by_exchange: bool = False,
+) -> pd.DataFrame:
+    """Calculate mid price from order book for all symbols.
+
+    Computes (best_bid + best_ask) / 2 for each symbol (and optionally exchange).
 
     Args:
-        data: Order book DataFrame (must be sorted)
-        symbol: Filter to specific symbol (optional)
-        exchange: Filter to specific exchange (optional)
+        data: Order book DataFrame (should be sorted)
         price_col: Name of price column (default: 'price')
+        by_exchange: Include exchange in grouping (default: False)
 
     Returns:
-        Mid price as float
+        DataFrame with 'mid_price' column, indexed by symbol (and optionally exchange)
 
     Examples:
         >>> orderbook = pd.DataFrame({
-        ...     'symbol': ['BTC/USDT', 'BTC/USDT'],
-        ...     'side': ['bids', 'asks'],
-        ...     'price': [99.5, 100.5],
-        ...     'qty': [10, 10]
+        ...     'symbol': ['BTC/USDT', 'BTC/USDT', 'ETH/USDT', 'ETH/USDT'],
+        ...     'side': ['bids', 'asks', 'bids', 'asks'],
+        ...     'price': [99.5, 100.5, 1800, 1820],
+        ...     'qty': [10, 10, 5, 5]
         ... })
         >>> calculate_mid_price(orderbook)
-        100.0
+                   mid_price
+        symbol
+        BTC/USDT      100.0
+        ETH/USDT     1810.0
 
     Notes:
-        - Order book should be sorted first
-        - Returns (best_bid + best_ask) / 2
-        - Raises error if either side is missing
+        - Order book should be sorted first (use sort_orderbook)
+        - Groups by symbol (and optionally exchange)
+        - Takes first row of each side as best bid/ask
     """
-    filtered = data.copy()
+    group_cols = ["exchange", "symbol"] if by_exchange and "exchange" in data.columns else ["symbol"]
 
-    if symbol is not None:
-        filtered = filtered[filtered["symbol"] == symbol]
-    if exchange is not None:
-        filtered = filtered[filtered["exchange"] == exchange]
+    # Get best bid and ask for each group (first row when sorted)
+    bids = data[data["side"].isin(["bids", "buy"])].groupby(group_cols)[price_col].first()
+    asks = data[data["side"].isin(["asks", "sell"])].groupby(group_cols)[price_col].first()
 
-    # Get best bid and ask (first row of each side when sorted)
-    bids = filtered[filtered["side"].isin(["bids", "buy"])]
-    asks = filtered[filtered["side"].isin(["asks", "sell"])]
+    # Calculate mid price
+    result = pd.DataFrame({
+        "best_bid": bids,
+        "best_ask": asks,
+    })
+    result["mid_price"] = (result["best_bid"] + result["best_ask"]) / 2
 
-    if bids.empty or asks.empty:
-        raise ValueError("Order book must have both bids and asks")
-
-    best_bid = bids.iloc[0][price_col]
-    best_ask = asks.iloc[0][price_col]
-
-    return (best_bid + best_ask) / 2
+    return result[["mid_price"]]
 
 
 def calculate_spread(
     data: pd.DataFrame,
-    symbol: Optional[str] = None,
-    exchange: Optional[str] = None,
     price_col: str = "price",
     relative: bool = False,
-) -> float:
-    """Calculate bid-ask spread from order book.
+    by_exchange: bool = False,
+) -> pd.DataFrame:
+    """Calculate bid-ask spread from order book for all symbols.
+
+    Computes best_ask - best_bid for each symbol (and optionally exchange).
+    Can return absolute spread or relative spread (as percentage of mid price).
 
     Args:
-        data: Order book DataFrame (must be sorted)
-        symbol: Filter to specific symbol (optional)
-        exchange: Filter to specific exchange (optional)
+        data: Order book DataFrame (should be sorted)
         price_col: Name of price column (default: 'price')
         relative: Return as percentage of mid price (default: False)
+        by_exchange: Include exchange in grouping (default: False)
 
     Returns:
-        Spread as float (absolute or relative)
+        DataFrame with 'spread' column, indexed by symbol (and optionally exchange)
 
     Examples:
         >>> orderbook = pd.DataFrame({
-        ...     'symbol': ['BTC/USDT', 'BTC/USDT'],
-        ...     'side': ['bids', 'asks'],
-        ...     'price': [99.5, 100.5],
-        ...     'qty': [10, 10]
+        ...     'symbol': ['BTC/USDT', 'BTC/USDT', 'ETH/USDT', 'ETH/USDT'],
+        ...     'side': ['bids', 'asks', 'bids', 'asks'],
+        ...     'price': [99.5, 100.5, 1800, 1820],
+        ...     'qty': [10, 10, 5, 5]
         ... })
         >>> calculate_spread(orderbook)
-        1.0
+                   spread
+        symbol
+        BTC/USDT     1.0
+        ETH/USDT    20.0
+
         >>> calculate_spread(orderbook, relative=True)
-        0.01  # 1% spread
+                      spread
+        symbol
+        BTC/USDT    0.010000
+        ETH/USDT    0.011050
 
     Notes:
         - Absolute spread = best_ask - best_bid
         - Relative spread = (best_ask - best_bid) / mid_price
-        - Order book should be sorted first
+        - Order book should be sorted first (use sort_orderbook)
+        - Tighter spreads indicate higher liquidity
     """
-    filtered = data.copy()
+    group_cols = ["exchange", "symbol"] if by_exchange and "exchange" in data.columns else ["symbol"]
 
-    if symbol is not None:
-        filtered = filtered[filtered["symbol"] == symbol]
-    if exchange is not None:
-        filtered = filtered[filtered["exchange"] == exchange]
+    # Get best bid and ask for each group (first row when sorted)
+    bids = data[data["side"].isin(["bids", "buy"])].groupby(group_cols)[price_col].first()
+    asks = data[data["side"].isin(["asks", "sell"])].groupby(group_cols)[price_col].first()
 
-    # Get best bid and ask
-    bids = filtered[filtered["side"].isin(["bids", "buy"])]
-    asks = filtered[filtered["side"].isin(["asks", "sell"])]
-
-    if bids.empty or asks.empty:
-        raise ValueError("Order book must have both bids and asks")
-
-    best_bid = bids.iloc[0][price_col]
-    best_ask = asks.iloc[0][price_col]
-
-    spread = best_ask - best_bid
+    result = pd.DataFrame({
+        "best_bid": bids,
+        "best_ask": asks,
+    })
+    result["spread"] = result["best_ask"] - result["best_bid"]
 
     if relative:
-        mid = (best_bid + best_ask) / 2
-        return spread / mid
+        mid_price = (result["best_bid"] + result["best_ask"]) / 2
+        result["spread"] = result["spread"] / mid_price
 
-    return spread
+    return result[["spread"]]
