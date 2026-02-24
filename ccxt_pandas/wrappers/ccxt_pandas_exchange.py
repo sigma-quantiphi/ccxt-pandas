@@ -70,9 +70,9 @@ class CCXTPandasExchange(CCXTPandasExchangeTyped):
     price_out_of_range: Literal["warn", "clip"] = "warn"
     validate_schemas: bool = False
     strict_validation: bool = False
-    _ccxt_processor: BaseProcessor = field(default_factory=BaseProcessor)
-    _function_handler: FunctionHandler = field(default_factory=FunctionHandler)
-    _signature_cache: dict = field(default_factory=dict)
+    _ccxt_processor: BaseProcessor = field(default_factory=BaseProcessor, init=False, repr=False)
+    _function_handler: FunctionHandler = field(default_factory=FunctionHandler, init=False, repr=False)
+    _signature_cache: dict = field(default_factory=dict, init=False, repr=False)
 
     def __post_init__(self):
         if self.exchange_name is None:

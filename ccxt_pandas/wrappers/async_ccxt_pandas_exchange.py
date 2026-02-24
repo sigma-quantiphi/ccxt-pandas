@@ -30,6 +30,7 @@ from ccxt_pandas.utils.pandas_utils import (
     async_call_per_group_concat,
     async_concat_results,
     concat_results,
+    FunctionHandler,
 )
 from ccxt_pandas.utils.utils import exchange_has_method
 
@@ -45,9 +46,14 @@ class AsyncCCXTPandasExchange(AsyncCCXTPandasExchangeTyped):
     - Date range pagination: use from_date/to_date to create paginated async task lists
     - Order DataFrame batching: use _from_dataframe methods to batch async order operations
     - Semaphore-based concurrency control
+    - Error handling modes: "raise", "warn", or "ignore" errors from exchange calls
 
     Methods always return coroutines. Multi-symbol and paginated calls are gathered
     and concatenated internally via async_concat_results().
+
+    Note: the cache=True parameter available on the sync wrapper is not supported here.
+    For incremental local caching in async contexts, manage a DataFrame externally and
+    pass it to async_concat_results().
 
     Attributes:
         exchange (ccxt.Exchange): The CCXT Pro exchange instance.
@@ -58,6 +64,7 @@ class AsyncCCXTPandasExchange(AsyncCCXTPandasExchangeTyped):
         max_order_cost (float): Maximum cost for a single order.
         max_number_of_orders (int): Maximum number of orders in batch operations.
         markets_cache_time (int): Cache duration for market data in seconds.
+        errors (str): Error handling mode: "raise", "warn", or "ignore".
         cost_out_of_range (str): Behavior when cost exceeds ranges: "warn" or "clip".
         amount_out_of_range (str): Behavior when amount exceeds ranges: "warn" or "clip".
         price_out_of_range (str): Behavior when price exceeds ranges: "warn" or "clip".
@@ -72,15 +79,17 @@ class AsyncCCXTPandasExchange(AsyncCCXTPandasExchangeTyped):
     max_order_cost: float = 10_000
     max_number_of_orders: int = 1_000
     markets_cache_time: int = 3600
+    errors: Literal["ignore", "raise", "warn"] = "raise"
     cost_out_of_range: Literal["warn", "clip"] = "warn"
     amount_out_of_range: Literal["warn", "clip"] = "warn"
     price_out_of_range: Literal["warn", "clip"] = "warn"
     validate_schemas: bool = False
     strict_validation: bool = False
     semaphore_value: int = 1000
-    _ccxt_processor: BaseProcessor = field(default_factory=BaseProcessor)
-    _semaphore: Semaphore = field(default_factory=Semaphore)
-    _signature_cache: dict = field(default_factory=dict)
+    _ccxt_processor: BaseProcessor = field(default_factory=BaseProcessor, init=False, repr=False)
+    _function_handler: FunctionHandler = field(default_factory=FunctionHandler, init=False, repr=False)
+    _semaphore: Semaphore = field(default_factory=Semaphore, init=False, repr=False)
+    _signature_cache: dict = field(default_factory=dict, init=False, repr=False)
 
     def __post_init__(self):
         if self.exchange_name is None:
@@ -97,6 +106,7 @@ class AsyncCCXTPandasExchange(AsyncCCXTPandasExchangeTyped):
             strict_validation=self.strict_validation,
         )
         self._semaphore = Semaphore(self.semaphore_value)
+        self._function_handler = FunctionHandler(errors=self.errors)
 
     def _analyze_method_signature(self, name: str) -> dict:
         if name not in self._signature_cache:
@@ -191,7 +201,7 @@ class AsyncCCXTPandasExchange(AsyncCCXTPandasExchangeTyped):
                     **kwargs,
                 )
                 return await async_concat_results(tasks)
-            return await base_call(*args, **kwargs)
+            return await self._function_handler.async_try_function(base_call(*args, **kwargs))
 
         return wrapper
 

@@ -1,8 +1,10 @@
-from typing import Dict, Optional, Type
+from typing import Dict, Optional, Type, Any
 
 import pandera as pa
 
 from ccxt_pandas.utils.utils import add_camel_case_methods
+from ccxt_pandas.wrappers.schemas import AccountsSchema, AddressesSchema, BalanceSchema, BidsAsksSchema, \
+    BorrowInterestSchema, CrossBorrowRatesSchema, CurrencySchema, IsolatedBorrowRatesSchema
 
 standard_dataframe_methods = {
     "fetch_accounts",
@@ -156,6 +158,7 @@ orders_methods = {
     "cancel_orders_for_symbols",
 }
 standard_dataframe_methods = add_camel_case_methods(standard_dataframe_methods)
+standard_dataframe_methods.update({"fetch_positions_adl_rank", "fetchPositionsADLRank"})
 markets_dataframe_methods = add_camel_case_methods(markets_dataframe_methods)
 currencies_dataframe_methods = add_camel_case_methods(currencies_dataframe_methods)
 balance_dataframe_methods = add_camel_case_methods(balance_dataframe_methods)
@@ -163,6 +166,7 @@ orderbook_dataframe_methods = add_camel_case_methods(orderbook_dataframe_methods
 orderbooks_dataframe_methods = add_camel_case_methods(orderbooks_dataframe_methods)
 orders_dataframe_methods = add_camel_case_methods(orders_dataframe_methods)
 dict_methods = add_camel_case_methods(dict_methods)
+dict_methods.update({"fetch_adl_rank", "fetch_position_adl_rank", "fetchADLRank", "fetchPositionADLRank"})
 single_order_methods = add_camel_case_methods(single_order_methods)
 bulk_order_methods = add_camel_case_methods(bulk_order_methods)
 symbol_order_methods = add_camel_case_methods(symbol_order_methods)
@@ -183,7 +187,8 @@ modified_methods = dataframe_methods | dict_methods
 
 # Schema mapping for validation
 # Import schemas (lazy import to avoid circular dependencies)
-def _get_schemas() -> Dict[str, Type[pa.DataFrameModel]]:
+def _get_schemas() -> dict[str | Any, type[
+    AccountsSchema | AddressesSchema | BalanceSchema | BidsAsksSchema | BorrowInterestSchema | CrossBorrowRatesSchema | IsolatedBorrowRatesSchema | CurrencySchema] | Any]:
     """Get schema mapping. Lazy import to avoid circular dependencies."""
     from ccxt_pandas.wrappers.schemas import (
         AccountsSchema,
@@ -215,6 +220,7 @@ def _get_schemas() -> Dict[str, Type[pa.DataFrameModel]]:
         OrderSchema,
         PortfolioDetailsSchema,
         PortfoliosSchema,
+        PositionsADLRankSchema,
         PositionsHistorySchema,
         PositionsSchema,
         TickersSchema,
@@ -309,6 +315,7 @@ def _get_schemas() -> Dict[str, Type[pa.DataFrameModel]]:
         "fetch_portfolios": PortfoliosSchema,
         # Positions
         "fetch_positions": PositionsSchema,
+        "fetch_positions_adl_rank": PositionsADLRankSchema,
         "fetch_position_history": PositionsHistorySchema,
         "fetch_positions_history": PositionsHistorySchema,
         "watch_positions": PositionsSchema,

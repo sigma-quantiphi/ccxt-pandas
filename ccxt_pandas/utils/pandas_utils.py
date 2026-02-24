@@ -380,6 +380,21 @@ class FunctionHandler:
             else:
                 raise ValueError(f"{function}({kwargs}): {e}") from e
 
+    async def async_try_function(
+        self,
+        coro: Awaitable,
+    ) -> pd.DataFrame | dict | None:
+        try:
+            return await coro
+        except Exception as e:
+            if self.errors == "ignore":
+                return None
+            elif self.errors == "warn":
+                warnings.warn(str(e))
+                return None
+            else:
+                raise
+
     def load_full_dataset(
         self,
         function: Callable[..., pd.DataFrame],
@@ -402,8 +417,9 @@ class FunctionHandler:
                 if data is not None and len(data) > 0:
                     df.append(data.copy())
                     since = data["timestamp"].max()
+                    length_data = len(data)
                 else:
-                    length_data = limit
+                    length_data = 0
                     since = min(since + pd.Timedelta(time_increment), to_date)
             if df:
                 return drop_duplicates(

@@ -35,7 +35,7 @@ okx_settings = {
 }
 coinbase_settings = {
     "apiKey": os.getenv("COINBASE_API_KEY"),
-    "secret": os.getenv("COINBASE_API_SECRET").replace("\\n", "\n"),
+    "secret": (os.getenv("COINBASE_API_SECRET") or "").replace("\\n", "\n"),
 }
 
 
@@ -345,6 +345,13 @@ def test_fetch_position(binance_authenticated_exchange):
 
 def test_fetch_positions(binance_authenticated_exchange):
     data = binance_authenticated_exchange.fetch_positions()
+    print(data)
+    print(data.dtypes)
+    assert isinstance(data, pd.DataFrame)
+
+
+def test_fetch_positions_adl_rank(binance_authenticated_exchange):
+    data = binance_authenticated_exchange.fetch_positions_adl_rank()
     print(data)
     print(data.dtypes)
     assert isinstance(data, pd.DataFrame)

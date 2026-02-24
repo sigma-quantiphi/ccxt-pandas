@@ -358,7 +358,7 @@ class BaseProcessor:
             try:
                 schema_columns = list(schema.to_schema().columns.keys())
                 return pd.DataFrame(columns=schema_columns)
-            except:
+            except Exception:
                 return df
 
         try:
