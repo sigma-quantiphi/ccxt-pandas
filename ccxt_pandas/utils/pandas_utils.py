@@ -9,8 +9,8 @@ import pandas as pd
 import pandera.pandas as pa
 from pandas import DataFrame
 
-cap_zero_columns = ["limits_price.min", "limits_cost.min", "limits_amount.min"]
-cap_inf_columns = ["limits_price.max", "limits_cost.max", "limits_amount.max"]
+cap_zero_columns = ["limits_price_min", "limits_cost_min", "limits_amount_min"]
+cap_inf_columns = ["limits_price_max", "limits_cost_max", "limits_amount_max"]
 order_data_columns = ["symbol"] + cap_zero_columns + cap_inf_columns
 
 
@@ -62,18 +62,17 @@ def date_time_columns_to_int_str(data: pd.DataFrame) -> pd.DataFrame:
     return data
 
 
-def expand_dict_columns(data: pd.DataFrame, separator: str = ".") -> pd.DataFrame:
+def expand_dict_columns(data: pd.DataFrame, separator: str = "_") -> pd.DataFrame:
     data = data.reset_index(drop=True)
     dict_columns = [
         x for x in data.columns if any(data[x].apply(lambda y: isinstance(y, dict)))
     ]
     columns_list = [data.drop(columns=dict_columns).copy()]
-    for dict_column in dict_columns:
-        exploded_column = pd.json_normalize(data[dict_column])
-        exploded_column.columns = [
-            f"{dict_column}{separator}{x}" for x in exploded_column.columns
-        ]
-        columns_list.append(exploded_column.copy())
+    for col in dict_columns:
+        expanded = pd.json_normalize(data[col], sep=separator).add_prefix(
+            f"{col}{separator}"
+        )
+        columns_list.append(expanded)
     return pd.concat(columns_list, axis=1)
 
 
@@ -90,7 +89,7 @@ def determine_mandatory_optional_fields_pandera(model: pa.DataFrameModel) -> dic
 
 def combine_params(row: pd.Series, param_cols: list) -> dict:
     return {
-        column.replace("params.", ""): row[column]
+        column.replace("params_", ""): row[column]
         for column in param_cols
         if pd.notnull(row[column])
     }
@@ -136,8 +135,8 @@ def preprocess_order(
             out_of_range = cost_out_of_range
         else:
             out_of_range = amount_out_of_range
-        limits_min = market[f"limits_{key}.min"]
-        limits_max = market[f"limits_{key}.max"]
+        limits_min = market[f"limits_{key}_min"]
+        limits_max = market[f"limits_{key}_max"]
         if out_of_range == "warn":
             if not limits_min <= value <= limits_max:
                 warnings.warn(
@@ -194,7 +193,7 @@ def preprocess_order_dataframe(
         ("price", price_out_of_range),
         ("amount", amount_out_of_range),
     ]:
-        min_limit, max_limit = f"limits_{column}.min", f"limits_{column}.max"
+        min_limit, max_limit = f"limits_{column}_min", f"limits_{column}_max"
         if column in orders.columns:
             if out_of_range == "warn":
                 in_bounds = orders[column].between(orders[min_limit], orders[max_limit])
@@ -209,7 +208,7 @@ def preprocess_order_dataframe(
                     orders[min_limit], orders[max_limit]
                 )
     if "params" not in orders.columns:
-        param_cols = orders.columns[orders.columns.str.startswith("params.")]
+        param_cols = orders.columns[orders.columns.str.startswith("params_")]
         orders["params"] = orders.apply(combine_params, axis=1, param_cols=param_cols)
     return orders
 

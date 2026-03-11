@@ -82,33 +82,26 @@ class CurrencySchema(BaseExchangeSchema):
         description="Withdrawal fee on this network",
     )
 
-    # Optional limits fields (dot notation for nested structure)
+    # Optional limits fields
     limits_withdraw_min: Optional[Series[float]] = pa.Field(
         ge=0,
         nullable=True,
         title="Withdraw Min",
         description="Minimum withdrawal amount",
-        alias="limits_withdraw.min",
     )
     limits_deposit_min: Optional[Series[float]] = pa.Field(
-        ge=0,
-        nullable=True,
-        title="Deposit Min",
-        description="Minimum deposit amount",
-        alias="limits_deposit.min",
+        ge=0, nullable=True, title="Deposit Min", description="Minimum deposit amount"
     )
     network_limits_deposit_min: Optional[Series[float]] = pa.Field(
         ge=0,
         nullable=True,
         title="Network Deposit Min",
         description="Minimum deposit amount on this network",
-        alias="network_limits_deposit.min",
     )
     network_limits_withdraw_min: Optional[Series[float]] = pa.Field(
         ge=0,
         nullable=True,
         title="Network Withdraw Min",
         description="Minimum withdrawal amount on this network",
-        alias="network_limits_withdraw.min",
     )
     # Note: exchange field comes from BaseExchangeSchema (Optional)

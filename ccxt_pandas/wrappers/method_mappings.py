@@ -3,8 +3,16 @@ from typing import Dict, Optional, Type, Any
 import pandera as pa
 
 from ccxt_pandas.utils.utils import add_camel_case_methods
-from ccxt_pandas.wrappers.schemas import AccountsSchema, AddressesSchema, BalanceSchema, BidsAsksSchema, \
-    BorrowInterestSchema, CrossBorrowRatesSchema, CurrencySchema, IsolatedBorrowRatesSchema
+from ccxt_pandas.wrappers.schemas import (
+    AccountsSchema,
+    AddressesSchema,
+    BalanceSchema,
+    BidsAsksSchema,
+    BorrowInterestSchema,
+    CrossBorrowRatesSchema,
+    CurrencySchema,
+    IsolatedBorrowRatesSchema,
+)
 
 standard_dataframe_methods = {
     "fetch_accounts",
@@ -166,7 +174,14 @@ orderbook_dataframe_methods = add_camel_case_methods(orderbook_dataframe_methods
 orderbooks_dataframe_methods = add_camel_case_methods(orderbooks_dataframe_methods)
 orders_dataframe_methods = add_camel_case_methods(orders_dataframe_methods)
 dict_methods = add_camel_case_methods(dict_methods)
-dict_methods.update({"fetch_adl_rank", "fetch_position_adl_rank", "fetchADLRank", "fetchPositionADLRank"})
+dict_methods.update(
+    {
+        "fetch_adl_rank",
+        "fetch_position_adl_rank",
+        "fetchADLRank",
+        "fetchPositionADLRank",
+    }
+)
 single_order_methods = add_camel_case_methods(single_order_methods)
 bulk_order_methods = add_camel_case_methods(bulk_order_methods)
 symbol_order_methods = add_camel_case_methods(symbol_order_methods)
@@ -187,8 +202,20 @@ modified_methods = dataframe_methods | dict_methods
 
 # Schema mapping for validation
 # Import schemas (lazy import to avoid circular dependencies)
-def _get_schemas() -> dict[str | Any, type[
-    AccountsSchema | AddressesSchema | BalanceSchema | BidsAsksSchema | BorrowInterestSchema | CrossBorrowRatesSchema | IsolatedBorrowRatesSchema | CurrencySchema] | Any]:
+def _get_schemas() -> dict[
+    str | Any,
+    type[
+        AccountsSchema
+        | AddressesSchema
+        | BalanceSchema
+        | BidsAsksSchema
+        | BorrowInterestSchema
+        | CrossBorrowRatesSchema
+        | IsolatedBorrowRatesSchema
+        | CurrencySchema
+    ]
+    | Any,
+]:
     """Get schema mapping. Lazy import to avoid circular dependencies."""
     from ccxt_pandas.wrappers.schemas import (
         AccountsSchema,

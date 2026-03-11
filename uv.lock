@@ -285,7 +285,7 @@ wheels = [
 
 [[package]]
 name = "ccxt-pandas"
-version = "0.13.0"
+version = "0.13.1"
 source = { editable = "." }
 dependencies = [
     { name = "aiodns" },
@@ -297,6 +297,7 @@ dependencies = [
     { name = "pandera" },
     { name = "pydantic" },
     { name = "python-dotenv" },
+    { name = "requests" },
 ]
 
 [package.optional-dependencies]
@@ -323,6 +324,7 @@ requires-dist = [
     { name = "pandera", specifier = ">=0.29.0,<1.0.0" },
     { name = "pydantic", specifier = ">=2.0.0,<3.0.0" },
     { name = "python-dotenv", specifier = ">=1.0.0" },
+    { name = "requests", specifier = ">=2.28.0,<3.0.0" },
     { name = "sphinx", marker = "extra == 'docs'", specifier = ">=8.2.3,<9.0.0" },
 ]
 provides-extras = ["docs"]

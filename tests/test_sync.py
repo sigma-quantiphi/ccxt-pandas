@@ -5,7 +5,7 @@ import pytest
 import pandas as pd
 from dotenv import load_dotenv
 
-from ccxt_pandas.wrappers.ccxt_pandas_exchange import CCXTPandasExchange
+from ccxt_pandas import CCXTPandasExchange
 
 load_dotenv()
 spot_symbol = "BNB/USDT"

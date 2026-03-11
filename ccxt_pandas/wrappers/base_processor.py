@@ -187,9 +187,9 @@ class BaseProcessor:
             "maxWithdrawAmount",
             "network_fee",
             "network_precision",
-            "network_limits_withdraw.min",
-            "network_limits_withdraw.max",
-            "network_limits_deposit.min",
+            "network_limits_withdraw_min",
+            "network_limits_withdraw_max",
+            "network_limits_deposit_min",
             "nextFundingRate",
             "nonce",
             "notional",
@@ -291,9 +291,7 @@ class BaseProcessor:
         Returns:
             pd.DataFrame: A processed DataFrame with formatted columns.
         """
-        data = expand_dict_columns(
-            data.drop(columns=["info"], errors="ignore"), separator="_"
-        )
+        data = expand_dict_columns(data.drop(columns=["info"], errors="ignore"))
         if self.dropna_fields:
             data = data.dropna(axis=1, how="all")
         columns = data.columns

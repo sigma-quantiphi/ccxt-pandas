@@ -86,8 +86,12 @@ class AsyncCCXTPandasExchange(AsyncCCXTPandasExchangeTyped):
     validate_schemas: bool = False
     strict_validation: bool = False
     semaphore_value: int = 1000
-    _ccxt_processor: BaseProcessor = field(default_factory=BaseProcessor, init=False, repr=False)
-    _function_handler: FunctionHandler = field(default_factory=FunctionHandler, init=False, repr=False)
+    _ccxt_processor: BaseProcessor = field(
+        default_factory=BaseProcessor, init=False, repr=False
+    )
+    _function_handler: FunctionHandler = field(
+        default_factory=FunctionHandler, init=False, repr=False
+    )
     _semaphore: Semaphore = field(default_factory=Semaphore, init=False, repr=False)
     _signature_cache: dict = field(default_factory=dict, init=False, repr=False)
 
@@ -201,7 +205,9 @@ class AsyncCCXTPandasExchange(AsyncCCXTPandasExchangeTyped):
                     **kwargs,
                 )
                 return await async_concat_results(tasks)
-            return await self._function_handler.async_try_function(base_call(*args, **kwargs))
+            return await self._function_handler.async_try_function(
+                base_call(*args, **kwargs)
+            )
 
         return wrapper
 

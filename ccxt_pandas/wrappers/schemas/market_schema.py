@@ -161,84 +161,49 @@ class MarketSchema(BaseExchangeSchema):
     )
 
     # Limits - Amount (16/19 for min, 13/19 for max)
-    # Note: Column names use dot notation (limits_amount.min)
     limits_amount_min: Optional[Series[float]] = pa.Field(
-        ge=0,
-        nullable=True,
-        alias="limits_amount.min",
-        title="Min Amount",
-        description="Minimum order amount",
+        ge=0, nullable=True, title="Min Amount", description="Minimum order amount"
     )
     limits_amount_max: Optional[Series[float]] = pa.Field(
-        ge=0,
-        nullable=True,
-        alias="limits_amount.max",
-        title="Max Amount",
-        description="Maximum order amount",
+        ge=0, nullable=True, title="Max Amount", description="Maximum order amount"
     )
 
     # Limits - Price (14/19 for min, 10/19 for max)
     limits_price_min: Optional[Series[float]] = pa.Field(
-        ge=0,
-        nullable=True,
-        alias="limits_price.min",
-        title="Min Price",
-        description="Minimum order price",
+        ge=0, nullable=True, title="Min Price", description="Minimum order price"
     )
     limits_price_max: Optional[Series[float]] = pa.Field(
-        ge=0,
-        nullable=True,
-        alias="limits_price.max",
-        title="Max Price",
-        description="Maximum order price",
+        ge=0, nullable=True, title="Max Price", description="Maximum order price"
     )
 
     # Limits - Cost (12/19 for min, 5/19 for max)
     limits_cost_min: Optional[Series[float]] = pa.Field(
-        ge=0,
-        nullable=True,
-        alias="limits_cost.min",
-        title="Min Cost",
-        description="Minimum order cost",
+        ge=0, nullable=True, title="Min Cost", description="Minimum order cost"
     )
     limits_cost_max: Optional[Series[float]] = pa.Field(
-        ge=0,
-        nullable=True,
-        alias="limits_cost.max",
-        title="Max Cost",
-        description="Maximum order cost",
+        ge=0, nullable=True, title="Max Cost", description="Maximum order cost"
     )
 
     # Limits - Market (only 5/19 - Binance variants and Aster)
     limits_market_min: Optional[Series[float]] = pa.Field(
         ge=0,
         nullable=True,
-        alias="limits_market.min",
         title="Min Market Size",
         description="Minimum market order size",
     )
     limits_market_max: Optional[Series[float]] = pa.Field(
         ge=0,
         nullable=True,
-        alias="limits_market.max",
         title="Max Market Size",
         description="Maximum market order size",
     )
 
     # Limits - Leverage (only 3/19)
     limits_leverage_min: Optional[Series[float]] = pa.Field(
-        ge=0,
-        nullable=True,
-        alias="limits_leverage.min",
-        title="Min Leverage",
-        description="Minimum leverage",
+        ge=0, nullable=True, title="Min Leverage", description="Minimum leverage"
     )
     limits_leverage_max: Optional[Series[float]] = pa.Field(
-        ge=0,
-        nullable=True,
-        alias="limits_leverage.max",
-        title="Max Leverage",
-        description="Maximum leverage",
+        ge=0, nullable=True, title="Max Leverage", description="Maximum leverage"
     )
 
     # Margin modes (only 5/19 - Binance variants and Bitget)
