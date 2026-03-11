@@ -20,7 +20,7 @@ def exchange_has_method(
 ) -> bool:
     """Checks if an exchange has a specific method"""
     method = snake_to_camel(method)
-    return method in exchange.has and not exchange.has[method] in [False, None]
+    return method in exchange.has and exchange.has[method] not in [False, None]
 
 
 if __name__ == "__main__":

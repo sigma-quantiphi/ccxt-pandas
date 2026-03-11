@@ -1,629 +1,880 @@
+from typing import Literal, Protocol
 from decimal import Decimal
-from types import NoneType
-from typing import List, Union, Protocol
-from ccxt.base.types import Int, OrderSide, OrderType, Str, Strings
+from pandera.typing import DataFrame
+from ccxt_pandas.wrappers.schemas import (
+    AccountsSchema,
+    AddressesSchema,
+    BalanceSchema,
+    BidsAsksSchema,
+    BorrowInterestSchema,
+    CrossBorrowRatesSchema,
+    CurrencySchema,
+    DepositWithdrawFeesSchema,
+    FundingHistorySchema,
+    FundingIntervalsSchema,
+    FundingRateHistorySchema,
+    FundingRateSchema,
+    GreeksSchema,
+    IsolatedBorrowRatesSchema,
+    LastPricesSchema,
+    LedgerSchema,
+    LeveragesSchema,
+    LiquidationsSchema,
+    LongShortRatioSchema,
+    MarkPricesSchema,
+    MarketSchema,
+    MyTradesSchema,
+    OHLCVSchema,
+    OpenInterestHistorySchema,
+    OrderBookSchema,
+    OrdersSchema,
+    PositionsHistorySchema,
+    PositionsSchema,
+    TickersSchema,
+    TradeSchema,
+    TradingFeesSchema,
+    TransactionsSchema,
+    TransfersSchema,
+)
 import pandas as pd
 
 
 class CCXTPandasExchangeTyped(Protocol):
     """A Class to add type hinting to CCXTPandasExchangeTyped"""
 
-    def watch_order_book_for_symbols(
-        self, symbols: List[str], limit: Int = None, params={}
+    def cancel_all_orders(
+        self, symbol: str | list[str] = None, params={}
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.watch_order_book_for_symbols"""
+        """Returns a pd.DataFrame from ccxt.cancel_all_orders"""
         ...
 
-    def watch_ticker(self, symbol: str, params={}) -> dict:
-        """Returns a dict from wrappers.watch_ticker"""
-        ...
-
-    def watch_funding_rate(self, symbol: str, params={}) -> dict:
-        """Returns a dict from wrappers.watch_funding_rate"""
-        ...
-
-    def watch_trades(
-        self,
-        symbol: str,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
+    def cancel_all_orders_ws(
+        self, symbol: str | list[str] = None, params={}
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.watch_trades"""
+        """Returns a pd.DataFrame from ccxt.cancel_all_orders_ws"""
         ...
 
-    def fetch_tickers(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_tickers"""
+    def cancel_order(self, id: str, symbol: str | list[str] = None, params={}) -> dict:
+        """Returns a dict from ccxt.cancel_order"""
         ...
 
-    def watch_ohlcv_for_symbols(
-        self,
-        symbolsAndTimeframes: List[List[str]],
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.watch_ohlcv_for_symbols"""
-        ...
-
-    def watch_orders_for_symbols(
-        self,
-        symbols: List[str],
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.watch_orders_for_symbols"""
-        ...
-
-    def fetch_greeks(self, symbol: str, params={}) -> dict:
-        """Returns a dict from wrappers.fetch_greeks"""
-        ...
-
-    def fetch_deposit_addresses(self, codes: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_deposit_addresses"""
-        ...
-
-    def fetch_cross_borrow_rates(self, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_cross_borrow_rates"""
-        ...
-
-    def fetch_funding_rates(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_funding_rates"""
-        ...
-
-    def watch_tickers(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.watch_tickers"""
-        ...
-
-    def fetch_isolated_borrow_rates(self, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_isolated_borrow_rates"""
-        ...
-
-    def fetch_transfers(
-        self,
-        code: Str = None,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_transfers"""
-        ...
-
-    def watch_my_liquidations(
-        self,
-        symbol: str,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.watch_my_liquidations"""
-        ...
-
-    def watch_liquidations_for_symbols(
-        self,
-        symbols: List[str],
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.watch_liquidations_for_symbols"""
-        ...
-
-    def fetch_positions_risk(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_positions_risk"""
-        ...
-
-    def fetch_trading_fee(self, symbol: str, params={}) -> dict:
-        """Returns a dict from wrappers.fetch_trading_fee"""
-        ...
-
-    def fetch_ledger(
-        self,
-        code: Str = None,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_ledger"""
-        ...
-
-    def fetch_leverages(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_leverages"""
-        ...
-
-    def cancel_order(self, id: str, symbol: Str = None, params={}) -> dict:
-        """Returns a dict from wrappers.cancel_order"""
-        ...
-
-    def fetch_bids_asks(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_bids_asks"""
-        ...
-
-    def fetch_funding_history(
-        self,
-        symbol: Str = None,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_funding_history"""
-        ...
-
-    def watch_my_trades_for_symbols(
-        self,
-        symbols: List[str],
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.watch_my_trades_for_symbols"""
-        ...
-
-    def watch_liquidations(
-        self,
-        symbol: str,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.watch_liquidations"""
-        ...
-
-    def create_order(
-        self,
-        symbol: str,
-        type: OrderType,
-        side: OrderSide,
-        amount: float,
-        price: Union[NoneType, str, float, int, Decimal] = None,
-        params={},
+    def cancel_order_ws(
+        self, id: str, symbol: str | list[str] = None, params={}
     ) -> dict:
-        """Returns a dict from wrappers.create_order"""
+        """Returns a dict from ccxt.cancel_order_ws"""
         ...
 
-    def fetch_position(self, symbol: str, params={}) -> dict:
-        """Returns a dict from wrappers.fetch_position"""
-        ...
-
-    def watch_positions(
-        self,
-        symbols: Strings = None,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
+    def cancel_orders(
+        self, ids: list[str], symbol: str | list[str] = None, params={}
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.watch_positions"""
-        ...
-
-    def edit_orders(self, orders: pd.DataFrame, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.edit_orders"""
-        ...
-
-    def fetch_my_liquidations(
-        self,
-        symbol: Str = None,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_my_liquidations"""
-        ...
-
-    def watch_bids_asks(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.watch_bids_asks"""
-        ...
-
-    def fetch_open_interest(self, symbol: str, params={}) -> dict:
-        """Returns a dict from wrappers.fetch_open_interest"""
-        ...
-
-    def watch_trades_for_symbols(
-        self,
-        symbols: List[str],
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.watch_trades_for_symbols"""
-        ...
-
-    def watch_balance(self, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.watch_balance"""
-        ...
-
-    def fetch_currencies(self, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_currencies"""
-        ...
-
-    def fetch_transaction_fees(self, codes: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_transaction_fees"""
-        ...
-
-    def fetch_isolated_borrow_rate(self, symbol: str, params={}) -> dict:
-        """Returns a dict from wrappers.fetch_isolated_borrow_rate"""
-        ...
-
-    def fetch_markets(self, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_markets"""
-        ...
-
-    def fetch_orders(
-        self,
-        symbol: Str = None,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_orders"""
-        ...
-
-    def fetch_last_prices(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_last_prices"""
-        ...
-
-    def fetch_margin_modes(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_margin_modes"""
-        ...
-
-    def fetch_funding_rate(self, symbol: str, params={}) -> dict:
-        """Returns a dict from wrappers.fetch_funding_rate"""
-        ...
-
-    def fetch_mark_prices(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_mark_prices"""
-        ...
-
-    def fetch_order(self, id: str, symbol: Str = None, params={}) -> dict:
-        """Returns a dict from wrappers.fetch_order"""
-        ...
-
-    def fetch_positions_history(
-        self,
-        symbols: Strings = None,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_positions_history"""
-        ...
-
-    def watch_funding_rates(self, symbols: List[str], params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.watch_funding_rates"""
-        ...
-
-    def create_orders(self, orders: pd.DataFrame, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.create_orders"""
-        ...
-
-    def fetch_status(self, params={}) -> dict:
-        """Returns a dict from wrappers.fetch_status"""
-        ...
-
-    def fetch_option_chain(self, code: str, params={}) -> dict:
-        """Returns a dict from wrappers.fetch_option_chain"""
-        ...
-
-    def fetch_order_book(
-        self, symbol: str, limit: Int = None, params={}
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_order_book"""
-        ...
-
-    def fetch_open_interest_history(
-        self,
-        symbol: str,
-        timeframe: str = "1h",
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_open_interest_history"""
-        ...
-
-    def watch_my_liquidations_for_symbols(
-        self,
-        symbols: List[str],
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.watch_my_liquidations_for_symbols"""
-        ...
-
-    def fetch_leverage_tiers(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_leverage_tiers"""
-        ...
-
-    def fetch_margin_adjustment_history(
-        self,
-        symbol: Str = None,
-        type: Str = None,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Union[NoneType, str, float, int, Decimal] = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_margin_adjustment_history"""
-        ...
-
-    def fetch_long_short_ratio_history(
-        self,
-        symbol: Str = None,
-        timeframe: Str = None,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_long_short_ratio_history"""
-        ...
-
-    def fetch_positions(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_positions"""
-        ...
-
-    def fetch_liquidations(
-        self,
-        symbol: str,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_liquidations"""
-        ...
-
-    def fetch_funding_rate_history(
-        self,
-        symbol: Str = None,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_funding_rate_history"""
-        ...
-
-    def fetch_mark_price(self, symbol: str, params={}) -> dict:
-        """Returns a dict from wrappers.fetch_mark_price"""
-        ...
-
-    def fetch_withdrawals(
-        self,
-        code: Str = None,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_withdrawals"""
-        ...
-
-    def fetch_deposits(
-        self,
-        code: Str = None,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_deposits"""
-        ...
-
-    def edit_order(
-        self,
-        id: str,
-        symbol: str,
-        type: OrderType,
-        side: OrderSide,
-        amount: Union[NoneType, str, float, int, Decimal] = None,
-        price: Union[NoneType, str, float, int, Decimal] = None,
-        params={},
-    ) -> dict:
-        """Returns a dict from wrappers.edit_order"""
-        ...
-
-    def fetch_open_orders(
-        self,
-        symbol: Str = None,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_open_orders"""
-        ...
-
-    def fetch_order_trades(
-        self,
-        id: str,
-        symbol: Str = None,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_order_trades"""
-        ...
-
-    def fetch_trading_fees(self, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_trading_fees"""
-        ...
-
-    def fetch_ticker(self, symbol: str, params={}) -> dict:
-        """Returns a dict from wrappers.fetch_ticker"""
-        ...
-
-    def fetch_convert_trade_history(
-        self,
-        code: Str = None,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_convert_trade_history"""
-        ...
-
-    def fetch_canceled_and_closed_orders(
-        self,
-        symbol: Str = None,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_canceled_and_closed_orders"""
-        ...
-
-    def fetch_borrow_interest(
-        self,
-        code: Str = None,
-        symbol: Str = None,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_borrow_interest"""
-        ...
-
-    def fetch_my_trades(
-        self,
-        symbol: Str = None,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
-        params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_my_trades"""
+        """Returns a pd.DataFrame from ccxt.cancel_orders"""
         ...
 
     def cancel_orders_for_symbols(
         self, orders: pd.DataFrame, params={}
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.cancel_orders_for_symbols"""
+        """Returns a pd.DataFrame from ccxt.cancel_orders_for_symbols"""
         ...
 
-    def fetch_deposit_withdraw_fee(self, code: str, params={}) -> dict:
-        """Returns a dict from wrappers.fetch_deposit_withdraw_fee"""
-        ...
-
-    def fetch_option(self, symbol: str, params={}) -> dict:
-        """Returns a dict from wrappers.fetch_option"""
-        ...
-
-    def watch_order_book(
-        self, symbol: str, limit: Int = None, params={}
+    def cancel_orders_ws(
+        self, ids: list[str], symbol: str | list[str] = None, params={}
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.watch_order_book"""
+        """Returns a pd.DataFrame from ccxt.cancel_orders_ws"""
         ...
 
-    def fetch_ohlcv(
+    def create_order(
         self,
-        symbol: str,
-        timeframe="1m",
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
+        symbol: str | list[str],
+        type: Literal["limit", "market"],
+        side: Literal["buy", "sell"],
+        amount: float,
+        price: None | str | float | int | Decimal = None,
         params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_ohlcv"""
+    ) -> dict:
+        """Returns a dict from ccxt.create_order"""
         ...
 
-    def watch_orders(
+    def create_order_ws(
         self,
-        symbol: Str = None,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
+        symbol: str | list[str],
+        type: Literal["limit", "market"],
+        side: Literal["buy", "sell"],
+        amount: float,
+        price: None | str | float | int | Decimal = None,
         params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.watch_orders"""
+    ) -> dict:
+        """Returns a dict from ccxt.create_order_ws"""
         ...
 
-    def fetch_position_history(
+    def create_orders(self, orders: pd.DataFrame, params={}) -> pd.DataFrame:
+        """Returns a pd.DataFrame from ccxt.create_orders"""
+        ...
+
+    def create_orders_ws(self, orders: pd.DataFrame, params={}) -> pd.DataFrame:
+        """Returns a pd.DataFrame from ccxt.create_orders_ws"""
+        ...
+
+    def edit_order(
         self,
-        symbol: str,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
+        id: str,
+        symbol: str | list[str],
+        type: Literal["limit", "market"],
+        side: Literal["buy", "sell"],
+        amount: None | str | float | int | Decimal = None,
+        price: None | str | float | int | Decimal = None,
         params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_position_history"""
+    ) -> dict:
+        """Returns a dict from ccxt.edit_order"""
         ...
 
-    def fetch_trades(
+    def edit_order_ws(
         self,
-        symbol: str,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
+        id: str,
+        symbol: str | list[str],
+        type: Literal["limit", "market"],
+        side: Literal["buy", "sell"],
+        amount: None | str | float | int | Decimal = None,
+        price: None | str | float | int | Decimal = None,
         params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_trades"""
+    ) -> dict:
+        """Returns a dict from ccxt.edit_order_ws"""
         ...
 
-    def cancel_all_orders(self, symbol: Str = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.cancel_all_orders"""
+    def edit_orders(self, orders: pd.DataFrame, params={}) -> pd.DataFrame:
+        """Returns a pd.DataFrame from ccxt.edit_orders"""
         ...
 
-    def fetch_convert_currencies(self, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_convert_currencies"""
+    def fetch_accounts(self, params={}) -> DataFrame[AccountsSchema]:
+        """Returns a DataFrame[AccountsSchema] from ccxt.fetch_accounts"""
         ...
 
-    def fetch_deposits_withdrawals(
+    def fetch_all_greeks(
+        self, symbols: list[str] | None = None, params={}
+    ) -> DataFrame[GreeksSchema]:
+        """Returns a DataFrame[GreeksSchema] from ccxt.fetch_all_greeks"""
+        ...
+
+    def fetch_balance(self, params={}) -> DataFrame[BalanceSchema]:
+        """Returns a DataFrame[BalanceSchema] from ccxt.fetch_balance"""
+        ...
+
+    def fetch_bids_asks(
+        self, symbols: list[str] | None = None, params={}
+    ) -> DataFrame[BidsAsksSchema]:
+        """Returns a DataFrame[BidsAsksSchema] from ccxt.fetch_bids_asks"""
+        ...
+
+    def fetch_borrow_interest(
         self,
-        code: Str = None,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
+        code: str | list[str] = None,
+        symbol: str | list[str] = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
         params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_deposits_withdrawals"""
+    ) -> DataFrame[BorrowInterestSchema]:
+        """Returns a DataFrame[BorrowInterestSchema] from ccxt.fetch_borrow_interest"""
         ...
 
-    def fetch_balance(self, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_balance"""
+    def fetch_canceled_and_closed_orders(
+        self,
+        symbol: str | list[str] = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[OrdersSchema]:
+        """Returns a DataFrame[OrdersSchema] from ccxt.fetch_canceled_and_closed_orders"""
         ...
 
-    def watch_position(self, symbol: Str = None, params={}) -> dict:
-        """Returns a dict from wrappers.watch_position"""
+    def fetch_canceled_orders(
+        self,
+        symbol: str | list[str] = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[OrdersSchema]:
+        """Returns a DataFrame[OrdersSchema] from ccxt.fetch_canceled_orders"""
         ...
 
     def fetch_closed_orders(
         self,
-        symbol: Str = None,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
+        symbol: str | list[str] = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
         params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_closed_orders"""
+    ) -> DataFrame[OrdersSchema]:
+        """Returns a DataFrame[OrdersSchema] from ccxt.fetch_closed_orders"""
         ...
 
-    def fetch_accounts(self, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_accounts"""
+    def fetch_convert_currencies(self, params={}) -> pd.DataFrame:
+        """Returns a pd.DataFrame from ccxt.fetch_convert_currencies"""
         ...
 
-    def fetch_all_greeks(self, symbols: Strings = None, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_all_greeks"""
-        ...
-
-    def watch_ohlcv(
+    def fetch_convert_trade_history(
         self,
-        symbol: str,
-        timeframe="1m",
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
+        code: str | list[str] = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
         params={},
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.watch_ohlcv"""
+        """Returns a pd.DataFrame from ccxt.fetch_convert_trade_history"""
+        ...
+
+    def fetch_cross_borrow_rate(self, code: str | list[str], params={}) -> dict:
+        """Returns a dict from ccxt.fetch_cross_borrow_rate"""
+        ...
+
+    def fetch_cross_borrow_rates(self, params={}) -> DataFrame[CrossBorrowRatesSchema]:
+        """Returns a DataFrame[CrossBorrowRatesSchema] from ccxt.fetch_cross_borrow_rates"""
+        ...
+
+    def fetch_currencies(self, params={}) -> DataFrame[CurrencySchema]:
+        """Returns a DataFrame[CurrencySchema] from ccxt.fetch_currencies"""
+        ...
+
+    def fetch_deposit_addresses(
+        self, codes: list[str] | None = None, params={}
+    ) -> DataFrame[AddressesSchema]:
+        """Returns a DataFrame[AddressesSchema] from ccxt.fetch_deposit_addresses"""
+        ...
+
+    def fetch_deposit_withdraw_fee(self, code: str | list[str], params={}) -> dict:
+        """Returns a dict from ccxt.fetch_deposit_withdraw_fee"""
         ...
 
     def fetch_deposit_withdraw_fees(
-        self, codes: Strings = None, params={}
+        self, codes: list[str] | None = None, params={}
+    ) -> DataFrame[DepositWithdrawFeesSchema]:
+        """Returns a DataFrame[DepositWithdrawFeesSchema] from ccxt.fetch_deposit_withdraw_fees"""
+        ...
+
+    def fetch_deposits(
+        self,
+        code: str | list[str] = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[TransactionsSchema]:
+        """Returns a DataFrame[TransactionsSchema] from ccxt.fetch_deposits"""
+        ...
+
+    def fetch_deposits_withdrawals(
+        self,
+        code: str | list[str] = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[TransactionsSchema]:
+        """Returns a DataFrame[TransactionsSchema] from ccxt.fetch_deposits_withdrawals"""
+        ...
+
+    def fetch_funding_history(
+        self,
+        symbol: str | list[str] = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[FundingHistorySchema]:
+        """Returns a DataFrame[FundingHistorySchema] from ccxt.fetch_funding_history"""
+        ...
+
+    def fetch_funding_interval(self, symbol: str | list[str], params={}) -> dict:
+        """Returns a dict from ccxt.fetch_funding_interval"""
+        ...
+
+    def fetch_funding_intervals(
+        self, symbols: list[str] | None = None, params={}
+    ) -> DataFrame[FundingIntervalsSchema]:
+        """Returns a DataFrame[FundingIntervalsSchema] from ccxt.fetch_funding_intervals"""
+        ...
+
+    def fetch_funding_rate(self, symbol: str | list[str], params={}) -> dict:
+        """Returns a dict from ccxt.fetch_funding_rate"""
+        ...
+
+    def fetch_funding_rate_history(
+        self,
+        symbol: str | list[str] = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[FundingRateHistorySchema]:
+        """Returns a DataFrame[FundingRateHistorySchema] from ccxt.fetch_funding_rate_history"""
+        ...
+
+    def fetch_funding_rates(
+        self, symbols: list[str] | None = None, params={}
+    ) -> DataFrame[FundingRateSchema]:
+        """Returns a DataFrame[FundingRateSchema] from ccxt.fetch_funding_rates"""
+        ...
+
+    def fetch_greeks(self, symbol: str | list[str], params={}) -> dict:
+        """Returns a dict from ccxt.fetch_greeks"""
+        ...
+
+    def fetch_isolated_borrow_rate(self, symbol: str | list[str], params={}) -> dict:
+        """Returns a dict from ccxt.fetch_isolated_borrow_rate"""
+        ...
+
+    def fetch_isolated_borrow_rates(
+        self, params={}
+    ) -> DataFrame[IsolatedBorrowRatesSchema]:
+        """Returns a DataFrame[IsolatedBorrowRatesSchema] from ccxt.fetch_isolated_borrow_rates"""
+        ...
+
+    def fetch_l3_order_book(
+        self, symbol: str | list[str], limit: int | None = None, params={}
+    ) -> DataFrame[OrderBookSchema]:
+        """Returns a DataFrame[OrderBookSchema] from ccxt.fetch_l3_order_book"""
+        ...
+
+    def fetch_last_prices(
+        self, symbols: list[str] | None = None, params={}
+    ) -> DataFrame[LastPricesSchema]:
+        """Returns a DataFrame[LastPricesSchema] from ccxt.fetch_last_prices"""
+        ...
+
+    def fetch_ledger(
+        self,
+        code: str | list[str] = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[LedgerSchema]:
+        """Returns a DataFrame[LedgerSchema] from ccxt.fetch_ledger"""
+        ...
+
+    def fetch_leverage_tiers(
+        self, symbols: list[str] | None = None, params={}
     ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.fetch_deposit_withdraw_fees"""
+        """Returns a pd.DataFrame from ccxt.fetch_leverage_tiers"""
         ...
 
-    def load_markets(self, reload=False, params={}) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.load_markets"""
+    def fetch_leverages(
+        self, symbols: list[str] | None = None, params={}
+    ) -> DataFrame[LeveragesSchema]:
+        """Returns a DataFrame[LeveragesSchema] from ccxt.fetch_leverages"""
         ...
 
-    def fetch_cross_borrow_rate(self, code: str, params={}) -> dict:
-        """Returns a dict from wrappers.fetch_cross_borrow_rate"""
+    def fetch_liquidations(
+        self,
+        symbol: str | list[str],
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[LiquidationsSchema]:
+        """Returns a DataFrame[LiquidationsSchema] from ccxt.fetch_liquidations"""
+        ...
+
+    def fetch_long_short_ratio_history(
+        self,
+        symbol: str | list[str] = None,
+        timeframe: str | None = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[LongShortRatioSchema]:
+        """Returns a DataFrame[LongShortRatioSchema] from ccxt.fetch_long_short_ratio_history"""
+        ...
+
+    def fetch_margin_adjustment_history(
+        self,
+        symbol: str | list[str] = None,
+        type: str | None = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: None | str | float | int | Decimal = None,
+        params={},
+    ) -> pd.DataFrame:
+        """Returns a pd.DataFrame from ccxt.fetch_margin_adjustment_history"""
+        ...
+
+    def fetch_margin_modes(
+        self, symbols: list[str] | None = None, params={}
+    ) -> pd.DataFrame:
+        """Returns a pd.DataFrame from ccxt.fetch_margin_modes"""
+        ...
+
+    def fetch_mark_price(self, symbol: str | list[str], params={}) -> dict:
+        """Returns a dict from ccxt.fetch_mark_price"""
+        ...
+
+    def fetch_mark_prices(
+        self, symbols: list[str] | None = None, params={}
+    ) -> DataFrame[MarkPricesSchema]:
+        """Returns a DataFrame[MarkPricesSchema] from ccxt.fetch_mark_prices"""
+        ...
+
+    def fetch_markets(self, params={}) -> DataFrame[MarketSchema]:
+        """Returns a DataFrame[MarketSchema] from ccxt.fetch_markets"""
+        ...
+
+    def fetch_my_liquidations(
+        self,
+        symbol: str | list[str] = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[LiquidationsSchema]:
+        """Returns a DataFrame[LiquidationsSchema] from ccxt.fetch_my_liquidations"""
+        ...
+
+    def fetch_my_trades(
+        self,
+        symbol: str | list[str] = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[MyTradesSchema]:
+        """Returns a DataFrame[MyTradesSchema] from ccxt.fetch_my_trades"""
+        ...
+
+    def fetch_ohlcv(
+        self,
+        symbol: str | list[str],
+        timeframe: str = "1m",
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[OHLCVSchema]:
+        """Returns a DataFrame[OHLCVSchema] from ccxt.fetch_ohlcv"""
+        ...
+
+    def fetch_open_interest(self, symbol: str | list[str], params={}) -> dict:
+        """Returns a dict from ccxt.fetch_open_interest"""
+        ...
+
+    def fetch_open_interest_history(
+        self,
+        symbol: str | list[str],
+        timeframe: str = "1h",
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[OpenInterestHistorySchema]:
+        """Returns a DataFrame[OpenInterestHistorySchema] from ccxt.fetch_open_interest_history"""
+        ...
+
+    def fetch_open_interests(
+        self, symbols: list[str] | None = None, params={}
+    ) -> pd.DataFrame:
+        """Returns a pd.DataFrame from ccxt.fetch_open_interests"""
+        ...
+
+    def fetch_open_orders(
+        self,
+        symbol: str | list[str] = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[OrdersSchema]:
+        """Returns a DataFrame[OrdersSchema] from ccxt.fetch_open_orders"""
+        ...
+
+    def fetch_option(self, symbol: str | list[str], params={}) -> dict:
+        """Returns a dict from ccxt.fetch_option"""
+        ...
+
+    def fetch_option_chain(self, code: str | list[str], params={}) -> pd.DataFrame:
+        """Returns a pd.DataFrame from ccxt.fetch_option_chain"""
+        ...
+
+    def fetch_order(self, id: str, symbol: str | list[str] = None, params={}) -> dict:
+        """Returns a dict from ccxt.fetch_order"""
+        ...
+
+    def fetch_order_book(
+        self, symbol: str | list[str], limit: int | None = None, params={}
+    ) -> DataFrame[OrderBookSchema]:
+        """Returns a DataFrame[OrderBookSchema] from ccxt.fetch_order_book"""
+        ...
+
+    def fetch_order_books(
+        self, symbols: list[str] | None = None, limit: int | None = None, params={}
+    ) -> pd.DataFrame:
+        """Returns a pd.DataFrame from ccxt.fetch_order_books"""
+        ...
+
+    def fetch_order_trades(
+        self,
+        id: str,
+        symbol: str | list[str] = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> pd.DataFrame:
+        """Returns a pd.DataFrame from ccxt.fetch_order_trades"""
+        ...
+
+    def fetch_orders(
+        self,
+        symbol: str | list[str] = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[OrdersSchema]:
+        """Returns a DataFrame[OrdersSchema] from ccxt.fetch_orders"""
+        ...
+
+    def fetch_orders_ws(
+        self,
+        symbol: str | list[str] = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[OrdersSchema]:
+        """Returns a DataFrame[OrdersSchema] from ccxt.fetch_orders_ws"""
+        ...
+
+    def fetch_position(self, symbol: str | list[str], params={}) -> dict:
+        """Returns a dict from ccxt.fetch_position"""
+        ...
+
+    def fetch_position_history(
+        self,
+        symbol: str | list[str],
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[PositionsHistorySchema]:
+        """Returns a DataFrame[PositionsHistorySchema] from ccxt.fetch_position_history"""
+        ...
+
+    def fetch_positions(
+        self, symbols: list[str] | None = None, params={}
+    ) -> DataFrame[PositionsSchema]:
+        """Returns a DataFrame[PositionsSchema] from ccxt.fetch_positions"""
+        ...
+
+    def fetch_positions_history(
+        self,
+        symbols: list[str] | None = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[PositionsHistorySchema]:
+        """Returns a DataFrame[PositionsHistorySchema] from ccxt.fetch_positions_history"""
+        ...
+
+    def fetch_positions_risk(
+        self, symbols: list[str] | None = None, params={}
+    ) -> pd.DataFrame:
+        """Returns a pd.DataFrame from ccxt.fetch_positions_risk"""
+        ...
+
+    def fetch_status(self, params={}) -> dict:
+        """Returns a dict from ccxt.fetch_status"""
+        ...
+
+    def fetch_ticker(self, symbol: str | list[str], params={}) -> dict:
+        """Returns a dict from ccxt.fetch_ticker"""
+        ...
+
+    def fetch_tickers(
+        self, symbols: list[str] | None = None, params={}
+    ) -> DataFrame[TickersSchema]:
+        """Returns a DataFrame[TickersSchema] from ccxt.fetch_tickers"""
+        ...
+
+    def fetch_trades(
+        self,
+        symbol: str | list[str],
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[TradeSchema]:
+        """Returns a DataFrame[TradeSchema] from ccxt.fetch_trades"""
+        ...
+
+    def fetch_trading_fee(self, symbol: str | list[str], params={}) -> dict:
+        """Returns a dict from ccxt.fetch_trading_fee"""
+        ...
+
+    def fetch_trading_fees(self, params={}) -> DataFrame[TradingFeesSchema]:
+        """Returns a DataFrame[TradingFeesSchema] from ccxt.fetch_trading_fees"""
+        ...
+
+    def fetch_transaction_fees(
+        self, codes: list[str] | None = None, params={}
+    ) -> pd.DataFrame:
+        """Returns a pd.DataFrame from ccxt.fetch_transaction_fees"""
+        ...
+
+    def fetch_transfers(
+        self,
+        code: str | list[str] = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[TransfersSchema]:
+        """Returns a DataFrame[TransfersSchema] from ccxt.fetch_transfers"""
+        ...
+
+    def fetch_withdrawals(
+        self,
+        code: str | list[str] = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[TransactionsSchema]:
+        """Returns a DataFrame[TransactionsSchema] from ccxt.fetch_withdrawals"""
+        ...
+
+    def load_markets(self, reload=False, params={}) -> DataFrame[MarketSchema]:
+        """Returns a DataFrame[MarketSchema] from ccxt.load_markets"""
+        ...
+
+    def watch_balance(self, params={}) -> DataFrame[BalanceSchema]:
+        """Returns a DataFrame[BalanceSchema] from ccxt.watch_balance"""
+        ...
+
+    def watch_bids_asks(
+        self, symbols: list[str] | None = None, params={}
+    ) -> DataFrame[BidsAsksSchema]:
+        """Returns a DataFrame[BidsAsksSchema] from ccxt.watch_bids_asks"""
+        ...
+
+    def watch_funding_rate(self, symbol: str | list[str], params={}) -> dict:
+        """Returns a dict from ccxt.watch_funding_rate"""
+        ...
+
+    def watch_funding_rates(
+        self, symbols: list[str], params={}
+    ) -> DataFrame[FundingRateSchema]:
+        """Returns a DataFrame[FundingRateSchema] from ccxt.watch_funding_rates"""
+        ...
+
+    def watch_liquidations(
+        self,
+        symbol: str | list[str],
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[LiquidationsSchema]:
+        """Returns a DataFrame[LiquidationsSchema] from ccxt.watch_liquidations"""
+        ...
+
+    def watch_liquidations_for_symbols(
+        self,
+        symbols: list[str],
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[LiquidationsSchema]:
+        """Returns a DataFrame[LiquidationsSchema] from ccxt.watch_liquidations_for_symbols"""
+        ...
+
+    def watch_mark_price(self, symbol: str | list[str], params={}) -> dict:
+        """Returns a dict from ccxt.watch_mark_price"""
+        ...
+
+    def watch_mark_prices(
+        self, symbols: list[str] | None = None, params={}
+    ) -> DataFrame[MarkPricesSchema]:
+        """Returns a DataFrame[MarkPricesSchema] from ccxt.watch_mark_prices"""
+        ...
+
+    def watch_my_liquidations(
+        self,
+        symbol: str | list[str],
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[LiquidationsSchema]:
+        """Returns a DataFrame[LiquidationsSchema] from ccxt.watch_my_liquidations"""
+        ...
+
+    def watch_my_liquidations_for_symbols(
+        self,
+        symbols: list[str],
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[LiquidationsSchema]:
+        """Returns a DataFrame[LiquidationsSchema] from ccxt.watch_my_liquidations_for_symbols"""
         ...
 
     def watch_my_trades(
         self,
-        symbol: Str = None,
-        since: int | pd.Timestamp | dict | str | None = None,
-        limit: Int = None,
+        symbol: str | list[str] = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
         params={},
-    ) -> pd.DataFrame:
-        """Returns a pd.DataFrame from wrappers.watch_my_trades"""
+    ) -> DataFrame[MyTradesSchema]:
+        """Returns a DataFrame[MyTradesSchema] from ccxt.watch_my_trades"""
+        ...
+
+    def watch_my_trades_for_symbols(
+        self,
+        symbols: list[str],
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[MyTradesSchema]:
+        """Returns a DataFrame[MyTradesSchema] from ccxt.watch_my_trades_for_symbols"""
+        ...
+
+    def watch_ohlcv(
+        self,
+        symbol: str | list[str],
+        timeframe: str = "1m",
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[OHLCVSchema]:
+        """Returns a DataFrame[OHLCVSchema] from ccxt.watch_ohlcv"""
+        ...
+
+    def watch_ohlcv_for_symbols(
+        self,
+        symbolsAndTimeframes: list[list[str]],
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[OHLCVSchema]:
+        """Returns a DataFrame[OHLCVSchema] from ccxt.watch_ohlcv_for_symbols"""
+        ...
+
+    def watch_order_book(
+        self, symbol: str | list[str], limit: int | None = None, params={}
+    ) -> DataFrame[OrderBookSchema]:
+        """Returns a DataFrame[OrderBookSchema] from ccxt.watch_order_book"""
+        ...
+
+    def watch_order_book_for_symbols(
+        self, symbols: list[str], limit: int | None = None, params={}
+    ) -> DataFrame[OrderBookSchema]:
+        """Returns a DataFrame[OrderBookSchema] from ccxt.watch_order_book_for_symbols"""
+        ...
+
+    def watch_orders(
+        self,
+        symbol: str | list[str] = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[OrdersSchema]:
+        """Returns a DataFrame[OrdersSchema] from ccxt.watch_orders"""
+        ...
+
+    def watch_orders_for_symbols(
+        self,
+        symbols: list[str],
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[OrdersSchema]:
+        """Returns a DataFrame[OrdersSchema] from ccxt.watch_orders_for_symbols"""
+        ...
+
+    def watch_position(self, symbol: str | list[str] = None, params={}) -> dict:
+        """Returns a dict from ccxt.watch_position"""
+        ...
+
+    def watch_positions(
+        self,
+        symbols: list[str] | None = None,
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[PositionsSchema]:
+        """Returns a DataFrame[PositionsSchema] from ccxt.watch_positions"""
+        ...
+
+    def watch_ticker(self, symbol: str | list[str], params={}) -> dict:
+        """Returns a dict from ccxt.watch_ticker"""
+        ...
+
+    def watch_tickers(
+        self, symbols: list[str] | None = None, params={}
+    ) -> DataFrame[TickersSchema]:
+        """Returns a DataFrame[TickersSchema] from ccxt.watch_tickers"""
+        ...
+
+    def watch_trades(
+        self,
+        symbol: str | list[str],
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        cache: bool = False,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[TradeSchema]:
+        """Returns a DataFrame[TradeSchema] from ccxt.watch_trades"""
+        ...
+
+    def watch_trades_for_symbols(
+        self,
+        symbols: list[str],
+        from_date: pd.Timestamp | dict | str | None = None,
+        to_date: pd.Timestamp | dict | str | None = None,
+        limit: int | None = None,
+        params={},
+    ) -> DataFrame[TradeSchema]:
+        """Returns a DataFrame[TradeSchema] from ccxt.watch_trades_for_symbols"""
         ...

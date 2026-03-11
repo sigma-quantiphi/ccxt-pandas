@@ -101,6 +101,34 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
+## Claude Code Integration
+
+CCXT-Pandas includes a Claude Code skill to accelerate your development workflow!
+
+The skill provides:
+- Quick reference for sync/async usage patterns
+- Common DataFrame structures for all methods
+- Batch operation examples and best practices
+- Troubleshooting tips and testing setup
+
+### Using the Skill
+
+**In this repository:** The skill is automatically available. Invoke with `/ccxt-pandas-helper`
+
+**In your projects:** Copy to your global skills directory:
+
+```bash
+# Windows
+cp .claude/skills/ccxt-pandas-helper.md %USERPROFILE%\.claude\skills\
+
+# macOS/Linux
+cp .claude/skills/ccxt-pandas-helper.md ~/.claude/skills/
+```
+
+After copying, use `/ccxt-pandas-helper` in any project for instant access to ccxt-pandas patterns and documentation.
+
+See [.claude/skills/README.md](.claude/skills/README.md) for more details.
+
 ## About Sigma Quantiphi
 [Sigma Quantiphi](https://www.sigmaquantiphi.com/) is a quantitative-engineering firm that builds end-to-end algorithmic-trading systems for the cryptocurrency markets.
 We create open-source, Python-first tools—like ccxt-pandas—and deliver turnkey execution, data, and research pipelines that emphasize simplicity, transparency, and rapid deployment.

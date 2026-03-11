@@ -4,7 +4,7 @@ import pandas as pd
 
 from ccxt_pandas import AsyncCCXTPandasExchange
 
-exchange = ccxt_pro.binance()
+exchange = ccxt_pro.okx()
 pandas_exchange = AsyncCCXTPandasExchange(exchange=exchange)
 symbols = ["BTC/USDT:USDT", "ETH/USDT:USDT"]
 symbolsAndTimeframes = [[x, "1m"] for x in symbols]
@@ -13,9 +13,6 @@ results = {}
 
 
 def tick():
-    # sync point for all three coroutines
-    # when one of these three streams is updated
-    # it prints the last data from each of the three streams
     print(pd.Timestamp.now(tz="UTC"))
     print("=======================================================")
     print(results["ohlcv"])
@@ -68,11 +65,10 @@ async def main():
             run_bids_asks_loop(),
             run_trades_loop(),
         ]
-        await asyncio.gather(*tasks)
-    except KeyboardInterrupt:
-        print("Websocket connection closed")
-    finally:
+        await asyncio.gather(*tasks, return_exceptions=True)
+    except Exception as e:
         await exchange.close()
+        print("Websocket connection closed", e)
 
 
 if __name__ == "__main__":

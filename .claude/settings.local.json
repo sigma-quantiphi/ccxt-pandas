@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -m pip install:*)",
+      "Bash(python -m pip install:*)",
+      "Bash(export PATH=\"$HOME/.local/bin:$PATH\")",
+      "Bash(uv sync:*)",
+      "Bash(uv run:*)",
+      "Bash(python:*)",
+      "WebSearch",
+      "Bash(git -C \"C:\\\\Users\\\\lucas\\\\OneDrive\\\\Documents\\\\code\\\\ccxt-pandas\" log -p --all -S \"API_KEY\" -- \"*.py\" \"*.env\" \"*.json\" \"*.yml\" \"*.yaml\" \"*.toml\" \"*.cfg\" \"*.ini\")",
+      "Bash(git -C \"C:\\\\Users\\\\lucas\\\\OneDrive\\\\Documents\\\\code\\\\ccxt-pandas\" log -p --all -S \"API_SECRET\" -- \"*.py\" \"*.env\" \"*.json\" \"*.yml\" \"*.yaml\" \"*.toml\" \"*.cfg\" \"*.ini\")",
+      "Bash(git -C \"C:\\\\Users\\\\lucas\\\\OneDrive\\\\Documents\\\\code\\\\ccxt-pandas\" log --all --diff-filter=A -- \"*.env\" \".env*\")",
+      "Bash(git -C \"C:\\\\Users\\\\lucas\\\\OneDrive\\\\Documents\\\\code\\\\ccxt-pandas\" log -p --all -G \"[''\"\"][A-Za-z0-9]{20,}[''\"\"]\" -- \"*.py\")",
+      "Bash(git -C \"C:\\\\Users\\\\lucas\\\\OneDrive\\\\Documents\\\\code\\\\ccxt-pandas\" log --all --name-only --diff-filter=A -- \"*.env\" \".env*\" \"*.env.*\")",
+      "Bash(git -C \"C:\\\\Users\\\\lucas\\\\OneDrive\\\\Documents\\\\code\\\\ccxt-pandas\" log -p --all -S \"password\" -- \"*.py\")",
+      "Bash(git -C \"C:\\\\Users\\\\lucas\\\\OneDrive\\\\Documents\\\\code\\\\ccxt-pandas\" log -p --all -- \".env\" \".env.example\" \".env.local\")",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git mv:*)",
+      "Bash(PYTHONPATH=. python:*)"
+    ]
+  }
+}
