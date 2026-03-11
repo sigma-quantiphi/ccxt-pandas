@@ -24,7 +24,6 @@ classifiers = [
 keywords = ["ccxt", "pandas", "cryptocurrency", "trading", "exchange", "dataframe"]
 dependencies = [
     "aiodns>=3.5.0,<4.0.0",
-    "coincurve>=20.0.0",
     "cryptography>=46.0.5",
     "async-lru>=2.0.0,<3.0.0",
     "cachetools>=6.0.0,<7.0.0",
@@ -41,6 +40,9 @@ dependencies = [
 docs = [
     "sphinx>=8.2.3,<9.0.0",
     "furo>=2024.8.6,<2025.0.0",
+]
+speed = [
+    "coincurve>=20.0.0",
 ]
 
 [project.urls]
