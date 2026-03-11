@@ -31,6 +31,7 @@ from ccxt_pandas.utils.pandas_utils import (
     async_concat_results,
     concat_results,
     FunctionHandler,
+    timestamp_to_int,
 )
 from ccxt_pandas.utils.utils import exchange_has_method
 
@@ -145,6 +146,8 @@ class AsyncCCXTPandasExchange(AsyncCCXTPandasExchangeTyped):
                     kwargs.pop("cost")
             elif method_name in symbol_order_methods:
                 kwargs["orders"] = kwargs["orders"][["id", "symbol"]].to_dict("records")
+            if "since" in kwargs:
+                kwargs["since"] = timestamp_to_int(kwargs["since"])
             async with self._semaphore:
                 if asyncio.iscoroutinefunction(original_method):
                     result = await original_method(*args, **kwargs)

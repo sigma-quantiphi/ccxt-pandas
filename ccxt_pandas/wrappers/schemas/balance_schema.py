@@ -2,7 +2,6 @@
 
 from typing import Optional
 
-import pandas as pd
 import pandera.pandas as pa
 from pandera.typing import Series
 

@@ -42,11 +42,10 @@ class OpenInterestHistorySchema(BaseExchangeSchema):
         description="Open interest in quote currency value",
     )
 
-    # Optional timestamps
     timestamp: Optional[Series[pd.Timestamp]] = pa.Field(
-        nullable=True, title="Timestamp", description="Open interest timestamp"
+        nullable=False, title="Timestamp", description="Open interest timestamp"
     )
     datetime: Optional[Series[pd.Timestamp]] = pa.Field(
-        nullable=True, title="Datetime", description="Open interest datetime (alias)"
+        nullable=False, title="Datetime", description="Open interest datetime (alias)"
     )
     # Note: exchange field comes from BaseExchangeSchema (Optional)

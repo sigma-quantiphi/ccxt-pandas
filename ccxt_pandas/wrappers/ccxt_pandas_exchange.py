@@ -22,6 +22,7 @@ from ccxt_pandas.utils.pandas_utils import (
     concat_results,
     FunctionHandler,
     merge_markets_with_balances,
+    timestamp_to_int,
 )
 from ccxt_pandas.utils.utils import exchange_has_method
 
@@ -125,6 +126,8 @@ class CCXTPandasExchange(CCXTPandasExchangeTyped):
                     kwargs.pop("cost")
             elif method_name in symbol_order_methods:
                 kwargs["orders"] = kwargs["orders"][["id", "symbol"]].to_dict("records")
+            if "since" in kwargs:
+                kwargs["since"] = timestamp_to_int(kwargs["since"])
             result = original_method(*args, **kwargs)
             result = self._ccxt_processor.preprocess_outputs(
                 method_name=method_name, result=result, symbol=kwargs.get("symbol")
