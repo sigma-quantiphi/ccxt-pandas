@@ -8,25 +8,30 @@ from dotenv import load_dotenv
 from ccxt_pandas import CCXTPandasExchange
 
 load_dotenv()
-api_key_read = os.getenv("SANDBOX_API_KEY")
-api_secret_read = os.getenv("SANDBOX_API_SECRET")
 exchange = ccxt.binance(
     {
-        "apiKey": api_key_read,
-        "secret": api_secret_read,
+        "apiKey": os.getenv("SANDBOX_API_KEY"),
+        "secret": os.getenv("SANDBOX_API_SECRET"),
     }
 )
-exchange.set_sandbox_mode(True)
+exchange.enable_demo_trading(True)
 pandas_exchange = CCXTPandasExchange(
     exchange=exchange,
     max_number_of_orders=100,
 )
 
 # Define parameters
-end_date = pd.Timestamp.now(tz="UTC").floor("1d")
+now = pd.Timestamp.now(tz="UTC")
+end_date = now.floor("1min")
+start_date = end_date - pd.Timedelta(minutes=2)
+symbols = ["BTC/USDT", "BNB/USDT", "XRP/USDT", "DOGE/USDT"]
+trades = pandas_exchange.fetch_trades(
+    symbol=symbols[0], from_date=start_date, to_date=end_date, limit=500
+)
+end_date = now.floor("1d")
+start_date = end_date - pd.Timedelta(days=5)
+ohlcv = pandas_exchange.fetch_ohlcv(symbol=symbols[0], from_date=start_date, timeframe="1m")
 start_date = end_date - pd.Timedelta(days=100)
-symbols = ["BNB/USDT", "XRP/USDT", "DOGE/USDT"]
-
 my_trades = pandas_exchange.fetch_my_trades(
     symbol=symbols, from_date=start_date, to_date=end_date
 )

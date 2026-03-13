@@ -21,6 +21,12 @@ import ccxt
 import pandas as pd
 import pandera as pa
 
+from ccxt_pandas.wrappers.field_type_mappings import (
+    get_numeric_fields,
+    get_bool_fields,
+    get_int_to_datetime_fields,
+    get_str_to_datetime_fields,
+)
 from ccxt_pandas.wrappers.method_mappings import (
     standard_dataframe_methods,
     markets_dataframe_methods,
@@ -61,21 +67,20 @@ class BaseProcessor:
         dropna_fields (bool): Determines whether empty (NaN) columns are removed from DataFrame outputs.
         attach_trades_to_orders (bool): Determines whether trades are attached to orders when converting orders to DataFrame.
         order_schema (OrderSchema): Schema used to validate and process orders.
-        cost_out_of_range: (str): Defines behavior when cost exceeds acceptable ranges. Options include:
-            - "warn": Logs a warning while removing the order.
-            - "clip": Clips or limits the volume to valid ranges.
-        amount_out_of_range (str): Defines behavior when volume exceeds acceptable ranges. Options include:
-            - "warn": Logs a warning while removing the order.
-            - "clip": Clips or limits the volume to valid ranges.
-        price_out_of_range (str): Defines behavior when price exceeds allowable ranges. Options include:
-            - "warn": Logs a warning while removing the order.
-            - "clip": Adjusts the price to fit within predefined limits.
+        cost_out_of_range (str): Defines behavior when cost exceeds acceptable ranges. Options: "warn", "clip".
+        amount_out_of_range (str): Defines behavior when volume exceeds acceptable ranges. Options: "warn", "clip".
+        price_out_of_range (str): Defines behavior when price exceeds allowable ranges. Options: "warn", "clip".
         conduct_order_checks (bool): Flag to enable or disable checks when converting orders to dictionary format.
         datetime_to_int_fields (tuple): Fields that should be converted from datetime to integer timestamps.
-        int_to_datetime_fields (tuple): Fields to convert from integer timestamps to pandas datetime.
-        str_to_datetime_fields (tuple): Fields with string timestamps to convert to pandas datetime.
-        numeric_fields (tuple): Fields that should be cast to numeric types.
-        bool_fields (tuple): Fields that should be cast to boolean types.
+        int_to_datetime_fields (frozenset | None): Fields to convert from integer (ms) timestamps to pandas datetime.
+            Defaults to None; resolved in __post_init__ from field_type_mappings based on exchange_name.
+        str_to_datetime_fields (frozenset | None): Fields with ISO string timestamps to convert to pandas datetime.
+            Defaults to None; resolved in __post_init__.
+        numeric_fields (frozenset | None): Fields that should be cast to numeric types.
+            Defaults to None; resolved in __post_init__ to exchange-specific + CCXT base fields,
+            or DEFAULT_NUMERIC_FIELDS for unrecognised exchanges.
+        bool_fields (frozenset | None): Fields that should be cast to boolean types.
+            Defaults to None; resolved in __post_init__.
         ohlcv_fields (tuple): Standard OHLCV (Open, High, Low, Close, Volume) column names.
     """
 
@@ -91,157 +96,10 @@ class BaseProcessor:
     price_out_of_range: Literal["warn", "clip"] = "warn"
     validate_schemas: bool = False
     strict_validation: bool = False
-    int_to_datetime_fields: tuple = field(
-        repr=False,
-        default=(
-            "createTime",
-            "created",
-            "createDate",
-            "expiry",
-            "expiryDate",
-            "fundingTimestamp",
-            "lastTradeTimestamp",
-            "lastUpdateTimestamp",
-            "nextFundingTimestamp",
-            "previousFundingTimestamp",
-            "time",
-            "timestamp",
-            "updateTime",
-        ),
-    )
-    str_to_datetime_fields: tuple = field(
-        repr=False,
-        default=(
-            "datetime",
-            "expiryDatetime",
-            "fundingDatetime",
-            "nextFundingDatetime",
-            "previousFundingDatetime",
-        ),
-    )
-    numeric_fields: tuple = field(
-        repr=False,
-        default=(
-            "amountBorrowed",
-            "ask",
-            "askImpliedVolatility",
-            "askPrice",
-            "askSize",
-            "askVolume",
-            "availableBalance",
-            "average",
-            "baseRate",
-            "baseVolume",
-            "bid",
-            "bidImpliedVolatility",
-            "bidPrice",
-            "bidSize",
-            "bidVolume",
-            "buySellRatio",
-            "buyVol",
-            "change",
-            "close",
-            "collateral",
-            "collateralMarginLevel",
-            "contractSize",
-            "contracts",
-            "cost",
-            "crossUnPnl",
-            "crossWalletBalance",
-            "delta",
-            "entryPrice",
-            "estimatedSettlePrice",
-            "exercisePrice",
-            "fee",  # Potential remove?
-            "fee_cost",
-            "fee_rate",
-            "free",
-            "freeze",
-            "fundingRate",
-            "gamma",
-            "high",
-            "indexPrice",
-            "initialMargin",
-            "initialMarginPercentage",
-            "interest",
-            "interestRate",
-            "last",
-            "lastPrice",
-            "leverage",
-            "liquidationPrice",
-            "locked",
-            "longAccount",
-            "longLeverage",
-            "longShortRatio",
-            "low",
-            "maker",
-            "maintMargin",
-            "maintenanceMargin",
-            "maintenanceMarginPercentage",
-            "marginBalance",
-            "marginLevel",
-            "marginRatio",
-            "markImpliedVolatility",
-            "markPrice",
-            "maxNotional",
-            "maxWithdrawAmount",
-            "network_fee",
-            "network_precision",
-            "network_limits_withdraw_min",
-            "network_limits_withdraw_max",
-            "network_limits_deposit_min",
-            "nextFundingRate",
-            "nonce",
-            "notional",
-            "open",
-            "openOrderInitialMargin",
-            # "percentage", in load_markets -> bool
-            "period",
-            "positionAmount",
-            "positionInitialMargin",
-            "precision",
-            "previousClose",
-            "previousFundingRate",
-            "price",
-            "quantity",
-            "quoteRate",
-            "quoteVolume",
-            "realStrikePrice",
-            "rho",
-            "sellVol",
-            "shortAccount",
-            "shortLeverage",
-            "strike",
-            "strikePrice",
-            "taker",
-            "theta",
-            "totalAssetOfBtc",
-            "totalCollateralValueInUSDT",
-            "totalLiabilityOfBtc",
-            "totalNetAssetOfBtc",
-            "underlyingPrice",
-            "unrealizedPnl",
-            "unrealizedProfit",
-            "vega",
-            "vwap",
-            "walletBalance",
-            "withdrawing",
-        ),
-    )
-    bool_fields: tuple = field(
-        repr=False,
-        default=(
-            "active",
-            "contract",
-            "deposit",
-            "inverse",
-            "linear",
-            "withdraw",
-            "network_active",
-            "network_deposit",
-            "network_withdraw",
-        ),
-    )
+    int_to_datetime_fields: frozenset | None = field(repr=False, default=None)
+    str_to_datetime_fields: frozenset | None = field(repr=False, default=None)
+    numeric_fields: frozenset | None = field(repr=False, default=None)
+    bool_fields: frozenset | None = field(repr=False, default=None)
     ohlcv_fields: tuple = field(
         repr=False,
         default=(
@@ -253,6 +111,25 @@ class BaseProcessor:
             "volume",
         ),
     )
+
+    def __post_init__(self):
+        """Resolve field type sets from field_type_mappings based on exchange_name.
+
+        For known exchanges (binance, okx) the resolved sets are CCXT base fields
+        combined with exchange-specific fields. For unknown exchanges the DEFAULT
+        sets (union of all registered exchanges) are used as a safe fallback.
+
+        Any field explicitly passed at construction time is left unchanged,
+        so callers can still override individual sets if needed.
+        """
+        if self.numeric_fields is None:
+            self.numeric_fields = get_numeric_fields(self.exchange_name)
+        if self.bool_fields is None:
+            self.bool_fields = get_bool_fields(self.exchange_name)
+        if self.int_to_datetime_fields is None:
+            self.int_to_datetime_fields = get_int_to_datetime_fields(self.exchange_name)
+        if self.str_to_datetime_fields is None:
+            self.str_to_datetime_fields = get_str_to_datetime_fields(self.exchange_name)
 
     def preprocess_dict(self, data: dict) -> dict:
         """
