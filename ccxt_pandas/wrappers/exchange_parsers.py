@@ -196,6 +196,14 @@ BINANCE_METHOD_CONFIG: dict[str, MethodConfig] = _build_dual_case_config({
     "sapiPostAlgoFuturesNewOrderTwap": MethodConfig(single_dict=True),
     "sapiPostAlgoFuturesNewOrderVp": MethodConfig(single_dict=True),
     "sapiDeleteAlgoFuturesOrder": MethodConfig(single_dict=True),
+    # --- Earn: Discount Buy / Accumulator (sapi) ---
+    # https://developers.binance.com/docs/advanced_earn/discount-buy
+    # Product list & positions enveloped: {"total": N, "list": [...]}
+    # Subscribe & sum-holding return a single dict.
+    "sapiGetAccumulatorProductList": MethodConfig(data_key="list"),
+    "sapiGetAccumulatorProductPositionList": MethodConfig(data_key="list"),
+    "sapiGetAccumulatorProductSumHolding": MethodConfig(single_dict=True),
+    "sapiPostAccumulatorProductSubscribe": MethodConfig(single_dict=True),
     # --- Algo: futures (fapi-native) ---
     # https://developers.binance.com/docs/derivatives/usds-margined-futures/trade
     "fapiPrivateGetAlgoOrder": MethodConfig(single_dict=True),

@@ -265,7 +265,7 @@ wheels = [
 
 [[package]]
 name = "ccxt"
-version = "4.5.37"
+version = "4.5.44"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiodns" },
@@ -278,9 +278,9 @@ dependencies = [
     { name = "typing-extensions" },
     { name = "yarl" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/92/f2/ef8d78c613d79bdd1b03b922c9c6c219a1ffaf3297fd944d42248865b308/ccxt-4.5.37.tar.gz", hash = "sha256:84e5701d974fd96d5370a4dd177f7f8f8cdaf23c55bd5ccbc6b063a8eebdb6d5", size = 5951053, upload-time = "2026-02-09T21:19:25.511Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/84/68/46f8c2f4921c1948e095ffe8375b91a7aaa75f34a02dc23902fcb805203f/ccxt-4.5.44.tar.gz", hash = "sha256:e488b7f812c3dc61afb0560100c8ea60d1a72f5b936f212fdae33382fb0ce1f7", size = 6104752, upload-time = "2026-03-17T18:27:11.467Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/5a/c9/96d2485fd3e36a7796d099d8f34c645814dce9c2be6419783bc8c19cfebe/ccxt-4.5.37-py2.py3-none-any.whl", hash = "sha256:d55116628cb1765cea0e41e134f1c7f49a4d7360d73772fd7a5277db5b52ff93", size = 6449367, upload-time = "2026-02-09T21:19:23.335Z" },
+    { url = "https://files.pythonhosted.org/packages/d2/0f/5a756dba0aef0dfa958f3dd47c343cb0f282c2806a4e13c0b159b59b39e2/ccxt-4.5.44-py2.py3-none-any.whl", hash = "sha256:a03deab603cdec47034ae3689c9e6dc5e71b82f51816e93eb7a1b6335fab65a8", size = 6604366, upload-time = "2026-03-17T18:27:08.815Z" },
 ]
 
 [[package]]
@@ -288,7 +288,6 @@ name = "ccxt-pandas"
 version = "0.13.4"
 source = { editable = "." }
 dependencies = [
-    { name = "aiodns" },
     { name = "async-lru" },
     { name = "cachetools" },
     { name = "ccxt" },
@@ -318,9 +317,8 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "aiodns", specifier = ">=3.5.0,<4.0.0" },
     { name = "async-lru", specifier = ">=2.0.0,<3.0.0" },
-    { name = "cachetools", specifier = ">=6.0.0,<7.0.0" },
+    { name = "cachetools", specifier = ">=6.0.0,<8.0.0" },
     { name = "ccxt", specifier = ">=4.5.0,<5.0.0" },
     { name = "coincurve", marker = "extra == 'speed'", specifier = ">=20.0.0" },
     { name = "cryptography", specifier = ">=46.0.5" },
