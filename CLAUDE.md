@@ -73,6 +73,21 @@ Both exchange wrappers override `__getattribute__`. When a method name is in `mo
 
 - **`_generate_typed_interface.py`** — Code generator that introspects `ccxt.Exchange` and `ccxt.pro.Exchange` to produce Protocol classes with proper type hints for IDE autocomplete. Run from repo root.
 
+### MCP Server (ccxt_pandas_mcp/)
+
+Optional MCP server package, installed via `pip install ccxt-pandas[mcp]`. Uses FastMCP v3.
+
+- **`server.py`** — FastMCP entry point. Registers all tools/resources, wires up lifespan.
+- **`config.py`** — Pydantic models: `MCPServerConfig`, `ExchangeAccountConfig`. Loads from JSON file (`CCXT_MCP_CONFIG` env var) or individual env vars (`CCXT_MCP_ACCOUNT_<name>_EXCHANGE`, etc.).
+- **`exchange_manager.py`** — Manages `AsyncCCXTPandasExchange` instances. Initialized in FastMCP lifespan, calls `load_markets()` at startup, closes connections on shutdown.
+- **`serialization.py`** — DataFrame → string conversion (markdown/json/csv) with row limiting.
+- **`tools/`** — Tool modules: `exchange_info.py`, `market_data.py`, `account.py`, `trading.py`, `calculations.py`. Each exports a `register_*_tools(mcp)` function.
+- **`resources/`** — MCP resources: `exchanges://list`, `accounts://list`.
+
+**Key design**: Async-only (MCP servers are async), read-only + sandbox by default, DataFrame responses as markdown tables.
+
+Run with: `uv run ccxt-pandas-mcp` or `ccxt-pandas-mcp` after install.
+
 ### Public API
 
 ```python

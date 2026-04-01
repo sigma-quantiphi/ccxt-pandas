@@ -10,6 +10,10 @@ from ccxt_pandas.wrappers.method_mappings import (
     modified_methods,
     get_method_schema,
 )
+from ccxt_pandas.wrappers.exchange_parsers import (
+    BINANCE_METHOD_CONFIG,
+    OKX_METHOD_CONFIG,
+)
 
 # Build reverse lookup from ccxt.base.types for known type aliases
 _CCXT_TYPE_ALIASES: dict[str, str] = {}
@@ -190,6 +194,38 @@ def _collect_used_imports(code: str) -> str:
     return "\n".join(lines) + "\n"
 
 
+def _get_implicit_method_names() -> list[str]:
+    """Collect camelCase implicit method names from all exchange parser configs.
+
+    Filters to camelCase only (snake_case aliases are auto-generated at runtime
+    by _build_dual_case_config and don't need separate stubs).
+    """
+    all_names: set[str] = set()
+    for config in (BINANCE_METHOD_CONFIG, OKX_METHOD_CONFIG):
+        for name in config:
+            # Keep only camelCase forms (contain at least one uppercase letter)
+            if any(c.isupper() for c in name):
+                all_names.add(name)
+    return sorted(all_names)
+
+
+def _generate_implicit_stub(method_name: str, is_async: bool = False) -> str:
+    """Generate a type stub for an implicit exchange method.
+
+    These methods accept passthrough params and always return a DataFrame.
+    """
+    if is_async:
+        return_type = "Awaitable[pd.DataFrame]"
+    else:
+        return_type = "pd.DataFrame"
+
+    return (
+        f"\n    def {method_name}(self, params={{}}) -> {return_type}:\n"
+        f'        """Returns a pd.DataFrame from ccxt.{method_name}"""\n'
+        f"        ..."
+    )
+
+
 def generate_typed_interface_class(
     base: type,
     class_name: str,
@@ -212,6 +248,12 @@ def generate_typed_interface_class(
                 lines.append(stub)
             except Exception as e:
                 print(f"Error inspecting {method_name}: {e}")
+
+    # Append stubs for implicit exchange methods (exchange_parsers.py)
+    implicit_names = _get_implicit_method_names()
+    for method_name in implicit_names:
+        lines.append(_generate_implicit_stub(method_name, is_async=is_async))
+
     body = class_header + "\n".join(lines) + "\n"
     import_lines = _collect_used_imports(body)
     return import_lines + body

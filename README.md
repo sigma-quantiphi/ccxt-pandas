@@ -45,13 +45,32 @@ pip install ccxt-pandas
 ```
 
 ## Examples
-Find all examples in the [CCXT-Pandas-Example Repository](https://github.com/sigma-quantiphi/ccxt-pandas-examples)
+
+See the [`examples/`](examples/) directory for 17 runnable scripts covering market data, trading, analytics, and WebSocket streaming:
+
+| # | Script | Description | Auth? |
+|---|--------|-------------|-------|
+| 01 | [Spot/Future/Swap Analysis](examples/01_spot_future_swap_price_volume_analysis.py) | BTC spread and volume across contract types | No |
+| 02 | [Exchange Arbitrage](examples/02_exchange_arbitrage.py) | Cross-exchange spread detection | No |
+| 03 | [Fetch Private Data](examples/03_fetch_private_data.py) | Trades, positions, greeks | Yes |
+| 04 | [Plot Trades](examples/04_plot_trades.py) | OHLCV candlestick + trade scatter charts | No |
+| 05 | [Orderbook Depth](examples/05_plot_orderbook_depth.py) | Cumulative depth chart | No |
+| 06 | [Orderbook VWAPs](examples/06_calculate_orderbook_vwaps.py) | VWAP at multiple notional depths | No |
+| 07 | [Market Making](examples/07_market_making_orders.py) | LIMIT_MAKER and QUEUE orders | Yes |
+| 08 | [Coin-Quoted Pricing](examples/08_pricing_coin_quoted_symbols.py) | Convert to USDT-equivalent prices | No |
+| 09 | [Deposits/Withdrawals](examples/09_deposits_withdrawals.py) | Fetch deposit/withdrawal history | Yes |
+| 10 | [WS Liquidations](examples/10_websockets_listen_liquidations.py) | Stream live liquidation events | No |
+| 11 | [Volatility History](examples/11_fetch_volatility_history.py) | BTC volatility from Deribit | No |
+| 13 | [Delta Position](examples/13_delta_position.py) | Net delta across spot + derivatives | Yes |
+| 14 | [WS Orders](examples/14_send_orders_via_websockets.py) | Place/edit orders via WebSocket | Yes |
+| 15 | [Open Interest](examples/15_open_interest_history.py) | Historical open interest + pct change | No |
+| 16 | [1000 OHLCV Async](examples/16_load_1000_ohlcv_async.py) | Bulk OHLCV with `asyncio.gather` | No |
+| 17 | [All Exchanges Async](examples/17_load_symbols_all_exchanges_async.py) | Load markets from every exchange | No |
 
 ## Getting Started
 
 CCXT-Pandas works identically to CCXT. Just add `exchange = CCXTPandasExchange(exchange=exchange)`
 and the exchange methods provided by CCXT will be exposed to CCXT-Pandas.
-More examples can be found on [Binder](https://mybinder.org/v2/gh/sigma-quantiphi/ccxt-pandas/HEAD?urlpath=%2Fdoc%2Ftree%2Fexamples): 
 
 ### Sync
 
@@ -100,6 +119,88 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
+## MCP Server
+
+CCXT-Pandas includes an optional MCP (Model Context Protocol) server that exposes exchange data and trading as tools for AI assistants like Claude.
+
+### Installation
+
+```bash
+pip install ccxt-pandas[mcp]
+```
+
+### Configuration
+
+Create a config file (e.g. `ccxt-mcp-config.json`):
+
+```json
+{
+  "accounts": {
+    "binance": {
+      "exchange": "binance",
+      "api_key": "your_api_key",
+      "secret": "your_secret",
+      "sandbox_mode": true
+    }
+  },
+  "read_only": true
+}
+```
+
+Or use environment variables:
+
+```bash
+export CCXT_MCP_ACCOUNT_BINANCE_EXCHANGE=binance
+export CCXT_MCP_ACCOUNT_BINANCE_API_KEY=your_key
+export CCXT_MCP_ACCOUNT_BINANCE_SECRET=your_secret
+export CCXT_MCP_READ_ONLY=true
+```
+
+### Running
+
+```bash
+# Via CLI
+ccxt-pandas-mcp
+
+# Via uv
+uv run ccxt-pandas-mcp
+```
+
+### Claude Desktop / Claude Code
+
+Add to your MCP client config:
+
+```json
+{
+  "mcpServers": {
+    "ccxt-pandas": {
+      "command": "uv",
+      "args": ["run", "ccxt-pandas-mcp"],
+      "env": {
+        "CCXT_MCP_CONFIG": "/path/to/ccxt-mcp-config.json"
+      }
+    }
+  }
+}
+```
+
+### Available Tools
+
+| Category | Tools |
+|----------|-------|
+| **Exchange Info** | `list_exchanges`, `load_markets`, `fetch_currencies` |
+| **Market Data** | `fetch_ohlcv`, `fetch_trades`, `fetch_order_book`, `fetch_ticker`, `fetch_tickers`, `fetch_funding_rates` |
+| **Account** | `fetch_balance`, `fetch_positions`, `fetch_open_orders`, `fetch_closed_orders`, `fetch_my_trades` |
+| **Trading** | `create_order`, `create_orders`, `cancel_order`, `cancel_all_orders` |
+| **Analytics** | `get_delta_exposure`, `get_orderbook_analytics` |
+
+### Safety
+
+- **Read-only by default** — trading tools require explicit `read_only: false`
+- **Sandbox by default** — prevents accidental mainnet trades
+- **Symbol whitelist/blacklist** — restrict tradeable pairs via config
+- **Cost caps** — inherited from ccxt-pandas order validation
 
 ## Claude Code Integration
 
