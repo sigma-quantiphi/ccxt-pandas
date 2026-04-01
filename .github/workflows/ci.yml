@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
-      - run: uv sync --all-extras --all-groups
+      - run: uv sync --extra mcp --extra docs --group dev
       - run: uv run python -m py_compile ccxt_pandas/__init__.py
       - run: uv run python -m py_compile ccxt_pandas_mcp/server.py
 
@@ -26,7 +26,7 @@ jobs:
       - uses: astral-sh/setup-uv@v6
         with:
           python-version: ${{ matrix.python-version }}
-      - run: uv sync --all-extras --all-groups
+      - run: uv sync --extra mcp --group dev
       - run: uv run python -c "from ccxt_pandas import CCXTPandasExchange, AsyncCCXTPandasExchange; print('Import OK')"
       - run: uv run python -c "from ccxt_pandas_mcp.server import mcp; print('MCP import OK')"
 
