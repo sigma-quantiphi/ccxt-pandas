@@ -1,6 +1,21 @@
 ## Unreleased
 
 ### Added
+- **Examples**: Reintroduced `examples/` directory with 17 runnable scripts (ported from crypto-pandas-tutorials):
+  - Market data & analysis: spot/future/swap spreads, exchange arbitrage, orderbook VWAPs, trade/depth plotting, coin-quoted pricing, volatility history, open interest
+  - Account & trading: private data fetch, market making orders, deposits/withdrawals, delta position calculation
+  - WebSocket streaming: liquidation events, order placement via WebSocket
+  - Async bulk operations: 1000-symbol OHLCV loading, all-exchange market loading
+  - All imports updated from `crypto_pandas` to `ccxt_pandas`
+- **MCP Server** (`ccxt-pandas[mcp]`): Model Context Protocol server exposing ccxt-pandas as AI-assistant tools
+  - 20 tools across 5 categories: exchange info, market data, account, trading, calculations
+  - MCP resources: `exchanges://list`, `accounts://list`
+  - Built on FastMCP v3 with async-only architecture
+  - Read-only + sandbox mode by default for safety
+  - Symbol whitelist/blacklist and cost cap enforcement
+  - Config via JSON file (`CCXT_MCP_CONFIG`) or env vars (`CCXT_MCP_ACCOUNT_<name>_*`)
+  - CLI entry point: `ccxt-pandas-mcp`
+  - Compatible with Claude Desktop, Claude Code, and other MCP clients
 - **Claude Code Skill**: Added `.claude/skills/ccxt-pandas-helper.md` skill for accelerated development with Claude Code
   - Quick reference for sync/async usage patterns
   - Common DataFrame structures for all methods
@@ -51,6 +66,10 @@
 - Made `side`, `baseValue`, and `quoteValue` optional in `LiquidationsSchema`
 
 ### Documentation
+- Added MCP Server section to README.md with installation, configuration, and usage guide
+- Added MCP Server architecture section to CLAUDE.md
+- Updated README.md examples section to reference local `examples/` directory
+- Updated `docs/source/examples.rst` to reference local examples
 - Added Claude Code Integration section to README.md
 - Added Claude Code Skill section to CLAUDE.md
 - Created `.claude/skills/README.md` with usage instructions
