@@ -1,0 +1,4 @@
+# Pair every .py / .ipynb in this directory.
+# After editing a .py: `jupytext --sync examples/<file>.py`
+# After editing a .ipynb: `jupytext --sync examples/<file>.ipynb`
+formats = "ipynb,py:light"

@@ -12,6 +12,7 @@
 - **Governance**: `SECURITY.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `STABILITY.md`, `.env.example`, `.claudeignore`, PR template, 3 issue templates.
 - **New examples**: `12_options_strategy_around_event.py`, `18_cheapest_withdrawal_route.py`, `19_multi_exchange_greeks.py`, `20_caching_repeat_fetches.py` (ported from newsletter repo).
 - **Documentation site moved from ReadTheDocs to GitHub Pages**: `https://sigma-quantiphi.github.io/ccxt-pandas/`. Sphinx + furo + MyST (Markdown). New guides: `getting-started`, `dataframes`, `explorer`, `mcp-server`. Built and deployed by `.github/workflows/docs.yml`. The old ReadTheDocs project can be archived on the RTD dashboard.
+- **Jupyter notebooks for 17 examples** paired with the `.py` sources via `jupytext` (config in `examples/jupytext.toml`). Binder installs from `binder/requirements.txt` (Python 3.13). The 4 async / WebSocket examples (`10`, `14`, `16`, `17`) stay `.py`-only because `asyncio.run()` and infinite WS loops don't work inside Jupyter's existing event loop. Pre-commit hook keeps the two formats in sync.
 
 ### Changed
 - Order-preprocessing raises now use `CCXTPandasOrderError` (subclass of `ValueError`, so existing `except ValueError:` blocks keep working).

@@ -11,6 +11,12 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
+  - repo: https://github.com/mwouts/jupytext
+    rev: v1.16.4
+    hooks:
+      - id: jupytext
+        args: [--sync]
+        files: ^examples/.*\.(py|ipynb)$
   - repo: https://github.com/Yelp/detect-secrets
     rev: v0.13.0
     hooks:

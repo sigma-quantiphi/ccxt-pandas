@@ -1,0 +1,5 @@
+# Binder install: the local checkout + plotly for example notebooks.
+# Anything else (ccxt, pandas, pandera, dotenv) comes via the package's
+# runtime deps in pyproject.toml.
+-e .
+plotly>=5.0

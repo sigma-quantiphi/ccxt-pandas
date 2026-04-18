@@ -72,6 +72,8 @@ dev = [
     "types-requests>=2.32",
     "pre-commit>=3.7",
     "python-dotenv>=1.0",
+    "jupytext>=1.16",
+    "nbformat>=5.9",
 ]
 
 [project.scripts]
