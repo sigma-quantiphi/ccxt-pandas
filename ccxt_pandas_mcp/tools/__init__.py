@@ -3,7 +3,9 @@
 from ccxt_pandas_mcp.tools.account import register_account_tools
 from ccxt_pandas_mcp.tools.calculations import register_calculation_tools
 from ccxt_pandas_mcp.tools.exchange_info import register_exchange_info_tools
+from ccxt_pandas_mcp.tools.implicit import register_implicit_tools
 from ccxt_pandas_mcp.tools.market_data import register_market_data_tools
+from ccxt_pandas_mcp.tools.okx_grid import register_okx_grid_tools
 from ccxt_pandas_mcp.tools.trading import register_trading_tools
 
 __all__ = [
@@ -12,4 +14,6 @@ __all__ = [
     "register_trading_tools",
     "register_calculation_tools",
     "register_exchange_info_tools",
+    "register_implicit_tools",
+    "register_okx_grid_tools",
 ]

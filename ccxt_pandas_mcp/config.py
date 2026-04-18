@@ -30,6 +30,10 @@ class MCPServerConfig(BaseModel):
     allowed_symbols: list[str] | None = None
     blocked_symbols: list[str] = Field(default_factory=list)
     default_account: str | None = None
+    # Withdrawal double-gate: even when read_only=False, the `withdraw` tool
+    # refuses unless allow_withdrawals=True. Optionally restrict destinations.
+    allow_withdrawals: bool = False
+    withdraw_address_allowlist: list[str] = Field(default_factory=list)
 
 
 def load_config() -> MCPServerConfig:
@@ -63,8 +67,14 @@ def load_config() -> MCPServerConfig:
                 default_type=os.getenv(f"{prefix}TYPE", "spot"),
             )
 
+    allow_withdrawals = os.getenv("CCXT_MCP_ALLOW_WITHDRAWALS", "false").lower() == "true"
+    addr_csv = os.getenv("CCXT_MCP_WITHDRAW_ADDRESS_ALLOWLIST", "")
+    address_allowlist = [a.strip() for a in addr_csv.split(",") if a.strip()]
+
     return MCPServerConfig(
         accounts=accounts,
         read_only=read_only,
         default_account=default_account,
+        allow_withdrawals=allow_withdrawals,
+        withdraw_address_allowlist=address_allowlist,
     )

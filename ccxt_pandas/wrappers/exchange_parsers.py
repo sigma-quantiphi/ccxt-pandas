@@ -46,11 +46,15 @@ class MethodConfig:
             in a list to produce a one-row DataFrame.
         column_names: Column names for list-of-lists responses. Not needed
             for list-of-dicts (dict keys are used automatically).
+        is_write: True if this method mutates exchange state (places orders,
+            transfers funds, etc.). Used by ccxt_pandas_mcp to gate the
+            implicit dispatcher behind read_only.
     """
 
     data_key: str | None = None
     single_dict: bool = False
     column_names: tuple[str, ...] | None = None
+    is_write: bool = False
 
 
 def _build_dual_case_config(config: dict[str, MethodConfig]) -> dict[str, MethodConfig]:
@@ -485,6 +489,26 @@ OKX_METHOD_CONFIG: dict[str, MethodConfig] = _build_dual_case_config(
         "privateGetTradingBotGridOrdersAlgoDetails": MethodConfig(data_key="data"),
         "privateGetTradingBotGridSubOrders": MethodConfig(data_key="data"),
         "privateGetTradingBotGridPositions": MethodConfig(data_key="data"),
+        # Grid trading writes (gated by is_write so the implicit dispatcher
+        # respects read_only even though name-heuristic also catches Post*)
+        "privatePostTradingBotGridOrderAlgo": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
+        "privatePostTradingBotGridStopOrderAlgo": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
+        "privatePostTradingBotGridAmendOrderAlgo": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
+        "privatePostTradingBotGridWithdrawIncome": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
+        "privatePostTradingBotGridComputeMarginBalance": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
+        "privatePostTradingBotGridMarginBalance": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
         # --- Signal trading (trading bot) ---
         "privateGetTradingBotSignalOrdersAlgoPending": MethodConfig(data_key="data"),
         "privateGetTradingBotSignalOrdersAlgoHistory": MethodConfig(data_key="data"),

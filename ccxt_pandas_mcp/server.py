@@ -8,7 +8,9 @@ from ccxt_pandas_mcp.tools import (
     register_account_tools,
     register_calculation_tools,
     register_exchange_info_tools,
+    register_implicit_tools,
     register_market_data_tools,
+    register_okx_grid_tools,
     register_trading_tools,
 )
 
@@ -30,6 +32,8 @@ register_market_data_tools(mcp)
 register_account_tools(mcp)
 register_trading_tools(mcp)
 register_calculation_tools(mcp)
+register_implicit_tools(mcp)
+register_okx_grid_tools(mcp)
 register_resources(mcp)
 
 
