@@ -53,7 +53,7 @@ myst_heading_anchors = 3
 suppress_warnings = [
     "myst.xref_missing",
     "ref.python",
-    "app.add_object",      # pandera DataFrameModel.Config shows once per subclass
+    "app.add_object",  # pandera DataFrameModel.Config shows once per subclass
     "autosectionlabel.*",
 ]
 

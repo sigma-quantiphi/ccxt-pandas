@@ -1,6 +1,5 @@
 """Bids/Asks ticker data schema."""
 
-
 import pandera.pandas as pa
 from pandera.typing import Series
 

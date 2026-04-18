@@ -1,6 +1,5 @@
 """Order book analysis and depth calculations."""
 
-
 import pandas as pd
 
 

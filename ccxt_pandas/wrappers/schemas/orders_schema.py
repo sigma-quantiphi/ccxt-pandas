@@ -1,6 +1,5 @@
 """Orders data schema."""
 
-
 import pandas as pd
 import pandera.pandas as pa
 from pandera.typing import Series

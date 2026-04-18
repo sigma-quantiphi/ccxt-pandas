@@ -1,6 +1,5 @@
 """Order schema for order submission and validation."""
 
-
 import pandera.pandas as pa
 
 from ccxt_pandas.wrappers.schemas.base_schemas import BaseExchangeSchema
@@ -13,9 +12,7 @@ class OrderSchema(BaseExchangeSchema):
     create_order_from_dataframe and similar methods.
     """
 
-    id: str | None = pa.Field(
-        nullable=True, default=None, description="Exchange-assigned order ID"
-    )
+    id: str | None = pa.Field(nullable=True, default=None, description="Exchange-assigned order ID")
     symbol: str = pa.Field(description="Unified CCXT market symbol")
     side: str = pa.Field(isin=["buy", "sell"])
     type: str = pa.Field(isin=["limit", "market", "stop_loss", "take_profit", "LIMIT_MAKER"])

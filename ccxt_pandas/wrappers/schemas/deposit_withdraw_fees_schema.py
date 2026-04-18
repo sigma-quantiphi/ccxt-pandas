@@ -1,6 +1,5 @@
 """Deposit and withdrawal fees data schema."""
 
-
 import pandera.pandas as pa
 from pandera.typing import Series
 

@@ -1,6 +1,5 @@
 """Currency and network data schema."""
 
-
 import pandera.pandas as pa
 from pandera.typing import Series
 

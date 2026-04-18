@@ -55,10 +55,34 @@ def test_fetch_ohlcv_returns_typed_dataframe(binance_unauth):
         responses.GET,
         "https://api.binance.com/api/v3/klines",
         json=[
-            [1712188800000, "70000.0", "70100.0", "69950.0", "70050.0", "12.5",
-             1712188859999, "875625.0", 100, "6.0", "420300.0", "0"],
-            [1712188860000, "70050.0", "70200.0", "70000.0", "70150.0", "15.0",
-             1712188919999, "1052250.0", 120, "7.5", "525825.0", "0"],
+            [
+                1712188800000,
+                "70000.0",
+                "70100.0",
+                "69950.0",
+                "70050.0",
+                "12.5",
+                1712188859999,
+                "875625.0",
+                100,
+                "6.0",
+                "420300.0",
+                "0",
+            ],
+            [
+                1712188860000,
+                "70050.0",
+                "70200.0",
+                "70000.0",
+                "70150.0",
+                "15.0",
+                1712188919999,
+                "1052250.0",
+                120,
+                "7.5",
+                "525825.0",
+                "0",
+            ],
         ],
         status=200,
     )
@@ -97,5 +121,5 @@ def test_fetch_order_book_returns_levels_dataframe(binance_unauth):
 
     assert len(df) == 4  # 2 bids + 2 asks
     assert set(df["side"]) == {"bids", "asks"}
-    assert (df["price"].dtype.kind == "f")  # numeric
-    assert (df["qty"].dtype.kind == "f")
+    assert df["price"].dtype.kind == "f"  # numeric
+    assert df["qty"].dtype.kind == "f"

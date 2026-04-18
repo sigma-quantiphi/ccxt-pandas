@@ -1,6 +1,5 @@
 """Order book data schema."""
 
-
 import pandas as pd
 import pandera.pandas as pa
 from pandera.typing import Series
@@ -30,9 +29,7 @@ class OrderBookSchema(BaseExchangeSchema):
         title="Side",
         description="Side: 'bids' or 'asks'",
     )
-    symbol: Series[str] | None = pa.Field(
-        nullable=True, title="Symbol", description="Trading pair"
-    )
+    symbol: Series[str] | None = pa.Field(nullable=True, title="Symbol", description="Trading pair")
     timestamp: Series[pd.Timestamp] | None = pa.Field(
         nullable=True, title="Timestamp", description="Order book timestamp"
     )

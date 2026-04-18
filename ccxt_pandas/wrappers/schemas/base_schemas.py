@@ -1,6 +1,5 @@
 """Base schema classes for all exchange response DataFrames."""
 
-
 import pandera.pandas as pa
 from pandera.typing import Series
 

@@ -1,6 +1,5 @@
 """Balance and wallet data schema."""
 
-
 import pandera.pandas as pa
 from pandera.typing import Series
 
