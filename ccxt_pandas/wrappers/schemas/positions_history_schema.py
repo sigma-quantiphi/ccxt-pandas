@@ -1,6 +1,5 @@
 """Positions history data schema."""
 
-from typing import Optional
 
 import pandas as pd
 import pandera.pandas as pa
@@ -19,9 +18,7 @@ class PositionsHistorySchema(BaseExchangeSchema):
     """
 
     # Required fields
-    id: Series[str] = pa.Field(
-        title="Position ID", description="Unique position identifier"
-    )
+    id: Series[str] = pa.Field(title="Position ID", description="Unique position identifier")
     symbol: Series[str] = pa.Field(title="Symbol", description="Trading pair")
     marginMode: Series[str] = pa.Field(
         isin=["cross", "isolated"],
@@ -60,12 +57,10 @@ class PositionsHistorySchema(BaseExchangeSchema):
     maintenanceMarginPercentage: Series[float] = pa.Field(
         ge=0, title="Maintenance Margin %", description="Maintenance margin percentage"
     )
-    leverage: Series[float] = pa.Field(
-        ge=0, title="Leverage", description="Position leverage"
-    )
+    leverage: Series[float] = pa.Field(ge=0, title="Leverage", description="Position leverage")
 
     # Optional fields
-    initialMarginPercentage: Optional[Series[float]] = pa.Field(
+    initialMarginPercentage: Series[float] | None = pa.Field(
         ge=0,
         nullable=True,
         title="Initial Margin %",

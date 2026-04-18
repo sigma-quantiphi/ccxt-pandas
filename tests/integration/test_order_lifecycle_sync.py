@@ -32,9 +32,7 @@ end_date = now.floor("1d")
 start_date = end_date - pd.Timedelta(days=5)
 ohlcv = pandas_exchange.fetch_ohlcv(symbol=symbols[0], from_date=start_date, timeframe="1m")
 start_date = end_date - pd.Timedelta(days=100)
-my_trades = pandas_exchange.fetch_my_trades(
-    symbol=symbols, from_date=start_date, to_date=end_date
-)
+my_trades = pandas_exchange.fetch_my_trades(symbol=symbols, from_date=start_date, to_date=end_date)
 print(my_trades)
 
 for i in range(5):
@@ -66,9 +64,7 @@ orders = pandas_exchange.edit_order_from_dataframe(
     orders=orders,
 )
 print(orders)
-cancel_response = pandas_exchange.cancel_order_from_dataframe(
-    orders=orders[["id", "symbol"]]
-)
+cancel_response = pandas_exchange.cancel_order_from_dataframe(orders=orders[["id", "symbol"]])
 print(cancel_response)
 
 # Multi order endpoints
@@ -79,13 +75,11 @@ print(orders)
 orders = pandas_exchange.fetch_open_orders(symbol=symbols)[
     ["id", "price", "amount", "side", "type", "symbol"]
 ]
-print(orders)
+
 orders["price"] *= 1.1
 orders = pandas_exchange.edit_orders_from_dataframe(orders=orders)
 print(orders)
-cancel_response = pandas_exchange.cancel_orders_from_dataframe(
-    orders=orders[["id", "symbol"]]
-)
+cancel_response = pandas_exchange.cancel_orders_from_dataframe(orders=orders[["id", "symbol"]])
 print(cancel_response)
 
 # Cancel all orders

@@ -20,16 +20,10 @@ class PortfolioDetailsSchema(BaseExchangeSchema):
     available_balance: Series[float] = pa.Field(
         ge=0, title="Available Balance", description="Available balance amount"
     )
-    hold_amount: Series[int] = pa.Field(
-        ge=0, title="Hold Amount", description="Amount on hold"
-    )
+    hold_amount: Series[int] = pa.Field(ge=0, title="Hold Amount", description="Amount on hold")
     wallet_name: Series[str] = pa.Field(title="Wallet Name", description="Wallet name")
-    account_id: Series[str] = pa.Field(
-        title="Account ID", description="Account identifier"
-    )
-    account_uuid: Series[str] = pa.Field(
-        title="Account UUID", description="Account UUID"
-    )
+    account_id: Series[str] = pa.Field(title="Account ID", description="Account identifier")
+    account_uuid: Series[str] = pa.Field(title="Account UUID", description="Account UUID")
     total_balance_fiat: Series[float] = pa.Field(
         ge=0, title="Total Balance Fiat", description="Total balance in fiat currency"
     )
@@ -57,15 +51,11 @@ class PortfolioDetailsSchema(BaseExchangeSchema):
     allocation: Series[float] = pa.Field(
         ge=0, title="Allocation", description="Portfolio allocation percentage"
     )
-    cost_basis: Series[float] = pa.Field(
-        ge=0, title="Cost Basis", description="Cost basis amount"
-    )
+    cost_basis: Series[float] = pa.Field(ge=0, title="Cost Basis", description="Cost basis amount")
     cost_basis_currency: Series[str] = pa.Field(
         title="Cost Basis Currency", description="Currency of cost basis"
     )
-    is_cash: Series[bool] = pa.Field(
-        title="Is Cash", description="Whether asset is cash"
-    )
+    is_cash: Series[bool] = pa.Field(title="Is Cash", description="Whether asset is cash")
     average_entry_price: Series[float] = pa.Field(
         ge=0, title="Average Entry Price", description="Average entry price"
     )
@@ -77,10 +67,6 @@ class PortfolioDetailsSchema(BaseExchangeSchema):
     unrealized_pnl: Series[float] = pa.Field(
         title="Unrealized PnL", description="Unrealized profit and loss"
     )
-    asset_color: Series[str] = pa.Field(
-        title="Asset Color", description="Asset display color"
-    )
-    account_type: Series[str] = pa.Field(
-        title="Account Type", description="Account type"
-    )
+    asset_color: Series[str] = pa.Field(title="Asset Color", description="Asset display color")
+    account_type: Series[str] = pa.Field(title="Account Type", description="Account type")
     # Note: exchange field comes from BaseExchangeSchema (Optional)

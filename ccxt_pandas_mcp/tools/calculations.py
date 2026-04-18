@@ -35,9 +35,7 @@ def register_calculation_tools(mcp: FastMCP):
         positions = await ex.fetch_positions()
         markets = await ex.load_markets()
 
-        df = calculate_delta_exposure(
-            balance=balance, positions=positions, markets=markets
-        )
+        df = calculate_delta_exposure(balance=balance, positions=positions, markets=markets)
         return serialize_dataframe(df, fmt=output_format)
 
     @mcp.tool()

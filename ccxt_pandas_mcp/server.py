@@ -3,6 +3,7 @@
 from fastmcp import FastMCP
 
 from ccxt_pandas_mcp.exchange_manager import lifespan
+from ccxt_pandas_mcp.resources import register_resources
 from ccxt_pandas_mcp.tools import (
     register_account_tools,
     register_calculation_tools,
@@ -10,12 +11,17 @@ from ccxt_pandas_mcp.tools import (
     register_market_data_tools,
     register_trading_tools,
 )
-from ccxt_pandas_mcp.resources import register_resources
 
 mcp = FastMCP(
     "ccxt-pandas-mcp",
-    instructions="Cryptocurrency exchange data and trading via ccxt-pandas. "
-    "Fetch market data, manage orders, and run analytics — all returning DataFrames.",
+    instructions=(
+        "Cryptocurrency exchange data and trading via ccxt-pandas. "
+        "Fetch market data, manage orders, and run analytics — all returning DataFrames.\n\n"
+        "Safety defaults: read-only mode and sandbox-mode are ON by default. "
+        "Set CCXT_MCP_READ_ONLY=false to enable trading. "
+        "Trading tools (create_order, cancel_order, transfer) require explicit user approval. "
+        "Row count is capped at CCXT_MCP_MAX_ROWS (default 100) per response."
+    ),
     lifespan=lifespan,
 )
 

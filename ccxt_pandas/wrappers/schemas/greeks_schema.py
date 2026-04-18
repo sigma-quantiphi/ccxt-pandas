@@ -1,6 +1,5 @@
 """Options Greeks data schema."""
 
-from typing import Optional
 
 import pandas as pd
 import pandera.pandas as pa
@@ -21,57 +20,49 @@ class GreeksSchema(BaseExchangeSchema):
     symbol: Series[str] = pa.Field(
         unique=True, title="Symbol", description="Option contract symbol"
     )
-    delta: Series[float] = pa.Field(
-        title="Delta", description="Option delta (price sensitivity)"
-    )
-    gamma: Series[float] = pa.Field(
-        title="Gamma", description="Option gamma (delta sensitivity)"
-    )
-    vega: Series[float] = pa.Field(
-        title="Vega", description="Option vega (volatility sensitivity)"
-    )
-    markPrice: Series[float] = pa.Field(
-        ge=0, title="Mark Price", description="Option mark price"
-    )
+    delta: Series[float] = pa.Field(title="Delta", description="Option delta (price sensitivity)")
+    gamma: Series[float] = pa.Field(title="Gamma", description="Option gamma (delta sensitivity)")
+    vega: Series[float] = pa.Field(title="Vega", description="Option vega (volatility sensitivity)")
+    markPrice: Series[float] = pa.Field(ge=0, title="Mark Price", description="Option mark price")
 
     # Optional Greeks
-    theta: Optional[Series[float]] = pa.Field(
+    theta: Series[float] | None = pa.Field(
         nullable=True, title="Theta", description="Option theta (time decay)"
     )
-    rho: Optional[Series[float]] = pa.Field(
+    rho: Series[float] | None = pa.Field(
         nullable=True, title="Rho", description="Option rho (interest rate sensitivity)"
     )
 
     # Optional implied volatility
-    bidImpliedVolatility: Optional[Series[float]] = pa.Field(
+    bidImpliedVolatility: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Bid IV", description="Bid implied volatility"
     )
-    askImpliedVolatility: Optional[Series[float]] = pa.Field(
+    askImpliedVolatility: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Ask IV", description="Ask implied volatility"
     )
-    markImpliedVolatility: Optional[Series[float]] = pa.Field(
+    markImpliedVolatility: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Mark IV", description="Mark implied volatility"
     )
 
     # Optional bid/ask data
-    bidPrice: Optional[Series[float]] = pa.Field(
+    bidPrice: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Bid Price", description="Best bid price"
     )
-    bidSize: Optional[Series[float]] = pa.Field(
+    bidSize: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Bid Size", description="Best bid size"
     )
-    askPrice: Optional[Series[float]] = pa.Field(
+    askPrice: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Ask Price", description="Best ask price"
     )
-    askSize: Optional[Series[float]] = pa.Field(
+    askSize: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Ask Size", description="Best ask size"
     )
 
     # Optional price data
-    lastPrice: Optional[Series[float]] = pa.Field(
+    lastPrice: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Last Price", description="Last trade price"
     )
-    underlyingPrice: Optional[Series[float]] = pa.Field(
+    underlyingPrice: Series[float] | None = pa.Field(
         ge=0,
         nullable=True,
         title="Underlying Price",
@@ -79,10 +70,10 @@ class GreeksSchema(BaseExchangeSchema):
     )
 
     # Optional timestamps
-    timestamp: Optional[Series[pd.Timestamp]] = pa.Field(
+    timestamp: Series[pd.Timestamp] | None = pa.Field(
         nullable=True, title="Timestamp", description="Greeks calculation timestamp"
     )
-    datetime: Optional[Series[pd.Timestamp]] = pa.Field(
+    datetime: Series[pd.Timestamp] | None = pa.Field(
         nullable=True,
         title="Datetime",
         description="Greeks calculation datetime (alias)",

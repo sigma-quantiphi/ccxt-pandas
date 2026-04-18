@@ -1,40 +1,38 @@
 import asyncio
 import inspect
-from functools import wraps
-from typing import Literal, Callable, Union, Any
 from asyncio import Semaphore
+from collections.abc import Callable
+from dataclasses import dataclass, field
+from functools import wraps
+from typing import Any, Literal
 
 import ccxt.pro as ccxt
 import pandas as pd
-from dataclasses import dataclass, field
-
 from async_lru import alru_cache
 
-from ccxt_pandas.wrappers.base_processor import BaseProcessor
-from ccxt_pandas.wrappers.method_mappings import (
-    single_order_methods,
-    symbol_order_methods,
-    modified_methods,
-)
 from ccxt_pandas.utils.async_ccxt_pandas_exchange_typed import (
     AsyncCCXTPandasExchangeTyped,
 )
 from ccxt_pandas.utils.pandas_utils import (
-    preprocess_order,
-    preprocess_order_dataframe,
-    check_orders_dataframe_size,
-    create_full_async_tasks,
-    create_multi_symbol_async_tasks,
-    create_full_multi_symbol_async_tasks,
-    async_loop_through_orders,
+    FunctionHandler,
     async_call_per_group_concat,
     async_concat_results,
-    concat_results,
-    FunctionHandler,
+    async_loop_through_orders,
+    create_full_async_tasks,
+    create_full_multi_symbol_async_tasks,
+    create_multi_symbol_async_tasks,
+    preprocess_order,
+    preprocess_order_dataframe,
     timestamp_to_int,
 )
 from ccxt_pandas.utils.utils import exchange_has_method
+from ccxt_pandas.wrappers.base_processor import BaseProcessor
 from ccxt_pandas.wrappers.exchange_parsers import get_parser
+from ccxt_pandas.wrappers.method_mappings import (
+    modified_methods,
+    single_order_methods,
+    symbol_order_methods,
+)
 
 
 @dataclass
@@ -88,9 +86,7 @@ class AsyncCCXTPandasExchange(AsyncCCXTPandasExchangeTyped):
     validate_schemas: bool = False
     strict_validation: bool = False
     semaphore_value: int = 1000
-    _ccxt_processor: BaseProcessor = field(
-        default_factory=BaseProcessor, init=False, repr=False
-    )
+    _ccxt_processor: BaseProcessor = field(default_factory=BaseProcessor, init=False, repr=False)
     _function_handler: FunctionHandler = field(
         default_factory=FunctionHandler, init=False, repr=False
     )
@@ -126,9 +122,7 @@ class AsyncCCXTPandasExchange(AsyncCCXTPandasExchangeTyped):
         original_method = getattr(self.exchange, method_name)
 
         @wraps(original_method)
-        async def base_call(
-            *args, **kwargs
-        ) -> Union[dict, pd.DataFrame, asyncio.Future]:
+        async def base_call(*args, **kwargs) -> dict | pd.DataFrame | asyncio.Future:
             if method_name in single_order_methods:
                 kwargs["amount"], kwargs["price"] = preprocess_order(
                     exchange=self.exchange,
@@ -181,6 +175,7 @@ class AsyncCCXTPandasExchange(AsyncCCXTPandasExchangeTyped):
                 processor = super().__getattribute__("_ccxt_processor")
                 parser = get_parser(processor.exchange_name)
                 if parser is not None:
+
                     @wraps(exchange_method)
                     async def implicit_wrapper(*args, **kwargs):
                         if asyncio.iscoroutinefunction(exchange_method):
@@ -188,6 +183,7 @@ class AsyncCCXTPandasExchange(AsyncCCXTPandasExchangeTyped):
                         else:
                             result = exchange_method(*args, **kwargs)
                         return parser(processor, result, method_name=method_name)
+
                     return implicit_wrapper
             return super().__getattribute__(method_name)
 
@@ -205,9 +201,7 @@ class AsyncCCXTPandasExchange(AsyncCCXTPandasExchangeTyped):
             from_date = kwargs.pop("from_date", None)
             to_date = kwargs.pop("to_date", None)
             if symbols and (supports_symbol or supports_code):
-                symbol_column: Literal["code", "symbol"] = (
-                    "code" if supports_code else "symbol"
-                )
+                symbol_column: Literal["code", "symbol"] = "code" if supports_code else "symbol"
                 if supports_since and from_date:
                     tasks = create_full_multi_symbol_async_tasks(
                         function=base_call,
@@ -234,15 +228,11 @@ class AsyncCCXTPandasExchange(AsyncCCXTPandasExchangeTyped):
                     **kwargs,
                 )
                 return await async_concat_results(tasks)
-            return await self._function_handler.async_try_function(
-                base_call(*args, **kwargs)
-            )
+            return await self._function_handler.async_try_function(base_call(*args, **kwargs))
 
         return wrapper
 
-    async def create_order_from_dataframe(
-        self, orders: pd.DataFrame, **kwargs
-    ) -> pd.DataFrame:
+    async def create_order_from_dataframe(self, orders: pd.DataFrame, **kwargs) -> pd.DataFrame:
         base_call = self._make_base_call("create_order")
         tasks = async_loop_through_orders(
             function=base_call,
@@ -252,9 +242,7 @@ class AsyncCCXTPandasExchange(AsyncCCXTPandasExchangeTyped):
         )
         return await async_concat_results(tasks)
 
-    async def edit_order_from_dataframe(
-        self, orders: pd.DataFrame, **kwargs
-    ) -> pd.DataFrame:
+    async def edit_order_from_dataframe(self, orders: pd.DataFrame, **kwargs) -> pd.DataFrame:
         base_call = self._make_base_call("edit_order")
         tasks = async_loop_through_orders(
             function=base_call,
@@ -264,9 +252,7 @@ class AsyncCCXTPandasExchange(AsyncCCXTPandasExchangeTyped):
         )
         return await async_concat_results(tasks)
 
-    async def cancel_order_from_dataframe(
-        self, orders: pd.DataFrame, **kwargs
-    ) -> pd.DataFrame:
+    async def cancel_order_from_dataframe(self, orders: pd.DataFrame, **kwargs) -> pd.DataFrame:
         base_call = self._make_base_call("cancel_order")
         tasks = async_loop_through_orders(
             function=base_call,
@@ -322,9 +308,7 @@ class AsyncCCXTPandasExchange(AsyncCCXTPandasExchangeTyped):
             tasks.append(base_call(orders=chunk, **kwargs))
         return await async_concat_results(tasks)
 
-    async def cancel_orders_from_dataframe(
-        self, orders: pd.DataFrame, **kwargs
-    ) -> pd.DataFrame:
+    async def cancel_orders_from_dataframe(self, orders: pd.DataFrame, **kwargs) -> pd.DataFrame:
         base_call = self._make_base_call("cancel_orders")
         tasks = async_call_per_group_concat(
             function=base_call,

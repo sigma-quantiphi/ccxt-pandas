@@ -25,9 +25,7 @@ class FundingHistorySchema(BaseExchangeSchema):
     datetime: Series[pd.Timestamp] = pa.Field(
         title="Datetime", description="Funding payment datetime (alias)"
     )
-    id: Series[str] = pa.Field(
-        title="Funding ID", description="Unique funding payment identifier"
-    )
+    id: Series[str] = pa.Field(title="Funding ID", description="Unique funding payment identifier")
     amount: Series[float] = pa.Field(
         title="Amount",
         description="Funding amount (negative if paid, positive if received)",

@@ -17,9 +17,7 @@ class LedgerSchema(BaseExchangeSchema, FeeFieldsMixin):
     """
 
     # Required fields
-    id: Series[str] = pa.Field(
-        title="ID", description="Ledger entry identifier (e.g., order ID)"
-    )
+    id: Series[str] = pa.Field(title="ID", description="Ledger entry identifier (e.g., order ID)")
     direction: Series[str] = pa.Field(
         isin=["in", "out"], title="Direction", description="Direction: 'in' or 'out'"
     )
@@ -34,21 +32,15 @@ class LedgerSchema(BaseExchangeSchema, FeeFieldsMixin):
         title="Type", description="Reference type (e.g., trade, deposit, withdrawal)"
     )
     currency: Series[str] = pa.Field(title="Currency", description="Currency code")
-    amount: Series[float] = pa.Field(
-        ge=0, title="Amount", description="Amount (excluding fee)"
-    )
+    amount: Series[float] = pa.Field(ge=0, title="Amount", description="Amount (excluding fee)")
     timestamp: Series[pd.Timestamp] = pa.Field(
         title="Timestamp", description="Ledger entry timestamp"
     )
     datetime: Series[pd.Timestamp] = pa.Field(
         title="Datetime", description="Ledger entry datetime (alias)"
     )
-    before: Series[float] = pa.Field(
-        ge=0, title="Before", description="Balance before this entry"
-    )
-    after: Series[float] = pa.Field(
-        ge=0, title="After", description="Balance after this entry"
-    )
+    before: Series[float] = pa.Field(ge=0, title="Before", description="Balance before this entry")
+    after: Series[float] = pa.Field(ge=0, title="After", description="Balance after this entry")
     status: Series[str] = pa.Field(
         isin=["ok", "pending", "canceled"],
         title="Status",

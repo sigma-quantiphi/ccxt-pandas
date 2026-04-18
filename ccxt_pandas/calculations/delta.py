@@ -1,6 +1,6 @@
 """Delta hedging calculations for portfolio management."""
 
-from typing import Literal, Union
+from typing import Literal
 
 import pandas as pd
 import pandera as pa
@@ -14,7 +14,7 @@ from ccxt_pandas.wrappers.schemas.positions_schema import PositionsSchema
 
 @pa.check_types
 def calculate_delta_exposure(
-    balance: Union[DataFrame[BalanceSchema], DataFrame[MarginsBalanceSchema]],
+    balance: DataFrame[BalanceSchema] | DataFrame[MarginsBalanceSchema],
     positions: DataFrame[PositionsSchema],
     markets: DataFrame[MarketSchema],
     balance_amount: Literal["free", "used", "total"] = "total",
@@ -77,9 +77,7 @@ def calculate_delta_exposure(
         - Input validation performed via Pandera schemas
     """
     # Prepare positions with amounts
-    positions_calc = positions.merge(
-        markets[["symbol", "base"]], on="symbol", how="left"
-    )
+    positions_calc = positions.merge(markets[["symbol", "base"]], on="symbol", how="left")
 
     # Calculate signed amount based on side (long = positive, short = negative)
     positions_calc[amount_column] = positions_calc["contracts"].where(
@@ -94,9 +92,9 @@ def calculate_delta_exposure(
     if "code" in balance_calc.columns:
         # BalanceSchema (spot balances)
         # Rename: code -> base, {balance_amount} -> amount_column
-        balance_calc = balance_calc.rename(
-            columns={"code": "base", balance_amount: amount_column}
-        )[["base", amount_column]]
+        balance_calc = balance_calc.rename(columns={"code": "base", balance_amount: amount_column})[
+            ["base", amount_column]
+        ]
     elif "symbol" in balance_calc.columns:
         # MarginsBalanceSchema (margin balances)
         # Use 'base' column directly, select base_{balance_amount} -> amount_column

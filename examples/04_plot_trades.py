@@ -40,7 +40,5 @@ fig.show()
 df = pandas_exchange.fetch_trades(symbol=symbol)
 df["amount"] = np.log1p(df["amount"]) * 10  # log scale size
 
-fig = px.scatter(
-    df, x="timestamp", y="price", size="amount", color="side", template="plotly_dark"
-)
+fig = px.scatter(df, x="timestamp", y="price", size="amount", color="side", template="plotly_dark")
 fig.show()

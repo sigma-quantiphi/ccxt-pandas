@@ -7,8 +7,9 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/sigma-quantiphi/ccxt-pandas/HEAD?urlpath=%2Fdoc%2Ftree%2Fexamples)
 [![Explore Data](https://img.shields.io/badge/Explore%20Data-CCXT--Explorer-ffffff?logo=streamlit&style=plastic&color=ffffff&logoColor=FF4B4B)](https://www.ccxt-explorer.com/)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/sigma-quantiphi/ccxt-pandas/blob/main/LICENSE.md)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Docs](https://readthedocs.org/projects/ccxt-pandas/badge/?version=latest)](https://ccxt-pandas.readthedocs.io/en/latest/)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![CI](https://github.com/sigma-quantiphi/ccxt-pandas/actions/workflows/ci.yml/badge.svg)](https://github.com/sigma-quantiphi/ccxt-pandas/actions/workflows/ci.yml)
+[![Docs](https://github.com/sigma-quantiphi/ccxt-pandas/actions/workflows/docs.yml/badge.svg)](https://sigma-quantiphi.github.io/ccxt-pandas/)
 [![Medium badge](https://img.shields.io/badge/-Follow&nbsp;on&nbsp;Medium-black?style=social&logo=medium)](https://medium.com/@lucasjamar47)
 
 ## 🚀 CCXT → Pandas DataFrames in One Line
@@ -61,11 +62,15 @@ See the [`examples/`](examples/) directory for 17 runnable scripts covering mark
 | 09 | [Deposits/Withdrawals](examples/09_deposits_withdrawals.py) | Fetch deposit/withdrawal history | Yes |
 | 10 | [WS Liquidations](examples/10_websockets_listen_liquidations.py) | Stream live liquidation events | No |
 | 11 | [Volatility History](examples/11_fetch_volatility_history.py) | BTC volatility from Deribit | No |
+| 12 | [Options Calendar Spread](examples/12_options_strategy_around_event.py) | Pick BTC call legs around an event date | No |
 | 13 | [Delta Position](examples/13_delta_position.py) | Net delta across spot + derivatives | Yes |
 | 14 | [WS Orders](examples/14_send_orders_via_websockets.py) | Place/edit orders via WebSocket | Yes |
 | 15 | [Open Interest](examples/15_open_interest_history.py) | Historical open interest + pct change | No |
 | 16 | [1000 OHLCV Async](examples/16_load_1000_ohlcv_async.py) | Bulk OHLCV with `asyncio.gather` | No |
 | 17 | [All Exchanges Async](examples/17_load_symbols_all_exchanges_async.py) | Load markets from every exchange | No |
+| 18 | [Cheapest Withdrawal Route](examples/18_cheapest_withdrawal_route.py) | Cheapest cross-exchange transfer rail per currency | Yes |
+| 19 | [Multi-Exchange Greeks](examples/19_multi_exchange_greeks.py) | Aggregate option Greeks across binance/bybit/okx | No |
+| 20 | [Trade Caching](examples/20_caching_repeat_fetches.py) | `cache=True` for incremental `fetch_trades` | No |
 
 ## Getting Started
 
@@ -118,6 +123,26 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+```
+
+## Explorer Dashboard
+
+CCXT-Pandas ships an optional Streamlit dashboard for browsing any CCXT exchange method, copying the equivalent code snippet, and plotting the resulting DataFrame. The hosted version lives at [ccxt-explorer.com](https://www.ccxt-explorer.com/).
+
+### Installation
+
+```bash
+pip install ccxt-pandas[explorer]
+```
+
+### Running
+
+```bash
+# Via CLI
+ccxt-pandas-explorer
+
+# Via uv
+uv run ccxt-pandas-explorer
 ```
 
 ## MCP Server

@@ -5,29 +5,24 @@ on:
     types: [published]
 
 permissions:
-  id-token: write
+  contents: read
+  id-token: write       # OIDC trusted publishing
+  attestations: write   # PEP 740 / sigstore attestations
 
 jobs:
-  build:
+  publish:
+    name: Build & Publish
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v6
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0  # hatch-vcs needs full history for version resolution
+      - uses: astral-sh/setup-uv@v7
+      - run: uv sync --extra dev --extra mcp --extra explorer
+      - run: uv run ruff check .
+      - run: uv run pytest tests/test_schemas_hypothesis.py
       - run: uv build
-      - uses: actions/upload-artifact@v4
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          name: dist
-          path: dist/
-
-  publish-pypi:
-    needs: build
-    runs-on: ubuntu-latest
-    environment: pypi
-    permissions:
-      id-token: write
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist/
-      - uses: pypa/gh-action-pypi-publish@release/v1
+          attestations: true

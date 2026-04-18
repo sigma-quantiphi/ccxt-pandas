@@ -1,6 +1,5 @@
 """Last prices data schema."""
 
-from typing import Optional
 
 import pandas as pd
 import pandera.pandas as pa
@@ -18,18 +17,14 @@ class LastPricesSchema(BaseExchangeSchema):
     """
 
     # Required fields
-    symbol: Series[str] = pa.Field(
-        unique=True, title="Symbol", description="Trading pair"
-    )
-    price: Series[float] = pa.Field(
-        ge=0, title="Price", description="Last traded price"
-    )
+    symbol: Series[str] = pa.Field(unique=True, title="Symbol", description="Trading pair")
+    price: Series[float] = pa.Field(ge=0, title="Price", description="Last traded price")
 
     # Optional timestamps
-    timestamp: Optional[Series[pd.Timestamp]] = pa.Field(
+    timestamp: Series[pd.Timestamp] | None = pa.Field(
         nullable=True, title="Timestamp", description="Last price timestamp"
     )
-    datetime: Optional[Series[pd.Timestamp]] = pa.Field(
+    datetime: Series[pd.Timestamp] | None = pa.Field(
         nullable=True, title="Datetime", description="Last price datetime (alias)"
     )
     # Note: exchange field comes from BaseExchangeSchema (Optional)

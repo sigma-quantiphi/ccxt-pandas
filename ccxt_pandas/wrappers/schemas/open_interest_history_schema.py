@@ -1,6 +1,5 @@
 """Open interest history data schema."""
 
-from typing import Optional
 
 import pandas as pd
 import pandera.pandas as pa
@@ -24,10 +23,10 @@ class OpenInterestHistorySchema(BaseExchangeSchema):
     )
 
     # Optional volume fields
-    baseVolume: Optional[Series[float]] = pa.Field(
+    baseVolume: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Base Volume", description="Volume in base currency"
     )
-    quoteVolume: Optional[Series[float]] = pa.Field(
+    quoteVolume: Series[float] | None = pa.Field(
         ge=0,
         nullable=True,
         title="Quote Volume",
@@ -35,17 +34,17 @@ class OpenInterestHistorySchema(BaseExchangeSchema):
     )
 
     # Optional open interest value
-    openInterestValue: Optional[Series[float]] = pa.Field(
+    openInterestValue: Series[float] | None = pa.Field(
         ge=0,
         nullable=True,
         title="Open Interest Value",
         description="Open interest in quote currency value",
     )
 
-    timestamp: Optional[Series[pd.Timestamp]] = pa.Field(
+    timestamp: Series[pd.Timestamp] | None = pa.Field(
         nullable=False, title="Timestamp", description="Open interest timestamp"
     )
-    datetime: Optional[Series[pd.Timestamp]] = pa.Field(
+    datetime: Series[pd.Timestamp] | None = pa.Field(
         nullable=False, title="Datetime", description="Open interest datetime (alias)"
     )
     # Note: exchange field comes from BaseExchangeSchema (Optional)

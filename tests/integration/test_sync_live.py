@@ -1,8 +1,8 @@
 import os
 
 import ccxt
-import pytest
 import pandas as pd
+import pytest
 from dotenv import load_dotenv
 
 from ccxt_pandas import CCXTPandasExchange
@@ -303,10 +303,7 @@ def test_fetch_closed_orders(sandbox_exchange):
 
 def test_fetch_greeks(binance_exchange):
     options_symbol = (
-        binance_exchange.load_markets()
-        .query("type == 'option'")
-        .head(3)["symbol"]
-        .tolist()
+        binance_exchange.load_markets().query("type == 'option'").head(3)["symbol"].tolist()
     )
     print(options_symbol)
     data = binance_exchange.fetch_greeks(symbol=options_symbol)
@@ -372,9 +369,7 @@ def test_fetch_ledger(binance_authenticated_exchange):
 
 
 def test_fetch_withdrawals(binance_authenticated_exchange):
-    data = binance_authenticated_exchange.fetch_withdrawals(
-        code=["BTC", "ETH", "BNB", "DOGE"]
-    )
+    data = binance_authenticated_exchange.fetch_withdrawals(code=["BTC", "ETH", "BNB", "DOGE"])
     print(data)
     print(data.dtypes)
     assert isinstance(data, pd.DataFrame)
@@ -430,9 +425,7 @@ def test_fetch_long_short_ratio_history(binance_exchange):
 
 
 def test_fetch_margin_adjustment_history(binance_authenticated_exchange):
-    data = binance_authenticated_exchange.fetch_margin_adjustment_history(
-        symbol=swap_symbol_list
-    )
+    data = binance_authenticated_exchange.fetch_margin_adjustment_history(symbol=swap_symbol_list)
     print(data)
     print(data.dtypes)
     assert isinstance(data, pd.DataFrame)
@@ -494,9 +487,7 @@ def test_fetch_cross_borrow_rate(binance_authenticated_exchange):
 
 
 def test_fetch_funding_interval(okx_exchange):
-    data = okx_exchange.fetch_funding_interval(
-        symbol=["BTC/USDT:USDT", "ETH/USDT:USDT"]
-    )
+    data = okx_exchange.fetch_funding_interval(symbol=["BTC/USDT:USDT", "ETH/USDT:USDT"])
     print(data)
     print(data.dtypes)
     assert isinstance(data, pd.DataFrame)
@@ -529,9 +520,7 @@ def test_create_order(okx_authenticated_exchange):
     data = okx_authenticated_exchange.fetch_order(id=data["id"], symbol=spot_symbol)
     print(data)
     assert isinstance(data, pd.DataFrame)
-    data = okx_authenticated_exchange.cancel_order(
-        id=data["id"].values[0], symbol=spot_symbol
-    )
+    data = okx_authenticated_exchange.cancel_order(id=data["id"].values[0], symbol=spot_symbol)
     print(data)
     assert isinstance(data, pd.DataFrame)
 

@@ -29,9 +29,7 @@ arbitrage = data[["exchange", "symbol", "bid"]].merge(
     data[["exchange", "symbol", "ask"]], on="symbol", suffixes=("Short", "Long")
 )
 arbitrage["spread"] = arbitrage["bid"] - arbitrage["ask"]
-arbitrage["spreadRelative"] = arbitrage["spread"] / arbitrage[["bid", "ask"]].mean(
-    axis=1
-)
+arbitrage["spreadRelative"] = arbitrage["spread"] / arbitrage[["bid", "ask"]].mean(axis=1)
 
 # Filter for different exchanges for buy/sell
 arbitrage = arbitrage.query("exchangeShort != exchangeLong").sort_values(

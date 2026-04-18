@@ -34,8 +34,16 @@ Tests hit live exchange APIs (sandbox where possible) so they are not hermetic.
 
 ## Code Style
 
-- **Formatter**: Black
-- **Pre-commit hook**: `detect-secrets` for preventing secret leaks
+- **Linter + formatter**: Ruff (`uv run ruff check .`, `uv run ruff format .`)
+- **Type checker**: mypy (`uv run mypy ccxt_pandas`)
+- **Pre-commit**: ruff + ruff-format + trailing-whitespace + end-of-file-fixer + check-yaml + detect-secrets (run `pre-commit install` once after cloning)
+
+## Testing
+
+- **Unit tests** (default): `uv run pytest tests/` — no API keys needed; the integration dir is skipped from collection.
+- **Live read-only tests**: `CCXT_LIVE=1 uv run pytest tests/integration/`
+- **Live order-lifecycle tests**: `CCXT_LIVE_TRADING=1 uv run pytest tests/integration/` (places real orders on sandbox)
+- **Stub fixtures** in `tests/conftest.py`: `binance_unauth`, `binance_authed_stub`, `okx_authed_stub`, `mocked_responses`, `mocked_aioresponses`.
 
 ## Regenerating Typed Interfaces
 
@@ -72,6 +80,16 @@ Both exchange wrappers override `__getattribute__`. When a method name is in `mo
 - **`pandas_utils.py`** — DataFrame helpers: timestamp conversion, dict column expansion, order preprocessing with exchange market limits (price/amount/cost range checking with "warn" or "clip" modes), `concat_results`/`async_concat_results` for merging multiple exchange call results.
 
 - **`_generate_typed_interface.py`** — Code generator that introspects `ccxt.Exchange` and `ccxt.pro.Exchange` to produce Protocol classes with proper type hints for IDE autocomplete. Run from repo root.
+
+### Explorer Dashboard (ccxt_pandas_explorer/)
+
+Optional Streamlit dashboard, installed via `pip install ccxt-pandas[explorer]`. Migrated from the standalone `ccxt-explorer` repo — same UI, now bundled with the package.
+
+- **`app.py`** — the Streamlit app: pick an exchange, pick a fetch method, browse markets, run the call, see the resulting DataFrame, and plot it with Plotly.
+- **`cli.py`** — `ccxt-pandas-explorer` console script. Spawns `streamlit run app.py` against the bundled app path so the favicon resolves regardless of CWD.
+- **`favicon.png`** — bundled via `[tool.hatch.build.targets.wheel.force-include]` in `pyproject.toml`.
+
+No auth — runs straight in the browser. Run with: `uv run ccxt-pandas-explorer` or `ccxt-pandas-explorer` after install.
 
 ### MCP Server (ccxt_pandas_mcp/)
 

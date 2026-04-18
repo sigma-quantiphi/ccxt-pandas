@@ -1,6 +1,5 @@
 """Trade analysis and PnL calculation utilities."""
 
-from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -13,8 +12,8 @@ from ccxt_pandas.wrappers.schemas.trade_schema import MyTradesSchema
 @pa.check_types
 def aggregate_trades(
     trades: DataFrame[MyTradesSchema],
-    group_by: Union[list[str], tuple] = ("symbol", "side"),
-    freq: Optional[str] = None,
+    group_by: list[str] | tuple = ("symbol", "side"),
+    freq: str | None = None,
     include_fees: bool = True,
 ) -> pd.DataFrame:
     """Aggregate trades by specified columns with optional time resampling.
@@ -105,9 +104,7 @@ def aggregate_trades(
     result["signed_amount"] = result["amount"].where(
         result["side"] == "buy", other=-result["amount"]
     )
-    result["signed_cost"] = result["cost"].where(
-        result["side"] == "buy", other=-result["cost"]
-    )
+    result["signed_cost"] = result["cost"].where(result["side"] == "buy", other=-result["cost"])
 
     # Define columns to aggregate
     agg_columns = ["amount", "cost", "n_trades", "signed_amount", "signed_cost"]
@@ -123,8 +120,8 @@ def aggregate_trades(
 @pa.check_types
 def calculate_realized_pnl(
     trades: DataFrame[MyTradesSchema],
-    group_by: Union[list[str], tuple] = ("symbol",),
-    freq: Optional[str] = None,
+    group_by: list[str] | tuple = ("symbol",),
+    freq: str | None = None,
     include_totals: bool = False,
 ) -> pd.DataFrame:
     """Calculate realized PnL metrics by matching buy and sell trades.
@@ -249,9 +246,7 @@ def calculate_realized_pnl(
         result = result.drop("All", axis=0)
 
     # Flatten column names
-    result.columns = [
-        "_".join([str(x) for x in col if x != ""]) for col in result.columns
-    ]
+    result.columns = ["_".join([str(x) for x in col if x != ""]) for col in result.columns]
 
     # Reset index to make grouping columns regular columns
     result = result.reset_index()

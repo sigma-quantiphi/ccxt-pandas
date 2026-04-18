@@ -1,9 +1,8 @@
-crypto-pandas
+.
 furo
-sphinx
+sphinx>=8.2
 sphinx_copybutton
 sphinx-sitemap
 sphinxext-opengraph
-sphinxcontrib-googleanalytics
-sphinxcontrib.redirects
 myst-parser
+linkify-it-py

@@ -54,9 +54,7 @@ funding_rates = pandas_exchange.fetch_funding_rates()
 print(funding_rates.tail().to_markdown(index=False))
 
 # Fetch Historical Funding Rate
-funding_rate_history = pandas_exchange.fetch_funding_rate_history(
-    symbol=symbol, limit=1000
-)
+funding_rate_history = pandas_exchange.fetch_funding_rate_history(symbol=symbol, limit=1000)
 print(funding_rate_history.tail().to_markdown(index=False))
 
 # --- Orders ---

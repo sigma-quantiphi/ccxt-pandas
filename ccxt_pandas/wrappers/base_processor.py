@@ -13,38 +13,38 @@ Attributes:
     possible_depth_meta (list): List of potential metadata fields found in order book depth data.
 """
 
-from dataclasses import dataclass, field
-from typing import Union, Literal, Optional, Type
 import warnings
+from dataclasses import dataclass, field
+from typing import Literal
 
 import ccxt
 import pandas as pd
 import pandera as pa
 
+from ccxt_pandas.utils.pandas_utils import (
+    determine_mandatory_optional_fields_pandera,
+    expand_dict_columns,
+)
 from ccxt_pandas.wrappers.field_type_mappings import (
-    get_numeric_fields,
     get_bool_fields,
     get_int_to_datetime_fields,
+    get_numeric_fields,
     get_str_to_datetime_fields,
 )
 from ccxt_pandas.wrappers.method_mappings import (
-    standard_dataframe_methods,
-    markets_dataframe_methods,
-    currencies_dataframe_methods,
     balance_dataframe_methods,
+    currencies_dataframe_methods,
+    dict_methods,
+    get_method_schema,
+    markets_dataframe_methods,
     ohlcv_dataframe_methods,
+    ohlcv_symbols_dataframe_methods,
     orderbook_dataframe_methods,
     orderbooks_dataframe_methods,
     orders_dataframe_methods,
-    ohlcv_symbols_dataframe_methods,
-    dict_methods,
-    get_method_schema,
+    standard_dataframe_methods,
 )
 from ccxt_pandas.wrappers.schemas.order_schema import OrderSchema
-from ccxt_pandas.utils.pandas_utils import (
-    expand_dict_columns,
-    determine_mandatory_optional_fields_pandera,
-)
 
 possible_depth_meta = ["symbol", "timestamp", "datetime", "nonce", "exchange", "T", "u"]
 
@@ -173,9 +173,7 @@ class BaseProcessor:
             data = data.dropna(axis=1, how="all")
         columns = data.columns
         if self.int_to_datetime_fields:
-            datetime_columns_to_convert = [
-                x for x in columns if x in self.int_to_datetime_fields
-            ]
+            datetime_columns_to_convert = [x for x in columns if x in self.int_to_datetime_fields]
             if datetime_columns_to_convert:
                 data[datetime_columns_to_convert] = (
                     data[datetime_columns_to_convert]
@@ -183,27 +181,21 @@ class BaseProcessor:
                     .apply(pd.to_datetime, unit="ms", utc=True, errors="coerce")
                 )
         if self.str_to_datetime_fields:
-            datetime_columns_to_convert = [
-                x for x in columns if x in self.str_to_datetime_fields
-            ]
+            datetime_columns_to_convert = [x for x in columns if x in self.str_to_datetime_fields]
             if datetime_columns_to_convert:
-                data[datetime_columns_to_convert] = data[
-                    datetime_columns_to_convert
-                ].apply(pd.to_datetime, utc=True, errors="coerce")
+                data[datetime_columns_to_convert] = data[datetime_columns_to_convert].apply(
+                    pd.to_datetime, utc=True, errors="coerce"
+                )
         if self.numeric_fields:
-            numeric_columns_to_convert = [
-                x for x in columns if x in self.numeric_fields
-            ]
+            numeric_columns_to_convert = [x for x in columns if x in self.numeric_fields]
             if numeric_columns_to_convert:
-                data[numeric_columns_to_convert] = data[
-                    numeric_columns_to_convert
-                ].apply(pd.to_numeric, errors="coerce")
+                data[numeric_columns_to_convert] = data[numeric_columns_to_convert].apply(
+                    pd.to_numeric, errors="coerce"
+                )
         if self.bool_fields:
             bool_columns_to_convert = [x for x in columns if x in self.bool_fields]
             if bool_columns_to_convert:
-                data[bool_columns_to_convert] = data[bool_columns_to_convert].astype(
-                    bool
-                )
+                data[bool_columns_to_convert] = data[bool_columns_to_convert].astype(bool)
         if self.exchange_name:
             data["exchange"] = self.exchange_name
         if self.account_name:
@@ -211,7 +203,7 @@ class BaseProcessor:
         return data
 
     def _validate_dataframe(
-        self, df: pd.DataFrame, schema: Optional[Type[pa.DataFrameModel]] = None
+        self, df: pd.DataFrame, schema: type[pa.DataFrameModel] | None = None
     ) -> pd.DataFrame:
         """Validate DataFrame against Pandera schema if validation enabled.
 
@@ -261,7 +253,7 @@ class BaseProcessor:
         self,
         data: list | dict,
         column_names: tuple = None,
-        schema: Optional[Type[pa.DataFrameModel]] = None,
+        schema: type[pa.DataFrameModel] | None = None,
     ) -> pd.DataFrame:
         """
         Convert a list of dictionaries into a pandas DataFrame and preprocess it.
@@ -280,13 +272,13 @@ class BaseProcessor:
         return self._validate_dataframe(data, schema)
 
     def markets_to_dataframe(
-        self, data: dict, schema: Optional[Type[pa.DataFrameModel]] = None
+        self, data: dict, schema: type[pa.DataFrameModel] | None = None
     ) -> pd.DataFrame:
         df = self.preprocess_dataframe(pd.DataFrame.from_dict(data, orient="index"))
         return self._validate_dataframe(df, schema)
 
     def currencies_to_dataframe(
-        self, data: dict, schema: Optional[Type[pa.DataFrameModel]] = None
+        self, data: dict, schema: type[pa.DataFrameModel] | None = None
     ) -> pd.DataFrame:
         data = (
             pd.DataFrame(data)
@@ -298,9 +290,7 @@ class BaseProcessor:
         networks = []
         for index, row in data.iterrows():
             network = pd.DataFrame(row["networks"]).T
-            network.columns = [
-                f"network_{x}" if x != "network" else x for x in network.columns
-            ]
+            network.columns = [f"network_{x}" if x != "network" else x for x in network.columns]
             network["id"] = row["id"]
             networks.append(network.copy())
         if networks:
@@ -317,7 +307,7 @@ class BaseProcessor:
         return self._validate_dataframe(df, schema)
 
     def balance_to_dataframe(
-        self, data: dict, schema: Optional[Type[pa.DataFrameModel]] = None
+        self, data: dict, schema: type[pa.DataFrameModel] | None = None
     ) -> pd.DataFrame:
         if "total" in data:
             df = pd.DataFrame(data={"code": list(data["total"].keys())})
@@ -326,9 +316,7 @@ class BaseProcessor:
                     df[column] = df["code"].map(data[column])
         else:
             df = pd.DataFrame(data={"symbol": data.keys()})
-            df = df[~df["symbol"].isin(["info", "timestamp", "datetime"])].reset_index(
-                drop=True
-            )
+            df = df[~df["symbol"].isin(["info", "timestamp", "datetime"])].reset_index(drop=True)
             df["base"] = df["symbol"].str.split("/").str[0]
             df["quote"] = df["symbol"].str.split("/").str[1]
             for index, row in df.iterrows():
@@ -347,7 +335,7 @@ class BaseProcessor:
         return self._validate_dataframe(df, schema)
 
     def order_book_to_dataframe(
-        self, data: Union[dict, list], schema: Optional[Type[pa.DataFrameModel]] = None
+        self, data: dict | list, schema: type[pa.DataFrameModel] | None = None
     ) -> pd.DataFrame:
         """
         Convert order book data into a pandas DataFrame.
@@ -383,7 +371,7 @@ class BaseProcessor:
         return self._validate_dataframe(data, schema)
 
     def order_books_to_dataframe(
-        self, data: dict, schema: Optional[Type[pa.DataFrameModel]] = None
+        self, data: dict, schema: type[pa.DataFrameModel] | None = None
     ) -> pd.DataFrame:
         """
         Convert order book data for multiple symbols into a unified pandas DataFrame.
@@ -412,7 +400,7 @@ class BaseProcessor:
         self,
         data: list,
         symbol: str | None = None,
-        schema: Optional[Type[pa.DataFrameModel]] = None,
+        schema: type[pa.DataFrameModel] | None = None,
     ) -> pd.DataFrame:
         """
         Convert OHLCV data into a pandas DataFrame.
@@ -425,15 +413,13 @@ class BaseProcessor:
         Returns:
             pd.DataFrame: A preprocessed OHLCV DataFrame.
         """
-        data = self.response_to_dataframe(
-            data, column_names=self.ohlcv_fields, schema=schema
-        )
+        data = self.response_to_dataframe(data, column_names=self.ohlcv_fields, schema=schema)
         if symbol:
             data["symbol"] = symbol
         return data
 
     def ohlcv_symbols_to_dataframe(
-        self, data: dict, schema: Optional[Type[pa.DataFrameModel]] = None
+        self, data: dict, schema: type[pa.DataFrameModel] | None = None
     ) -> pd.DataFrame:
         """
         Convert OHLCV data for multiple trading pairs into a pandas DataFrame.
@@ -450,9 +436,7 @@ class BaseProcessor:
         full_data = []
         for symbol, timeframes in data.items():
             for timeframe, ohlcv_data in timeframes.items():
-                df = self.ohlcv_to_dataframe(
-                    data=ohlcv_data, symbol=symbol, schema=schema
-                )
+                df = self.ohlcv_to_dataframe(data=ohlcv_data, symbol=symbol, schema=schema)
                 df["timeframe"] = timeframe
                 full_data.append(df.copy())
         if not full_data:
@@ -460,7 +444,7 @@ class BaseProcessor:
         return pd.concat(full_data, ignore_index=True)
 
     def orders_to_dataframe(
-        self, data: list, schema: Optional[Type[pa.DataFrameModel]] = None
+        self, data: list, schema: type[pa.DataFrameModel] | None = None
     ) -> pd.DataFrame:
         """
         Convert order data into a pandas DataFrame.
@@ -528,15 +512,11 @@ class BaseProcessor:
         fields["optional"] = [x for x in orders.columns if x in fields["optional"]]
         if "price" in orders.columns:
             orders["price"] = orders.apply(
-                lambda x: exchange.price_to_precision(
-                    symbol=x["symbol"], price=x["price"]
-                ),
+                lambda x: exchange.price_to_precision(symbol=x["symbol"], price=x["price"]),
                 axis=1,
             )
         orders["amount"] = orders.apply(
-            lambda x: exchange.amount_to_precision(
-                symbol=x["symbol"], amount=x["amount"]
-            ),
+            lambda x: exchange.amount_to_precision(symbol=x["symbol"], amount=x["amount"]),
             axis=1,
         )
         return orders[fields["mandatory"] + fields["optional"]].to_dict("records")

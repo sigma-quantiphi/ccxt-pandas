@@ -16,9 +16,7 @@ class PortfoliosSchema(BaseExchangeSchema):
     """
 
     # Required fields
-    id: Series[str] = pa.Field(
-        title="Portfolio ID", description="Unique portfolio identifier"
-    )
+    id: Series[str] = pa.Field(title="Portfolio ID", description="Unique portfolio identifier")
     type: Series[str] = pa.Field(
         title="Type", description="Portfolio type (e.g., DEFAULT, INTX, FUTURES)"
     )

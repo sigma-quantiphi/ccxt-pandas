@@ -1,13 +1,16 @@
 import asyncio
 import warnings
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
-from typing import Literal, Awaitable, Any, Callable, Union, overload
+from typing import Any, Literal, overload
 
 import ccxt
 import numpy as np
 import pandas as pd
 import pandera.pandas as pa
 from pandas import DataFrame
+
+from ccxt_pandas.exceptions import CCXTPandasOrderError
 
 cap_zero_columns = ["limits_price_min", "limits_cost_min", "limits_amount_min"]
 cap_inf_columns = ["limits_price_max", "limits_cost_max", "limits_amount_max"]
@@ -64,14 +67,10 @@ def date_time_columns_to_int_str(data: pd.DataFrame) -> pd.DataFrame:
 
 def expand_dict_columns(data: pd.DataFrame, separator: str = "_") -> pd.DataFrame:
     data = data.reset_index(drop=True)
-    dict_columns = [
-        x for x in data.columns if any(data[x].apply(lambda y: isinstance(y, dict)))
-    ]
+    dict_columns = [x for x in data.columns if any(data[x].apply(lambda y: isinstance(y, dict)))]
     columns_list = [data.drop(columns=dict_columns).copy()]
     for col in dict_columns:
-        expanded = pd.json_normalize(data[col], sep=separator).add_prefix(
-            f"{col}{separator}"
-        )
+        expanded = pd.json_normalize(data[col], sep=separator).add_prefix(f"{col}{separator}")
         columns_list.append(expanded)
     return pd.concat(columns_list, axis=1)
 
@@ -110,7 +109,7 @@ def preprocess_order(
 ) -> tuple:
     market = markets[markets["symbol"] == symbol].reindex(columns=order_data_columns)
     if market.empty:
-        raise ValueError(f"Symbol '{symbol}' not found in markets")
+        raise CCXTPandasOrderError(f"Symbol '{symbol}' not found in markets")
     market[cap_zero_columns] = market[cap_zero_columns].fillna(0)
     market[cap_inf_columns] = market[cap_inf_columns].fillna(np.inf)
     market = market.to_dict("records")[0]
@@ -119,10 +118,10 @@ def preprocess_order(
     elif pd.isnull(cost) and (pd.notnull(amount) and pd.notnull(price)):
         cost = amount * price
     if (order_type == "limit") and pd.isnull(price):
-        raise ValueError("Missing price for limit order.")
+        raise CCXTPandasOrderError("Missing price for limit order.")
     if pd.notnull(cost):
         if cost > max_cost:
-            raise ValueError(f"Order cost {cost} larger than limit {max_cost}")
+            raise CCXTPandasOrderError(f"Order cost {cost} larger than limit {max_cost}")
     values = {"amount": amount, "price": price, "cost": cost}
     new_values = {}
     for key, value in values.items():
@@ -146,21 +145,15 @@ def preprocess_order(
         else:
             value = np.clip(value, limits_min, limits_max)
         new_values[key] = value
-    new_values["amount"] = exchange.amount_to_precision(
-        symbol=symbol, amount=new_values["amount"]
-    )
-    new_values["price"] = exchange.price_to_precision(
-        symbol=symbol, price=new_values["price"]
-    )
+    new_values["amount"] = exchange.amount_to_precision(symbol=symbol, amount=new_values["amount"])
+    new_values["price"] = exchange.price_to_precision(symbol=symbol, price=new_values["price"])
     return new_values["amount"], new_values["price"]
 
 
-def check_orders_dataframe_size(
-    orders: pd.DataFrame, max_number_of_orders: int = 5
-) -> None:
+def check_orders_dataframe_size(orders: pd.DataFrame, max_number_of_orders: int = 5) -> None:
     n_orders = len(orders.index)
     if n_orders > max_number_of_orders:
-        raise ValueError(
+        raise CCXTPandasOrderError(
             f"Number of orders {n_orders} larger than limit {max_number_of_orders}"
         )
 
@@ -183,7 +176,7 @@ def preprocess_order_dataframe(
     if "cost" in orders.columns:
         orders_error = orders[orders["cost"] > max_cost]
         if not orders_error.empty:
-            raise ValueError(f"Orders exceeding max cost: {orders_error}")
+            raise CCXTPandasOrderError(f"Orders exceeding max cost: {orders_error}")
     order_markets = markets.reindex(columns=order_data_columns)
     order_markets[cap_zero_columns] = order_markets[cap_zero_columns].fillna(0)
     order_markets[cap_inf_columns] = order_markets[cap_inf_columns].fillna(np.inf)
@@ -204,9 +197,7 @@ def preprocess_order_dataframe(
                         f"Removing orders with {column} outside limits:\n{out_of_bounds_orders.to_markdown(index=False)}"
                     )
             else:
-                orders[column] = orders[column].clip(
-                    orders[min_limit], orders[max_limit]
-                )
+                orders[column] = orders[column].clip(orders[min_limit], orders[max_limit])
     if "params" not in orders.columns:
         param_cols = orders.columns[orders.columns.str.startswith("params_")]
         orders["params"] = orders.apply(combine_params, axis=1, param_cols=param_cols)
@@ -256,9 +247,7 @@ def concat_results(
         if all([isinstance(x, pd.DataFrame) for x in clean_results]):
             return pd.concat(clean_results, ignore_index=True)
         elif all([isinstance(x, dict) for x in clean_results]):
-            return pd.DataFrame(data=clean_results).drop(
-                columns=["info"], errors="ignore"
-            )
+            return pd.DataFrame(data=clean_results).drop(columns=["info"], errors="ignore")
         else:
             return clean_results
     else:
@@ -277,8 +266,7 @@ async def async_concat_results(
         results = await asyncio.gather(*tasks, return_exceptions=True)
         return concat_results(results=results, errors=errors)
     elif all(
-        isinstance(group, list) and all(isinstance(t, Awaitable) for t in group)
-        for group in tasks
+        isinstance(group, list) and all(isinstance(t, Awaitable) for t in group) for group in tasks
     ):
         flat_tasks = [t for group in tasks for t in group]
         flat_results = await asyncio.gather(*flat_tasks, return_exceptions=True)
@@ -293,12 +281,10 @@ async def async_concat_results(
             i += group_size
         return results
     else:
-        raise TypeError(
-            "Expected coroutine, list of coroutines, or list of lists of coroutines."
-        )
+        raise TypeError("Expected coroutine, list of coroutines, or list of lists of coroutines.")
 
 
-def filter_empty_data(data: Union[dict, pd.DataFrame]) -> Union[dict, pd.DataFrame]:
+def filter_empty_data(data: dict | pd.DataFrame) -> dict | pd.DataFrame:
     if isinstance(data, pd.DataFrame):
         data = data.dropna(axis=1, how="all", ignore_index=True)
     return data
@@ -306,7 +292,7 @@ def filter_empty_data(data: Union[dict, pd.DataFrame]) -> Union[dict, pd.DataFra
 
 def append_non_empty(
     results: list,
-    data: Union[dict, pd.DataFrame],
+    data: dict | pd.DataFrame,
 ) -> list:
     data = filter_empty_data(data=data)
     if data is not None:
@@ -342,20 +328,16 @@ def drop_duplicates(
     )
 
 
-def merge_markets_with_balances(
-    markets: pd.DataFrame, balance: pd.DataFrame
-) -> pd.DataFrame:
+def merge_markets_with_balances(markets: pd.DataFrame, balance: pd.DataFrame) -> pd.DataFrame:
     balance = balance.drop(columns=["datetime", "timestamp"], errors="ignore")
     if "base_free" in balance.columns:
         markets = markets.merge(balance)
     else:
         for column in ["base", "quote", "settle"]:
-            column_renaming = {
-                x: f"{column}_{x}" for x in ["free", "used", "total", "debt"]
-            }
-            markets = markets.merge(
-                balance.rename(columns={"symbol": column}), how="left"
-            ).rename(columns=column_renaming)
+            column_renaming = {x: f"{column}_{x}" for x in ["free", "used", "total", "debt"]}
+            markets = markets.merge(balance.rename(columns={"symbol": column}), how="left").rename(
+                columns=column_renaming
+            )
     return markets
 
 
@@ -365,7 +347,7 @@ class FunctionHandler:
 
     def try_function(
         self,
-        function: Callable[..., Union[pd.DataFrame, dict, None]],
+        function: Callable[..., pd.DataFrame | dict | None],
         **kwargs: dict,
     ) -> pd.DataFrame | dict | None:
         try:
@@ -421,9 +403,7 @@ class FunctionHandler:
                     length_data = 0
                     since = min(since + pd.Timedelta(time_increment), to_date)
             if df:
-                return drop_duplicates(
-                    data=pd.concat(df), from_date=from_date, to_date=to_date
-                )
+                return drop_duplicates(data=pd.concat(df), from_date=from_date, to_date=to_date)
             else:
                 return pd.DataFrame()
         else:
@@ -456,7 +436,7 @@ class FunctionHandler:
 
     def load_multi_symbol_dataset(
         self,
-        function: Callable[..., Union[pd.DataFrame, dict]],
+        function: Callable[..., pd.DataFrame | dict],
         symbols: list[str],
         symbol_column: Literal["symbol", "code"] = "symbol",
         **kwargs: Any,
@@ -510,9 +490,7 @@ class FunctionHandler:
     ) -> pd.DataFrame:
         results = []
         for symbol in symbols:
-            subset = (
-                data[data[symbol_column] == symbol] if not data.empty else data.copy()
-            )
+            subset = data[data[symbol_column] == symbol] if not data.empty else data.copy()
             updated = self.load_dataset_into_cache(
                 data=subset,
                 function=function,
@@ -698,7 +676,5 @@ def async_call_per_group_concat(
 ) -> list[Awaitable[pd.DataFrame]]:
     tasks = []
     for key, grp in orders.groupby(group_col):
-        tasks.append(
-            function(**{group_col: key, f"{id_col}s": grp[id_col].tolist(), **kwargs})
-        )
+        tasks.append(function(**{group_col: key, f"{id_col}s": grp[id_col].tolist(), **kwargs}))
     return tasks

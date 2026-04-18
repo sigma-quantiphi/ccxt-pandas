@@ -20,9 +20,7 @@ class BorrowInterestSchema(BaseExchangeSchema):
     account: Series[str] = pa.Field(
         title="Account", description="Market symbol that the interest was accrued in"
     )
-    currency: Series[str] = pa.Field(
-        title="Currency", description="Currency of the interest"
-    )
+    currency: Series[str] = pa.Field(title="Currency", description="Currency of the interest")
     interest: Series[float] = pa.Field(
         ge=0, title="Interest", description="Amount of interest charged"
     )

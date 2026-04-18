@@ -25,12 +25,8 @@ symbols = ["BNB/USDT:USDT", "XRP/USDT:USDT"]
 
 exchange = CCXTPandasMultiAccount(accounts=accounts)
 ohlcv = exchange.fetch_ohlcv(symbol=symbols)
-my_trades = exchange.fetch_my_trades(
-    symbol=symbols, from_date=start_date, to_date=end_date
-)
-funding = exchange.fetch_funding_history(
-    symbol=symbols, from_date=start_date, to_date=end_date
-)
+my_trades = exchange.fetch_my_trades(symbol=symbols, from_date=start_date, to_date=end_date)
+funding = exchange.fetch_funding_history(symbol=symbols, from_date=start_date, to_date=end_date)
 print(funding)
 print(my_trades)
 

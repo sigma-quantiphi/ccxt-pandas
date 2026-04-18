@@ -27,8 +27,7 @@ def _check_symbol_allowed(symbol: str, config: MCPServerConfig) -> None:
         raise PermissionError(f"Symbol {symbol} is blocked in server config.")
     if config.allowed_symbols is not None and symbol not in config.allowed_symbols:
         raise PermissionError(
-            f"Symbol {symbol} is not in the allowed symbols list. "
-            f"Allowed: {config.allowed_symbols}"
+            f"Symbol {symbol} is not in the allowed symbols list. Allowed: {config.allowed_symbols}"
         )
 
 

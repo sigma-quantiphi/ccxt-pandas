@@ -1,4 +1,4 @@
-from typing import Dict, Optional, Type, Any
+from typing import Any
 
 import pandera as pa
 
@@ -237,14 +237,14 @@ def _get_schemas() -> dict[
         LeveragesSchema,
         LiquidationsSchema,
         LongShortRatioSchema,
-        MarkPricesSchema,
         MarketSchema,
+        MarkPricesSchema,
         MyTradesSchema,
         OHLCVSchema,
         OpenInterestHistorySchema,
         OrderBookSchema,
-        OrdersSchema,
         OrderSchema,
+        OrdersSchema,
         PortfolioDetailsSchema,
         PortfoliosSchema,
         PositionsADLRankSchema,
@@ -371,10 +371,10 @@ def _get_schemas() -> dict[
 
 
 # Cached schema mapping
-_method_schemas_cache: Optional[Dict[str, Type[pa.DataFrameModel]]] = None
+_method_schemas_cache: dict[str, type[pa.DataFrameModel]] | None = None
 
 
-def get_method_schema(method_name: str) -> Optional[Type[pa.DataFrameModel]]:
+def get_method_schema(method_name: str) -> type[pa.DataFrameModel] | None:
     """Get schema for a method name.
 
     Args:

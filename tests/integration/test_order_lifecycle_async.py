@@ -1,9 +1,9 @@
-import os
 import asyncio
+import os
 
+import ccxt.pro as ccxt
 import pandas as pd
 from dotenv import load_dotenv
-import ccxt.pro as ccxt
 
 from ccxt_pandas import AsyncCCXTPandasExchange
 
@@ -30,9 +30,9 @@ async def main():
     ohlcv = await pandas_exchange.fetch_ohlcv(
         symbol=symbols, from_date=start_date, to_date=end_date
     )
-    ohlcv = ohlcv.drop_duplicates(subset=["symbol"], keep="last")[
-        ["symbol", "close"]
-    ].rename(columns={"close": "price"})
+    ohlcv = ohlcv.drop_duplicates(subset=["symbol"], keep="last")[["symbol", "close"]].rename(
+        columns={"close": "price"}
+    )
     ohlcv["price"] /= 2
     ohlcv["side"] = "buy"
     ohlcv["notional"] = 12

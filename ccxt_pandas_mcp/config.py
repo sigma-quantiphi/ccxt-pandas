@@ -58,9 +58,7 @@ def load_config() -> MCPServerConfig:
                 exchange=value,
                 api_key=os.getenv(f"{prefix}API_KEY", ""),
                 secret=SecretStr(os.getenv(f"{prefix}SECRET", "")),
-                password=(
-                    SecretStr(pw) if (pw := os.getenv(f"{prefix}PASSWORD")) else None
-                ),
+                password=(SecretStr(pw) if (pw := os.getenv(f"{prefix}PASSWORD")) else None),
                 sandbox_mode=os.getenv(f"{prefix}SANDBOX", "true").lower() != "false",
                 default_type=os.getenv(f"{prefix}TYPE", "spot"),
             )

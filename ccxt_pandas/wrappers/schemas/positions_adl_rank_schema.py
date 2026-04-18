@@ -16,9 +16,7 @@ class PositionsADLRankSchema(BaseExchangeSchema):
     of auto-deleveraging. A higher rank/percent means higher ADL risk.
     """
 
-    symbol: Series[str] = pa.Field(
-        title="Symbol", description="Unified CCXT market symbol"
-    )
+    symbol: Series[str] = pa.Field(title="Symbol", description="Unified CCXT market symbol")
     rank: Series[int] = pa.Field(
         ge=1,
         le=5,

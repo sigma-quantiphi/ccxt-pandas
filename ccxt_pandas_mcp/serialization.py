@@ -2,23 +2,30 @@
 
 from __future__ import annotations
 
+import os
 from typing import Literal
 
 import pandas as pd
+
+DEFAULT_MAX_ROWS = int(os.getenv("CCXT_MCP_MAX_ROWS", "100"))
 
 
 def serialize_dataframe(
     df: pd.DataFrame,
     fmt: Literal["markdown", "json", "csv"] = "markdown",
-    max_rows: int = 100,
+    max_rows: int | None = None,
 ) -> str:
     """Serialize a DataFrame to a string suitable for MCP tool responses.
 
     Args:
         df: The DataFrame to serialize.
         fmt: Output format — "markdown" (default), "json", or "csv".
-        max_rows: Maximum rows to include. Excess rows are noted in the output.
+        max_rows: Maximum rows to include. Defaults to `CCXT_MCP_MAX_ROWS`
+            env var (or 100). Excess rows are noted in the output.
     """
+    if max_rows is None:
+        max_rows = DEFAULT_MAX_ROWS
+
     total = len(df)
     truncated = total > max_rows
     if truncated:

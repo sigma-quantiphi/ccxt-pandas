@@ -1,6 +1,5 @@
 """OHLCV (candlestick) data schema."""
 
-from typing import Optional
 
 import pandas as pd
 import pandera.pandas as pa
@@ -18,15 +17,13 @@ class OHLCVSchema(BaseExchangeSchema):
     Symbol is optional as it may not be present in single-symbol queries.
     """
 
-    timestamp: Series[pd.Timestamp] = pa.Field(
-        title="Timestamp", description="Opening time (UTC)"
-    )
+    timestamp: Series[pd.Timestamp] = pa.Field(title="Timestamp", description="Opening time (UTC)")
     open: Series[float] = pa.Field(ge=0, title="Open", description="Opening price")
     high: Series[float] = pa.Field(ge=0, title="High", description="Highest price")
     low: Series[float] = pa.Field(ge=0, title="Low", description="Lowest price")
     close: Series[float] = pa.Field(ge=0, title="Close", description="Closing price")
     volume: Series[float] = pa.Field(ge=0, title="Volume", description="Volume")
-    symbol: Optional[Series[str]] = pa.Field(
+    symbol: Series[str] | None = pa.Field(
         nullable=True,
         title="Symbol",
         description="Trading pair (optional for single-symbol queries)",

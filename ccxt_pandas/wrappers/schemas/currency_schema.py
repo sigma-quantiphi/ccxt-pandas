@@ -1,6 +1,5 @@
 """Currency and network data schema."""
 
-from typing import Optional
 
 import pandera.pandas as pa
 from pandera.typing import Series
@@ -42,40 +41,40 @@ class CurrencySchema(BaseExchangeSchema):
     )
 
     # Optional boolean fields
-    active: Optional[Series[bool]] = pa.Field(
+    active: Series[bool] | None = pa.Field(
         nullable=True,
         title="Active",
         description="Whether currency is active for trading",
     )
-    deposit: Optional[Series[bool]] = pa.Field(
+    deposit: Series[bool] | None = pa.Field(
         nullable=True,
         title="Deposit Enabled",
         description="Whether deposits are enabled",
     )
-    withdraw: Optional[Series[bool]] = pa.Field(
+    withdraw: Series[bool] | None = pa.Field(
         nullable=True,
         title="Withdraw Enabled",
         description="Whether withdrawals are enabled",
     )
-    network_deposit: Optional[Series[bool]] = pa.Field(
+    network_deposit: Series[bool] | None = pa.Field(
         nullable=True,
         title="Network Deposit Enabled",
         description="Whether deposits are enabled on this network",
     )
-    network_withdraw: Optional[Series[bool]] = pa.Field(
+    network_withdraw: Series[bool] | None = pa.Field(
         nullable=True,
         title="Network Withdraw Enabled",
         description="Whether withdrawals are enabled on this network",
     )
-    network_active: Optional[Series[bool]] = pa.Field(
+    network_active: Series[bool] | None = pa.Field(
         nullable=True, title="Network Active", description="Whether network is active"
     )
 
     # Optional fee fields
-    fee: Optional[Series[float]] = pa.Field(
+    fee: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Fee", description="General fee amount"
     )
-    network_fee: Optional[Series[float]] = pa.Field(
+    network_fee: Series[float] | None = pa.Field(
         ge=0,
         nullable=True,
         title="Network Fee",
@@ -83,22 +82,22 @@ class CurrencySchema(BaseExchangeSchema):
     )
 
     # Optional limits fields
-    limits_withdraw_min: Optional[Series[float]] = pa.Field(
+    limits_withdraw_min: Series[float] | None = pa.Field(
         ge=0,
         nullable=True,
         title="Withdraw Min",
         description="Minimum withdrawal amount",
     )
-    limits_deposit_min: Optional[Series[float]] = pa.Field(
+    limits_deposit_min: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Deposit Min", description="Minimum deposit amount"
     )
-    network_limits_deposit_min: Optional[Series[float]] = pa.Field(
+    network_limits_deposit_min: Series[float] | None = pa.Field(
         ge=0,
         nullable=True,
         title="Network Deposit Min",
         description="Minimum deposit amount on this network",
     )
-    network_limits_withdraw_min: Optional[Series[float]] = pa.Field(
+    network_limits_withdraw_min: Series[float] | None = pa.Field(
         ge=0,
         nullable=True,
         title="Network Withdraw Min",

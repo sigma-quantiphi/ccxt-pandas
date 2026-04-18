@@ -1,8 +1,9 @@
 import asyncio
 
 import ccxt.pro as ccxt
+
 from ccxt_pandas.wrappers.async_ccxt_pandas_exchange import AsyncCCXTPandasExchange
-from tests.test_sync import sandbox_settings
+from tests.integration.test_sync_live import sandbox_settings
 
 exchange = ccxt.binance(sandbox_settings)
 exchange.set_sandbox_mode(True)

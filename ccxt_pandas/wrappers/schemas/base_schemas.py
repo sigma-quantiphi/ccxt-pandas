@@ -1,6 +1,5 @@
 """Base schema classes for all exchange response DataFrames."""
 
-from typing import Optional
 
 import pandera.pandas as pa
 from pandera.typing import Series
@@ -13,10 +12,10 @@ class BaseExchangeSchema(pa.DataFrameModel):
     exchange and account identifiers across DataFrame responses.
     """
 
-    exchange: Optional[Series[str]] = pa.Field(
+    exchange: Series[str] | None = pa.Field(
         nullable=True, title="Exchange", description="Exchange name"
     )
-    account: Optional[Series[str]] = pa.Field(
+    account: Series[str] | None = pa.Field(
         nullable=True, title="Account", description="Account identifier"
     )
 
@@ -34,15 +33,15 @@ class FeeFieldsMixin(pa.DataFrameModel):
     by schemas representing transactions, trades, and orders.
     """
 
-    fee_currency: Optional[Series[str]] = pa.Field(
+    fee_currency: Series[str] | None = pa.Field(
         nullable=True,
         title="Fee Currency",
         description="Currency in which fee was charged",
     )
-    fee_cost: Optional[Series[float]] = pa.Field(
+    fee_cost: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Fee Cost", description="Fee amount charged"
     )
-    fee_rate: Optional[Series[float]] = pa.Field(
+    fee_rate: Series[float] | None = pa.Field(
         ge=0,
         nullable=True,
         title="Fee Rate",

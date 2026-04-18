@@ -19,12 +19,8 @@ class CrossBorrowRatesSchema(BaseExchangeSchema):
     currency: Series[str] = pa.Field(
         title="Currency", description="Currency code (e.g., BTC, USDT)"
     )
-    rate: Series[float] = pa.Field(
-        ge=0, title="Rate", description="Borrow interest rate"
-    )
-    period: Series[int] = pa.Field(
-        ge=0, title="Period", description="Rate period in milliseconds"
-    )
+    rate: Series[float] = pa.Field(ge=0, title="Rate", description="Borrow interest rate")
+    period: Series[int] = pa.Field(ge=0, title="Period", description="Rate period in milliseconds")
     # Note: exchange field comes from BaseExchangeSchema (Optional)
 
 
@@ -47,7 +43,5 @@ class IsolatedBorrowRatesSchema(BaseExchangeSchema):
     quoteRate: Series[float] = pa.Field(
         ge=0, title="Quote Rate", description="Borrow interest rate for quote currency"
     )
-    period: Series[int] = pa.Field(
-        ge=0, title="Period", description="Rate period in milliseconds"
-    )
+    period: Series[int] = pa.Field(ge=0, title="Period", description="Rate period in milliseconds")
     # Note: exchange field comes from BaseExchangeSchema (Optional)

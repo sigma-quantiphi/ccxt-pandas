@@ -1,6 +1,5 @@
 """Margins balance data schema."""
 
-from typing import Optional
 
 import pandas as pd
 import pandera.pandas as pa
@@ -40,22 +39,22 @@ class MarginsBalanceSchema(BaseExchangeSchema):
     )
 
     # Optional fields
-    base_debt: Optional[Series[float]] = pa.Field(
+    base_debt: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Base Debt", description="Borrowed base currency"
     )
-    quote_debt: Optional[Series[float]] = pa.Field(
+    quote_debt: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Quote Debt", description="Borrowed quote currency"
     )
-    base: Optional[Series[str]] = pa.Field(
+    base: Series[str] | None = pa.Field(
         nullable=True, title="Base", description="Base currency identifier"
     )
-    quote: Optional[Series[str]] = pa.Field(
+    quote: Series[str] | None = pa.Field(
         nullable=True, title="Quote", description="Quote currency identifier"
     )
-    timestamp: Optional[Series[pd.Timestamp]] = pa.Field(
+    timestamp: Series[pd.Timestamp] | None = pa.Field(
         nullable=True, title="Timestamp", description="Balance snapshot timestamp"
     )
-    datetime: Optional[Series[pd.Timestamp]] = pa.Field(
+    datetime: Series[pd.Timestamp] | None = pa.Field(
         nullable=True, title="Datetime", description="Balance snapshot datetime (alias)"
     )
     # Note: exchange field comes from BaseExchangeSchema (Optional)

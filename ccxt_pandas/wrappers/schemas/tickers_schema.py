@@ -1,6 +1,5 @@
 """Tickers data schema."""
 
-from typing import Optional
 
 import pandas as pd
 import pandera.pandas as pa
@@ -19,58 +18,56 @@ class TickersSchema(BaseExchangeSchema):
     """
 
     # Required fields
-    symbol: Series[str] = pa.Field(
-        unique=True, title="Symbol", description="Trading pair"
-    )
+    symbol: Series[str] = pa.Field(unique=True, title="Symbol", description="Trading pair")
 
     # Optional timestamp fields
-    timestamp: Optional[Series[pd.Timestamp]] = pa.Field(
+    timestamp: Series[pd.Timestamp] | None = pa.Field(
         nullable=True, title="Timestamp", description="Ticker timestamp"
     )
-    datetime: Optional[Series[pd.Timestamp]] = pa.Field(
+    datetime: Series[pd.Timestamp] | None = pa.Field(
         nullable=True, title="Datetime", description="Ticker datetime (alias)"
     )
 
     # Optional price fields
-    open: Optional[Series[float]] = pa.Field(
+    open: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Open", description="24h opening price"
     )
-    high: Optional[Series[float]] = pa.Field(
+    high: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="High", description="24h highest price"
     )
-    low: Optional[Series[float]] = pa.Field(
+    low: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Low", description="24h lowest price"
     )
-    close: Optional[Series[float]] = pa.Field(
+    close: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Close", description="Last closing price"
     )
-    last: Optional[Series[float]] = pa.Field(
+    last: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Last", description="Last traded price"
     )
-    bid: Optional[Series[float]] = pa.Field(
+    bid: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Bid", description="Best bid price"
     )
-    ask: Optional[Series[float]] = pa.Field(
+    ask: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Ask", description="Best ask price"
     )
-    vwap: Optional[Series[float]] = pa.Field(
+    vwap: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="VWAP", description="Volume weighted average price"
     )
-    previousClose: Optional[Series[float]] = pa.Field(
+    previousClose: Series[float] | None = pa.Field(
         ge=0,
         nullable=True,
         title="Previous Close",
         description="Previous closing price",
     )
-    average: Optional[Series[float]] = pa.Field(
+    average: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Average", description="Average price"
     )
 
     # Optional derivatives price fields
-    markPrice: Optional[Series[float]] = pa.Field(
+    markPrice: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Mark Price", description="Mark price (derivatives)"
     )
-    indexPrice: Optional[Series[float]] = pa.Field(
+    indexPrice: Series[float] | None = pa.Field(
         ge=0,
         nullable=True,
         title="Index Price",
@@ -78,30 +75,30 @@ class TickersSchema(BaseExchangeSchema):
     )
 
     # Optional change fields
-    change: Optional[Series[float]] = pa.Field(
+    change: Series[float] | None = pa.Field(
         nullable=True, title="Change", description="24h absolute price change"
     )
-    percentage: Optional[Series[float]] = pa.Field(
+    percentage: Series[float] | None = pa.Field(
         nullable=True, title="Percentage", description="24h percentage change"
     )
 
     # Optional volume fields
-    baseVolume: Optional[Series[float]] = pa.Field(
+    baseVolume: Series[float] | None = pa.Field(
         ge=0,
         nullable=True,
         title="Base Volume",
         description="24h volume in base currency",
     )
-    quoteVolume: Optional[Series[float]] = pa.Field(
+    quoteVolume: Series[float] | None = pa.Field(
         ge=0,
         nullable=True,
         title="Quote Volume",
         description="24h volume in quote currency",
     )
-    bidVolume: Optional[Series[float]] = pa.Field(
+    bidVolume: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Bid Volume", description="Volume at best bid"
     )
-    askVolume: Optional[Series[float]] = pa.Field(
+    askVolume: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Ask Volume", description="Volume at best ask"
     )
     # Note: exchange field comes from BaseExchangeSchema (Optional)

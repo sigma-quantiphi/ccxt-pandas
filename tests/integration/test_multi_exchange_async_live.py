@@ -22,9 +22,7 @@ timeframe = "1m"
 
 
 async def main():
-    ohlcv = exchanges.fetch_ohlcv(
-        symbol=symbols, from_date=start_date, to_date=end_date
-    )
+    ohlcv = exchanges.fetch_ohlcv(symbol=symbols, from_date=start_date, to_date=end_date)
     orderbook = exchanges.fetch_order_book(symbol=symbols)
     start_time = time.time()
     ohlcv, orderbook = await async_concat_results([ohlcv, orderbook])

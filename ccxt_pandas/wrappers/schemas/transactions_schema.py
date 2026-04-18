@@ -1,6 +1,5 @@
 """Transactions data schema."""
 
-from typing import Optional
 
 import pandas as pd
 import pandera.pandas as pa
@@ -19,12 +18,8 @@ class TransactionsSchema(BaseExchangeSchema, FeeFieldsMixin):
     """
 
     # Required fields
-    id: Series[str] = pa.Field(
-        title="ID", description="Exchange-specific transaction ID"
-    )
-    txid: Series[str] = pa.Field(
-        title="TXID", description="Transaction hash on blockchain"
-    )
+    id: Series[str] = pa.Field(title="ID", description="Exchange-specific transaction ID")
+    txid: Series[str] = pa.Field(title="TXID", description="Transaction hash on blockchain")
     timestamp: Series[pd.Timestamp] = pa.Field(
         title="Timestamp", description="Transaction timestamp"
     )
@@ -47,30 +42,30 @@ class TransactionsSchema(BaseExchangeSchema, FeeFieldsMixin):
     )
 
     # Optional fields
-    addressFrom: Optional[Series[str]] = pa.Field(
+    addressFrom: Series[str] | None = pa.Field(
         nullable=True, title="Address From", description="Sender address"
     )
-    address: Optional[Series[str]] = pa.Field(
+    address: Series[str] | None = pa.Field(
         nullable=True, title="Address", description="From or to address"
     )
-    addressTo: Optional[Series[str]] = pa.Field(
+    addressTo: Series[str] | None = pa.Field(
         nullable=True, title="Address To", description="Receiver address"
     )
-    tagFrom: Optional[Series[str]] = pa.Field(
+    tagFrom: Series[str] | None = pa.Field(
         nullable=True, title="Tag From", description="Tag/memo/payment_id for sender"
     )
-    tag: Optional[Series[str]] = pa.Field(
+    tag: Series[str] | None = pa.Field(
         nullable=True, title="Tag", description="Tag/memo/payment_id for address"
     )
-    tagTo: Optional[Series[str]] = pa.Field(
+    tagTo: Series[str] | None = pa.Field(
         nullable=True, title="Tag To", description="Tag/memo/payment_id for receiver"
     )
-    updated: Optional[Series[pd.Timestamp]] = pa.Field(
+    updated: Series[pd.Timestamp] | None = pa.Field(
         nullable=True,
         title="Updated",
         description="Timestamp of most recent status change",
     )
-    comment: Optional[Series[str]] = pa.Field(
+    comment: Series[str] | None = pa.Field(
         nullable=True, title="Comment", description="User-defined comment or message"
     )
     # Note: fee_currency, fee_cost, fee_rate come from FeeFieldsMixin (Optional)

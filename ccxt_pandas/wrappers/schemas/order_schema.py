@@ -1,6 +1,5 @@
 """Order schema for order submission and validation."""
 
-from typing import Optional
 
 import pandera.pandas as pa
 
@@ -14,14 +13,12 @@ class OrderSchema(BaseExchangeSchema):
     create_order_from_dataframe and similar methods.
     """
 
-    id: Optional[str] = pa.Field(
+    id: str | None = pa.Field(
         nullable=True, default=None, description="Exchange-assigned order ID"
     )
     symbol: str = pa.Field(description="Unified CCXT market symbol")
     side: str = pa.Field(isin=["buy", "sell"])
-    type: str = pa.Field(
-        isin=["limit", "market", "stop_loss", "take_profit", "LIMIT_MAKER"]
-    )
-    amount: Optional[float] = pa.Field(gt=0)
-    price: Optional[float] = pa.Field(ge=0, nullable=True, default=None)
-    params: Optional[dict] = pa.Field(nullable=True, default=None)
+    type: str = pa.Field(isin=["limit", "market", "stop_loss", "take_profit", "LIMIT_MAKER"])
+    amount: float | None = pa.Field(gt=0)
+    price: float | None = pa.Field(ge=0, nullable=True, default=None)
+    params: dict | None = pa.Field(nullable=True, default=None)

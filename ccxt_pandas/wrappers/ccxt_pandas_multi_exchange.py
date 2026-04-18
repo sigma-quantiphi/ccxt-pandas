@@ -1,11 +1,12 @@
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable, Literal
+from typing import Literal
 
 import ccxt
 import pandas as pd
 
+from ccxt_pandas.utils.pandas_utils import append_non_empty, concat_results
 from ccxt_pandas.wrappers.ccxt_pandas_exchange import CCXTPandasExchange
-from ccxt_pandas.utils.pandas_utils import concat_results, append_non_empty
 
 
 @dataclass

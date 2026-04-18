@@ -1,6 +1,5 @@
 """Addresses data schema."""
 
-from typing import Optional
 
 import pandera.pandas as pa
 from pandera.typing import Series
@@ -23,12 +22,10 @@ class AddressesSchema(BaseExchangeSchema):
         title="Network",
         description="Deposit/withdraw network (e.g., ERC20, TRC20, BSC20)",
     )
-    address: Series[str] = pa.Field(
-        title="Address", description="Deposit address for the currency"
-    )
+    address: Series[str] = pa.Field(title="Address", description="Deposit address for the currency")
 
     # Optional fields
-    tag: Optional[Series[str]] = pa.Field(
+    tag: Series[str] | None = pa.Field(
         nullable=True,
         title="Tag",
         description="Tag/memo/payment ID for currencies that require it (e.g., XRP, XMR)",

@@ -1,6 +1,5 @@
 """Funding rate data schema."""
 
-from typing import Optional
 
 import pandas as pd
 import pandera.pandas as pa
@@ -19,21 +18,17 @@ class FundingRateSchema(BaseExchangeSchema):
     """
 
     # Required fields
-    symbol: Series[str] = pa.Field(
-        unique=True, title="Symbol", description="Trading pair"
-    )
-    fundingRate: Series[float] = pa.Field(
-        title="Funding Rate", description="Current funding rate"
-    )
+    symbol: Series[str] = pa.Field(unique=True, title="Symbol", description="Trading pair")
+    fundingRate: Series[float] = pa.Field(title="Funding Rate", description="Current funding rate")
 
     # Optional price fields
-    markPrice: Optional[Series[float]] = pa.Field(
+    markPrice: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Mark Price", description="Current mark price"
     )
-    indexPrice: Optional[Series[float]] = pa.Field(
+    indexPrice: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Index Price", description="Current index price"
     )
-    estimatedSettlePrice: Optional[Series[float]] = pa.Field(
+    estimatedSettlePrice: Series[float] | None = pa.Field(
         ge=0,
         nullable=True,
         title="Est. Settle Price",
@@ -41,54 +36,54 @@ class FundingRateSchema(BaseExchangeSchema):
     )
 
     # Optional rate fields
-    interestRate: Optional[Series[float]] = pa.Field(
+    interestRate: Series[float] | None = pa.Field(
         nullable=True, title="Interest Rate", description="Interest rate component"
     )
-    nextFundingRate: Optional[Series[float]] = pa.Field(
+    nextFundingRate: Series[float] | None = pa.Field(
         nullable=True, title="Next Funding Rate", description="Next funding rate"
     )
-    previousFundingRate: Optional[Series[float]] = pa.Field(
+    previousFundingRate: Series[float] | None = pa.Field(
         nullable=True, title="Prev Funding Rate", description="Previous funding rate"
     )
 
     # Optional timestamp fields
-    timestamp: Optional[Series[pd.Timestamp]] = pa.Field(
+    timestamp: Series[pd.Timestamp] | None = pa.Field(
         nullable=True, title="Timestamp", description="Current timestamp"
     )
-    datetime: Optional[Series[pd.Timestamp]] = pa.Field(
+    datetime: Series[pd.Timestamp] | None = pa.Field(
         nullable=True, title="Datetime", description="Current datetime (alias)"
     )
-    fundingTimestamp: Optional[Series[pd.Timestamp]] = pa.Field(
+    fundingTimestamp: Series[pd.Timestamp] | None = pa.Field(
         nullable=True,
         title="Funding Timestamp",
         description="Current funding timestamp",
     )
-    fundingDatetime: Optional[Series[pd.Timestamp]] = pa.Field(
+    fundingDatetime: Series[pd.Timestamp] | None = pa.Field(
         nullable=True,
         title="Funding Datetime",
         description="Current funding datetime (alias)",
     )
-    nextFundingTimestamp: Optional[Series[pd.Timestamp]] = pa.Field(
+    nextFundingTimestamp: Series[pd.Timestamp] | None = pa.Field(
         nullable=True, title="Next Funding Time", description="Next funding timestamp"
     )
-    nextFundingDatetime: Optional[Series[pd.Timestamp]] = pa.Field(
+    nextFundingDatetime: Series[pd.Timestamp] | None = pa.Field(
         nullable=True,
         title="Next Funding Datetime",
         description="Next funding datetime (alias)",
     )
-    previousFundingTimestamp: Optional[Series[pd.Timestamp]] = pa.Field(
+    previousFundingTimestamp: Series[pd.Timestamp] | None = pa.Field(
         nullable=True,
         title="Prev Funding Time",
         description="Previous funding timestamp",
     )
-    previousFundingDatetime: Optional[Series[pd.Timestamp]] = pa.Field(
+    previousFundingDatetime: Series[pd.Timestamp] | None = pa.Field(
         nullable=True,
         title="Prev Funding Datetime",
         description="Previous funding datetime (alias)",
     )
 
     # Optional metadata
-    interval: Optional[Series[str]] = pa.Field(
+    interval: Series[str] | None = pa.Field(
         nullable=True, title="Interval", description="Funding interval period"
     )
     # Note: exchange field comes from BaseExchangeSchema (Optional)

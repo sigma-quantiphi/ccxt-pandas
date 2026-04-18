@@ -1,8 +1,8 @@
 import os
 from typing import Any
 
-import requests
 import pandas as pd
+import requests
 
 
 def print_markdown(message: Any) -> None:

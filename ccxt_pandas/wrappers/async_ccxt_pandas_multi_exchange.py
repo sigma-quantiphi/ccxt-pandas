@@ -1,5 +1,6 @@
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable, Any
+from typing import Any
 
 import ccxt.pro as ccxt_pro
 
@@ -30,9 +31,7 @@ class AsyncCCXTPandasMultiExchange:
                     exchange=exchange, exchange_name=exchange_id
                 )
 
-    def __getattr__(
-        self, method_name
-    ) -> Callable[[tuple[Any, ...], dict[str, Any]], list]:
+    def __getattr__(self, method_name) -> Callable[[tuple[Any, ...], dict[str, Any]], list]:
         def wrapper_function(*args, **kwargs) -> list:
             tasks = []
             for name, exchange in self.exchanges.items():

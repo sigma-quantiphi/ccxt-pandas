@@ -1,34 +1,27 @@
-.. crypto-pandas documentation master file
+ccxt-pandas
+===========
 
-Crypto-Pandas Documentation
-===========================
-
-.. mdinclude:: ../../README.md
+.. include:: ../../README.md
+   :parser: myst_parser.sphinx_
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Guides
+   :hidden:
 
-   installation
+   getting-started
+   dataframes
    examples
-   about
-   api/modules
+   explorer
+   mcp-server
 
-.. _modules:
-    Crypto-Pandas Modules Documentation
-    ===================================
-    
-    .. toctree::
-       :maxdepth: 2
-    
-    Module Summary
-    --------------
-    
-    .. autosummary::
-       :toctree: _autosummary
-       :recursive:
-       crypto_pandas
-       crypto_pandas.utils
+.. toctree::
+   :maxdepth: 2
+   :caption: Reference
+   :hidden:
+
+   api
+   about
 
 Indices and tables
 ==================

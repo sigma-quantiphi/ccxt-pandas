@@ -1,4 +1,5 @@
 import asyncio
+
 import ccxt.pro as ccxt_pro
 import pandas as pd
 
@@ -49,9 +50,7 @@ async def run_bids_asks_loop():
 async def run_trades_loop():
     while True:
         try:
-            results["trades"] = await pandas_exchange.watchTradesForSymbols(
-                symbols=symbols
-            )
+            results["trades"] = await pandas_exchange.watchTradesForSymbols(symbols=symbols)
             tick()
         except Exception as e:
             print(type(e).__name__, str(e))

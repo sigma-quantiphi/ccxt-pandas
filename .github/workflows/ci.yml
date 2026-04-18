@@ -6,37 +6,63 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
+    name: Lint & Format
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v6
-      - run: uv sync --extra mcp --extra docs --group dev
-      - run: uv run python -m py_compile ccxt_pandas/__init__.py
-      - run: uv run python -m py_compile ccxt_pandas_mcp/server.py
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0  # hatch-vcs needs full history for version resolution
+      - uses: astral-sh/setup-uv@v7
+      - run: uv sync --extra dev --extra mcp --extra explorer
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+
+  typecheck:
+    name: Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0  # hatch-vcs needs full history for version resolution
+      - uses: astral-sh/setup-uv@v7
+      - run: uv sync --extra dev --extra mcp --extra explorer
+      - run: uv run mypy ccxt_pandas ccxt_pandas_mcp ccxt_pandas_explorer
 
   test:
+    name: Unit Tests
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         python-version: ["3.11", "3.12", "3.13"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v6
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0  # hatch-vcs needs full history for version resolution
+      - uses: astral-sh/setup-uv@v7
         with:
           python-version: ${{ matrix.python-version }}
-      - run: uv sync --extra mcp --group dev
-      - run: uv run python -c "from ccxt_pandas import CCXTPandasExchange, AsyncCCXTPandasExchange; print('Import OK')"
-      - run: uv run python -c "from ccxt_pandas_mcp.server import mcp; print('MCP import OK')"
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v6
-      - run: uv build
-      - uses: actions/upload-artifact@v4
+      - run: uv sync --extra dev --extra mcp --extra explorer
+      - run: uv run pytest tests/test_schemas_hypothesis.py
+      - name: Smoke import
+        run: |
+          uv run python -c "from ccxt_pandas import CCXTPandasExchange, AsyncCCXTPandasExchange, OHLCVSchema, CCXTPandasError"
+          uv run python -c "from ccxt_pandas_mcp.server import mcp"
+          uv run python -c "from ccxt_pandas_explorer import APP_PATH"
+      - name: Upload coverage to Codecov
+        if: matrix.python-version == '3.12'
+        uses: codecov/codecov-action@v6
         with:
-          name: dist
-          path: dist/
+          files: ./coverage.xml
+          fail_ci_if_error: false
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

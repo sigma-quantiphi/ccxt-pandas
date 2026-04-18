@@ -1,6 +1,5 @@
 """Funding rate history data schema."""
 
-from typing import Optional
 
 import pandas as pd
 import pandera.pandas as pa
@@ -31,19 +30,19 @@ class FundingRateHistorySchema(BaseExchangeSchema):
     )
 
     # Optional fields
-    markPrice: Optional[Series[float]] = pa.Field(
+    markPrice: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Mark Price", description="Mark price at this time"
     )
-    indexPrice: Optional[Series[float]] = pa.Field(
+    indexPrice: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Index Price", description="Index price at this time"
     )
-    nextFundingRate: Optional[Series[float]] = pa.Field(
+    nextFundingRate: Series[float] | None = pa.Field(
         nullable=True, title="Next Funding Rate", description="Next funding rate"
     )
-    nextFundingTimestamp: Optional[Series[pd.Timestamp]] = pa.Field(
+    nextFundingTimestamp: Series[pd.Timestamp] | None = pa.Field(
         nullable=True, title="Next Funding Time", description="Next funding timestamp"
     )
-    nextFundingDatetime: Optional[Series[pd.Timestamp]] = pa.Field(
+    nextFundingDatetime: Series[pd.Timestamp] | None = pa.Field(
         nullable=True,
         title="Next Funding Datetime",
         description="Next funding datetime (alias)",

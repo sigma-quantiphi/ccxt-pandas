@@ -1,6 +1,6 @@
 [project]
 name = "ccxt-pandas"
-version = "0.14.0"
+dynamic = ["version"]
 description = "Library combining the power of CCXT with Pandas."
 authors = [
     {name = "Sigma Quantiphi", email = "contact@sqphi.com"}
@@ -20,6 +20,7 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Topic :: Office/Business :: Financial :: Investment",
     "Topic :: Scientific/Engineering :: Information Analysis",
+    "Typing :: Typed",
 ]
 keywords = ["ccxt", "pandas", "cryptocurrency", "trading", "exchange", "dataframe"]
 dependencies = [
@@ -39,6 +40,11 @@ dependencies = [
 docs = [
     "sphinx>=8.2.3,<9.0.0",
     "furo>=2024.8.6,<2025.0.0",
+    "myst-parser>=4.0",
+    "linkify-it-py>=2.0",
+    "sphinx_copybutton>=0.5",
+    "sphinx-sitemap>=2.6",
+    "sphinxext-opengraph>=0.9",
 ]
 speed = [
     "coincurve>=20.0.0",
@@ -46,24 +52,130 @@ speed = [
 mcp = [
     "fastmcp>=2.0.0",
 ]
+explorer = [
+    "streamlit>=1.42.0",
+    "plotly>=5.0.0",
+    "Pillow>=10.0.0",
+]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+    "pytest-cov>=5.0",
+    "pytest-mock>=3.14",
+    "hypothesis>=6.100",
+    "responses>=0.25",
+    "aioresponses>=0.7",
+    "ruff>=0.9",
+    "mypy>=1.11",
+    "pandas-stubs>=2.2",
+    "types-cachetools>=5.3",
+    "types-requests>=2.32",
+    "pre-commit>=3.7",
+    "python-dotenv>=1.0",
+]
 
 [project.scripts]
 ccxt-pandas-mcp = "ccxt_pandas_mcp.server:main"
+ccxt-pandas-explorer = "ccxt_pandas_explorer.cli:main"
 
 [project.urls]
 homepage = "https://github.com/sigma-quantiphi/ccxt-pandas"
 repository = "https://github.com/sigma-quantiphi/ccxt-pandas"
-documentation = "https://github.com/sigma-quantiphi/ccxt-pandas"
+documentation = "https://sigma-quantiphi.github.io/ccxt-pandas/"
 
-[dependency-groups]
-dev = [
-    "pytest>=7.0",
-    "python-dotenv>=1.0",
-]
+[tool.uv]
+package = true
 
 [build-system]
-requires = ["hatchling"]
+# hatch-vcs derives the package version from the latest git tag, so the version
+# lives in exactly one place (the tag). To cut a release, run
+# `git tag vX.Y.Z && git push --tags` — do not add a static `version =` back.
+requires = ["hatchling>=1.25", "hatch-vcs>=0.4"]
 build-backend = "hatchling.build"
 
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "ccxt_pandas/_version.py"
+
 [tool.hatch.build.targets.wheel]
-packages = ["ccxt_pandas", "ccxt_pandas_mcp"]
+packages = ["ccxt_pandas", "ccxt_pandas_mcp", "ccxt_pandas_explorer"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"ccxt_pandas_explorer/favicon.png" = "ccxt_pandas_explorer/favicon.png"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --cov=ccxt_pandas --cov=ccxt_pandas_mcp --cov=ccxt_pandas_explorer --cov-report=term-missing --cov-report=xml"
+asyncio_mode = "auto"
+markers = [
+    "live: hits live exchange APIs (skipped unless CCXT_LIVE=1)",
+    "live_trading: places real orders (skipped unless CCXT_LIVE_TRADING=1)",
+]
+
+[tool.coverage.run]
+source = ["ccxt_pandas", "ccxt_pandas_mcp", "ccxt_pandas_explorer"]
+branch = true
+omit = ["ccxt_pandas/utils/*_typed.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "\\.\\.\\.",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["B008"]
+
+[tool.ruff.lint.per-file-ignores]
+"examples/*.py" = ["E402"]
+"ccxt_pandas_explorer/app.py" = ["E402", "E501"]   # raw HTML strings in sidebar
+"ccxt_pandas/utils/*_typed.py" = ["E", "F", "B"]
+"tests/integration/*.py" = ["F", "E", "B"]   # legacy live-API scripts, not enforced
+"ccxt_pandas/utils/pandas_utils.py" = ["E501", "B028"]   # long warning messages, stacklevel
+"ccxt_pandas/wrappers/*.py" = ["E501", "B028", "B904", "B007"]   # long messages, warnings, exception chaining
+"ccxt_pandas/calculations/*.py" = ["E501"]
+"ccxt_pandas_mcp/*.py" = ["E501"]
+"ccxt_pandas_mcp/tools/*.py" = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+ignore_missing_imports = true
+warn_return_any = false
+warn_unused_ignores = false
+no_implicit_optional = false
+
+[[tool.mypy.overrides]]
+module = [
+    "ccxt_pandas.utils.ccxt_pandas_exchange_typed",
+    "ccxt_pandas.utils.async_ccxt_pandas_exchange_typed",
+]
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "ccxt_pandas.wrappers.*"
+disable_error_code = ["attr-defined", "arg-type", "return-value", "assignment", "misc", "union-attr", "call-overload", "operator", "abstract", "var-annotated", "call-arg", "import-untyped", "valid-type"]
+
+[[tool.mypy.overrides]]
+module = "ccxt_pandas.utils.pandas_utils"
+disable_error_code = ["arg-type", "assignment", "operator", "var-annotated", "union-attr", "return-value", "misc"]
+
+[[tool.mypy.overrides]]
+module = "ccxt_pandas.utils._generate_typed_interface"
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "ccxt_pandas_mcp.*"
+disable_error_code = ["misc", "arg-type", "assignment", "return-value", "union-attr", "call-overload", "abstract", "call-arg"]
+
+[[tool.mypy.overrides]]
+module = "ccxt_pandas_explorer.*"
+ignore_errors = true

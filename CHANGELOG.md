@@ -1,6 +1,22 @@
 ## Unreleased
 
 ### Added
+- **Explorer Dashboard** (`ccxt-pandas[explorer]`): bundled Streamlit dashboard for browsing CCXT methods. CLI: `ccxt-pandas-explorer`.
+- **Custom exception hierarchy** (`CCXTPandasError`, `CCXTPandasOrderError`, `CCXTPandasSchemaError`, `CCXTPandasMethodError`). Subclasses of `ValueError` / `AttributeError` for backward compat.
+- **Schemas re-exported from package root** — `from ccxt_pandas import OHLCVSchema, OrderSchema, …` now works.
+- **PEP 561 typing**: `py.typed` markers in `ccxt_pandas`, `ccxt_pandas_mcp`, `ccxt_pandas_explorer`. Added `Typing :: Typed` classifier.
+- **Test infrastructure**: `tests/conftest.py` with stub-credential fixtures + `mocked_responses` / `mocked_aioresponses`; hypothesis schema round-trip in `tests/test_schemas_hypothesis.py`. Live tests gated under `tests/integration/` behind `CCXT_LIVE` / `CCXT_LIVE_TRADING`.
+- **CI/CD**: split CI into lint + typecheck + test jobs (Python 3.11/3.12/3.13), Codecov upload, concurrency cancellation. `publish.yml` now runs lint + tests + emits PEP 740 sigstore attestations.
+- **Tooling**: ruff (lint+format), mypy (with per-module overrides for generated stubs), pre-commit hooks (ruff, ruff-format, trailing-whitespace, end-of-file-fixer, check-yaml, detect-secrets), dependabot (pip + GH Actions weekly with grouped PRs).
+- **MCP**: `CCXT_MCP_MAX_ROWS` env var (default 100) for output truncation; safety defaults surfaced in `FastMCP.instructions`.
+- **Governance**: `SECURITY.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `STABILITY.md`, `.env.example`, `.claudeignore`, PR template, 3 issue templates.
+- **New examples**: `12_options_strategy_around_event.py`, `18_cheapest_withdrawal_route.py`, `19_multi_exchange_greeks.py`, `20_caching_repeat_fetches.py` (ported from newsletter repo).
+- **Documentation site moved from ReadTheDocs to GitHub Pages**: `https://sigma-quantiphi.github.io/ccxt-pandas/`. Sphinx + furo + MyST (Markdown). New guides: `getting-started`, `dataframes`, `explorer`, `mcp-server`. Built and deployed by `.github/workflows/docs.yml`. The old ReadTheDocs project can be archived on the RTD dashboard.
+
+### Changed
+- Order-preprocessing raises now use `CCXTPandasOrderError` (subclass of `ValueError`, so existing `except ValueError:` blocks keep working).
+
+### Examples
 - **Examples**: Reintroduced `examples/` directory with 17 runnable scripts (ported from crypto-pandas-tutorials):
   - Market data & analysis: spot/future/swap spreads, exchange arbitrage, orderbook VWAPs, trade/depth plotting, coin-quoted pricing, volatility history, open interest
   - Account & trading: private data fetch, market making orders, deposits/withdrawals, delta position calculation

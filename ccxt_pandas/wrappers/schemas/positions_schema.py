@@ -17,9 +17,7 @@ class PositionsSchema(BaseExchangeSchema):
     """
 
     # Required fields
-    id: Series[str] = pa.Field(
-        title="Position ID", description="Unique position identifier"
-    )
+    id: Series[str] = pa.Field(title="Position ID", description="Unique position identifier")
     symbol: Series[str] = pa.Field(title="Symbol", description="Trading pair")
     notional: Series[float] = pa.Field(
         ge=0, title="Notional", description="Notional value of the position"
@@ -43,26 +41,18 @@ class PositionsSchema(BaseExchangeSchema):
     realizedPnl: Series[float] = pa.Field(
         title="Realized PnL", description="Realized profit and loss"
     )
-    percentage: Series[float] = pa.Field(
-        title="Percentage", description="PnL percentage"
-    )
-    contracts: Series[float] = pa.Field(
-        ge=0, title="Contracts", description="Number of contracts"
-    )
+    percentage: Series[float] = pa.Field(title="Percentage", description="PnL percentage")
+    contracts: Series[float] = pa.Field(ge=0, title="Contracts", description="Number of contracts")
     contractSize: Series[float] = pa.Field(
         ge=0, title="Contract Size", description="Size of each contract"
     )
-    markPrice: Series[float] = pa.Field(
-        ge=0, title="Mark Price", description="Current mark price"
-    )
+    markPrice: Series[float] = pa.Field(ge=0, title="Mark Price", description="Current mark price")
     side: Series[str] = pa.Field(
         isin=["long", "short"],
         title="Side",
         description="Position side: 'long' or 'short'",
     )
-    hedged: Series[bool] = pa.Field(
-        title="Hedged", description="Whether position is in hedge mode"
-    )
+    hedged: Series[bool] = pa.Field(title="Hedged", description="Whether position is in hedge mode")
     timestamp: Series[pd.Timestamp] = pa.Field(
         title="Timestamp", description="Position open timestamp"
     )
@@ -78,18 +68,14 @@ class PositionsSchema(BaseExchangeSchema):
     maintenanceMarginPercentage: Series[float] = pa.Field(
         ge=0, title="Maintenance Margin %", description="Maintenance margin percentage"
     )
-    collateral: Series[float] = pa.Field(
-        ge=0, title="Collateral", description="Collateral amount"
-    )
+    collateral: Series[float] = pa.Field(ge=0, title="Collateral", description="Collateral amount")
     initialMargin: Series[float] = pa.Field(
         ge=0, title="Initial Margin", description="Initial margin amount"
     )
     initialMarginPercentage: Series[float] = pa.Field(
         ge=0, title="Initial Margin %", description="Initial margin percentage"
     )
-    leverage: Series[float] = pa.Field(
-        ge=0, title="Leverage", description="Position leverage"
-    )
+    leverage: Series[float] = pa.Field(ge=0, title="Leverage", description="Position leverage")
     marginRatio: Series[float] = pa.Field(
         ge=0, title="Margin Ratio", description="Current margin ratio"
     )

@@ -1,6 +1,5 @@
 """Order book analysis and depth calculations."""
 
-from typing import Optional, Union
 
 import pandas as pd
 
@@ -215,8 +214,8 @@ def calculate_notional(
 
 def calculate_vwap_by_depth(
     data: pd.DataFrame,
-    depths: Union[list, tuple, set],
-    group_by: Optional[list[str]] = None,
+    depths: list | tuple | set,
+    group_by: list[str] | None = None,
     price_col: str = "price",
     qty_col: str = "qty",
 ) -> pd.DataFrame:
@@ -293,9 +292,7 @@ def calculate_vwap_by_depth(
         within_depth["cum_notional"] <= within_depth["depth"],
         other=(
             within_depth["depth"]
-            - within_depth.groupby(group_by_with_depth)["cum_notional"]
-            .shift(1)
-            .fillna(0)
+            - within_depth.groupby(group_by_with_depth)["cum_notional"].shift(1).fillna(0)
         ),
     )
 
@@ -303,9 +300,7 @@ def calculate_vwap_by_depth(
     within_depth[qty_col] = within_depth["notional"] / within_depth[price_col]
 
     # Aggregate by group and depth
-    vwap = within_depth.groupby(group_by_with_depth, as_index=False)[
-        [qty_col, "notional"]
-    ].sum()
+    vwap = within_depth.groupby(group_by_with_depth, as_index=False)[[qty_col, "notional"]].sum()
 
     # Calculate VWAP
     vwap[price_col] = vwap["notional"] / vwap[qty_col]
@@ -366,9 +361,7 @@ def calculate_mid_price_and_spread(
         - Tighter spreads indicate higher liquidity
     """
     group_cols = (
-        ["exchange", "symbol"]
-        if by_exchange and "exchange" in data.columns
-        else ["symbol"]
+        ["exchange", "symbol"] if by_exchange and "exchange" in data.columns else ["symbol"]
     )
     result = data.copy()
     result["side"] = result["side"].map({"asks": "ask", "bids": "bid"})

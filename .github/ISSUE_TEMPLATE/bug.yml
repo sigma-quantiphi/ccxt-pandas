@@ -1,0 +1,65 @@
+name: Bug report
+description: Something behaves unexpectedly or crashes.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug! Before submitting, please check existing issues.
+  - type: input
+    id: version
+    attributes:
+      label: "ccxt-pandas version"
+      description: "Output of `python -c 'import ccxt_pandas; print(ccxt_pandas.__version__)'`"
+      placeholder: "0.14.0"
+    validations:
+      required: true
+  - type: input
+    id: ccxt_version
+    attributes:
+      label: "ccxt version"
+      description: "Output of `python -c 'import ccxt; print(ccxt.__version__)'`"
+      placeholder: "4.5.0"
+    validations:
+      required: true
+  - type: input
+    id: python
+    attributes:
+      label: Python version
+      placeholder: "3.12.3"
+    validations:
+      required: true
+  - type: input
+    id: exchange
+    attributes:
+      label: Exchange
+      description: Which exchange (e.g. binance, okx, bybit) is the call targeting?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction
+      description: Smallest snippet that triggers the bug. Please redact any credentials.
+      render: python
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Paste the traceback or unexpected output. Redact any credentials.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: OS, deployment environment, sandbox vs live, anything else relevant.

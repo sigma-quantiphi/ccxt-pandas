@@ -1,31 +1,87 @@
-from ccxt_pandas.wrappers.async_ccxt_pandas_exchange import AsyncCCXTPandasExchange
-from ccxt_pandas.wrappers.ccxt_pandas_exchange import CCXTPandasExchange
-from ccxt_pandas.wrappers.ccxt_pandas_multi_account import CCXTPandasMultiAccount
-from ccxt_pandas.wrappers.async_ccxt_pandas_multi_account import (
-    AsyncCCXTPandasMultiAccount,
-)
-from ccxt_pandas.wrappers.ccxt_pandas_multi_exchange import CCXTPandasMultiExchange
-from ccxt_pandas.wrappers.async_ccxt_pandas_multi_exchange import (
-    AsyncCCXTPandasMultiExchange,
-)
-from ccxt_pandas.wrappers.models import ExchangeClientConfig
+try:
+    from ccxt_pandas._version import __version__
+except ImportError:  # editable install before first build / source checkout
+    __version__ = "0.0.0+unknown"
+
 from ccxt_pandas.calculations import (
-    calculate_delta_exposure,
     aggregate_trades,
-    calculate_realized_pnl,
-    floor_series,
-    ceil_series,
+    calculate_delta_exposure,
     calculate_mid_price_and_spread,
     calculate_notional,
+    calculate_realized_pnl,
     calculate_vwap_by_depth,
+    ceil_series,
     create_mirrored_sides,
+    floor_series,
     is_ask_side,
     side_sign,
     signed_price,
     sort_orderbook,
 )
+from ccxt_pandas.exceptions import (
+    CCXTPandasError,
+    CCXTPandasMethodError,
+    CCXTPandasOrderError,
+    CCXTPandasSchemaError,
+)
+from ccxt_pandas.wrappers.async_ccxt_pandas_exchange import AsyncCCXTPandasExchange
+from ccxt_pandas.wrappers.async_ccxt_pandas_multi_account import (
+    AsyncCCXTPandasMultiAccount,
+)
+from ccxt_pandas.wrappers.async_ccxt_pandas_multi_exchange import (
+    AsyncCCXTPandasMultiExchange,
+)
+from ccxt_pandas.wrappers.ccxt_pandas_exchange import CCXTPandasExchange
+from ccxt_pandas.wrappers.ccxt_pandas_multi_account import CCXTPandasMultiAccount
+from ccxt_pandas.wrappers.ccxt_pandas_multi_exchange import CCXTPandasMultiExchange
+from ccxt_pandas.wrappers.models import ExchangeClientConfig
+from ccxt_pandas.wrappers.schemas import (
+    AccountsSchema,
+    AddressesSchema,
+    BalanceSchema,
+    BaseExchangeSchema,
+    BidsAsksSchema,
+    BorrowInterestSchema,
+    CrossBorrowRatesSchema,
+    CurrencySchema,
+    DepositWithdrawFeesSchema,
+    FeeFieldsMixin,
+    FundingHistorySchema,
+    FundingIntervalsSchema,
+    FundingRateHistorySchema,
+    FundingRateSchema,
+    GreeksSchema,
+    IsolatedBorrowRatesSchema,
+    LastPricesSchema,
+    LedgerSchema,
+    LeveragesSchema,
+    LiquidationsSchema,
+    LongShortRatioSchema,
+    MarginsBalanceSchema,
+    MarketSchema,
+    MarkPricesSchema,
+    MyTradesSchema,
+    OHLCVSchema,
+    OpenInterestHistorySchema,
+    OrderBookSchema,
+    OrderSchema,
+    OrdersSchema,
+    PortfolioDetailsSchema,
+    PortfoliosSchema,
+    PositionsADLRankSchema,
+    PositionsHistorySchema,
+    PositionsSchema,
+    TickersSchema,
+    TradeSchema,
+    TradingFeesSchema,
+    TransactionsSchema,
+    TransfersSchema,
+    VolatilityHistorySchema,
+)
 
 __all__ = [
+    "__version__",
+    # Wrappers
     "CCXTPandasExchange",
     "AsyncCCXTPandasExchange",
     "CCXTPandasMultiAccount",
@@ -33,6 +89,12 @@ __all__ = [
     "CCXTPandasMultiExchange",
     "AsyncCCXTPandasMultiExchange",
     "ExchangeClientConfig",
+    # Exceptions
+    "CCXTPandasError",
+    "CCXTPandasMethodError",
+    "CCXTPandasOrderError",
+    "CCXTPandasSchemaError",
+    # Calculations
     "calculate_delta_exposure",
     "aggregate_trades",
     "calculate_realized_pnl",
@@ -46,4 +108,46 @@ __all__ = [
     "side_sign",
     "signed_price",
     "sort_orderbook",
+    # Schemas
+    "AccountsSchema",
+    "AddressesSchema",
+    "BalanceSchema",
+    "BaseExchangeSchema",
+    "BidsAsksSchema",
+    "BorrowInterestSchema",
+    "CrossBorrowRatesSchema",
+    "CurrencySchema",
+    "DepositWithdrawFeesSchema",
+    "FeeFieldsMixin",
+    "FundingHistorySchema",
+    "FundingIntervalsSchema",
+    "FundingRateHistorySchema",
+    "FundingRateSchema",
+    "GreeksSchema",
+    "IsolatedBorrowRatesSchema",
+    "LastPricesSchema",
+    "LedgerSchema",
+    "LeveragesSchema",
+    "LiquidationsSchema",
+    "LongShortRatioSchema",
+    "MarginsBalanceSchema",
+    "MarketSchema",
+    "MarkPricesSchema",
+    "MyTradesSchema",
+    "OHLCVSchema",
+    "OpenInterestHistorySchema",
+    "OrderBookSchema",
+    "OrderSchema",
+    "OrdersSchema",
+    "PortfolioDetailsSchema",
+    "PortfoliosSchema",
+    "PositionsADLRankSchema",
+    "PositionsHistorySchema",
+    "PositionsSchema",
+    "TickersSchema",
+    "TradeSchema",
+    "TradingFeesSchema",
+    "TransactionsSchema",
+    "TransfersSchema",
+    "VolatilityHistorySchema",
 ]

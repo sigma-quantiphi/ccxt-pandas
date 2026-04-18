@@ -25,9 +25,7 @@ print(orderbook)
 
 # Calculate notional, cumulative depth, and max depth
 orderbook["notional"] = orderbook["price"] * orderbook["qty"]
-orderbook["cumNotional"] = orderbook.groupby(["symbol", "exchange", "side"])[
-    "notional"
-].cumsum()
+orderbook["cumNotional"] = orderbook.groupby(["symbol", "exchange", "side"])["notional"].cumsum()
 orderbook["totalNotional"] = orderbook.groupby(["symbol", "exchange", "side"])[
     "notional"
 ].transform("sum")
@@ -55,9 +53,7 @@ vwaps_pivot = vwaps.pivot(
     index=["symbol", "exchange", "depth"], columns="side", values="vwap"
 ).reset_index()
 vwaps_pivot["spread"] = vwaps_pivot["asks"] - vwaps_pivot["bids"]
-vwaps_pivot["spreadRelative"] = vwaps_pivot["spread"] / vwaps_pivot[
-    ["asks", "bids"]
-].mean(axis=1)
+vwaps_pivot["spreadRelative"] = vwaps_pivot["spread"] / vwaps_pivot[["asks", "bids"]].mean(axis=1)
 print(vwaps_pivot)
 
 print("\nBTC/USDT:")

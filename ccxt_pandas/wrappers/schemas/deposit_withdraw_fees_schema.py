@@ -1,6 +1,5 @@
 """Deposit and withdrawal fees data schema."""
 
-from typing import Optional
 
 import pandera.pandas as pa
 from pandera.typing import Series
@@ -32,12 +31,12 @@ class DepositWithdrawFeesSchema(BaseExchangeSchema):
     )
 
     # Optional fields (not present in all exchanges)
-    network_withdraw_percentage: Optional[Series[bool]] = pa.Field(
+    network_withdraw_percentage: Series[bool] | None = pa.Field(
         nullable=True,
         title="Network Withdraw Percentage",
         description="Whether network withdrawal fee is percentage-based",
     )
-    withdraw_percentage: Optional[Series[bool]] = pa.Field(
+    withdraw_percentage: Series[bool] | None = pa.Field(
         nullable=True,
         title="Withdraw Percentage",
         description="Whether withdrawal fee is percentage-based",

@@ -1,0 +1,40 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      dev-dependencies:
+        patterns:
+          - "pytest*"
+          - "ruff"
+          - "mypy"
+          - "pandas-stubs"
+          - "types-*"
+          - "pre-commit"
+          - "hypothesis"
+          - "responses"
+          - "aioresponses"
+      runtime-dependencies:
+        patterns:
+          - "ccxt"
+          - "pandas"
+          - "pandera"
+          - "pydantic"
+          - "orjson"
+          - "cachetools"
+          - "async-lru"
+          - "cryptography"
+          - "requests"
+          - "python-dotenv"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "ci"

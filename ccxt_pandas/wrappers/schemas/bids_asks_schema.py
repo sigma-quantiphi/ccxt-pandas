@@ -1,6 +1,5 @@
 """Bids/Asks ticker data schema."""
 
-from typing import Optional
 
 import pandera.pandas as pa
 from pandera.typing import Series
@@ -17,9 +16,7 @@ class BidsAsksSchema(BaseExchangeSchema):
     """
 
     # Required fields
-    symbol: Series[str] = pa.Field(
-        unique=True, title="Symbol", description="Trading pair"
-    )
+    symbol: Series[str] = pa.Field(unique=True, title="Symbol", description="Trading pair")
     # Bid/ask can be null if orderbook is empty
     bid: Series[float] = pa.Field(
         ge=0,
@@ -47,49 +44,49 @@ class BidsAsksSchema(BaseExchangeSchema):
     )
 
     # Optional ticker fields
-    high: Optional[Series[float]] = pa.Field(
+    high: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="24h High", description="24h highest price"
     )
-    low: Optional[Series[float]] = pa.Field(
+    low: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="24h Low", description="24h lowest price"
     )
-    vwap: Optional[Series[float]] = pa.Field(
+    vwap: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="VWAP", description="Volume-weighted average price"
     )
-    open: Optional[Series[float]] = pa.Field(
+    open: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Open", description="Opening price"
     )
-    close: Optional[Series[float]] = pa.Field(
+    close: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Close", description="Closing price"
     )
-    last: Optional[Series[float]] = pa.Field(
+    last: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Last", description="Last trade price"
     )
-    change: Optional[Series[float]] = pa.Field(
+    change: Series[float] | None = pa.Field(
         nullable=True, title="Change", description="Price change"
     )
-    percentage: Optional[Series[float]] = pa.Field(
+    percentage: Series[float] | None = pa.Field(
         nullable=True, title="Percentage", description="Percentage change"
     )
-    average: Optional[Series[float]] = pa.Field(
+    average: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Average", description="Average price"
     )
-    baseVolume: Optional[Series[float]] = pa.Field(
+    baseVolume: Series[float] | None = pa.Field(
         ge=0,
         nullable=True,
         title="Base Volume",
         description="24h volume in base currency",
     )
-    quoteVolume: Optional[Series[float]] = pa.Field(
+    quoteVolume: Series[float] | None = pa.Field(
         ge=0,
         nullable=True,
         title="Quote Volume",
         description="24h volume in quote currency",
     )
-    markPrice: Optional[Series[float]] = pa.Field(
+    markPrice: Series[float] | None = pa.Field(
         ge=0, nullable=True, title="Mark Price", description="Mark price (derivatives)"
     )
-    indexPrice: Optional[Series[float]] = pa.Field(
+    indexPrice: Series[float] | None = pa.Field(
         ge=0,
         nullable=True,
         title="Index Price",

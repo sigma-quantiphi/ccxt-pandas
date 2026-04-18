@@ -1,6 +1,10 @@
-from typing import Awaitable, Literal, Protocol
+from collections.abc import Awaitable
 from decimal import Decimal
+from typing import Literal, Protocol
+
+import pandas as pd
 from pandera.typing import DataFrame
+
 from ccxt_pandas.wrappers.schemas import (
     AccountsSchema,
     AddressesSchema,
@@ -21,8 +25,8 @@ from ccxt_pandas.wrappers.schemas import (
     LeveragesSchema,
     LiquidationsSchema,
     LongShortRatioSchema,
-    MarkPricesSchema,
     MarketSchema,
+    MarkPricesSchema,
     MyTradesSchema,
     OHLCVSchema,
     OpenInterestHistorySchema,
@@ -35,77 +39,105 @@ from ccxt_pandas.wrappers.schemas import (
     TradeSchema,
     TradingFeesSchema,
     TransactionsSchema,
-    TransfersSchema
+    TransfersSchema,
 )
-import pandas as pd
+
 
 class AsyncCCXTPandasExchangeTyped(Protocol):
     """A Class to add type hinting to AsyncCCXTPandasExchangeTyped"""
 
-    def cancelAllOrders(self, symbol: str | list[str] = None, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def cancelAllOrders(
+        self, symbol: str | list[str] = None, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.cancelAllOrders"""
         ...
 
-    def cancelAllOrdersWs(self, symbol: str | list[str] = None, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def cancelAllOrdersWs(
+        self, symbol: str | list[str] = None, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.cancelAllOrdersWs"""
         ...
 
-    def cancelOrder(self, id: str, symbol: str | list[str] = None, params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def cancelOrder(
+        self, id: str, symbol: str | list[str] = None, params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.cancelOrder"""
         ...
 
-    def cancelOrderWs(self, id: str, symbol: str | list[str] = None, params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def cancelOrderWs(
+        self, id: str, symbol: str | list[str] = None, params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.cancelOrderWs"""
         ...
 
-    def cancelOrders(self, ids: list[str], symbol: str | list[str] = None, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def cancelOrders(
+        self, ids: list[str], symbol: str | list[str] = None, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.cancelOrders"""
         ...
 
-    def cancelOrdersForSymbols(self, orders: pd.DataFrame, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def cancelOrdersForSymbols(
+        self, orders: pd.DataFrame, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.cancelOrdersForSymbols"""
         ...
 
-    def cancelOrdersWs(self, ids: list[str], symbol: str | list[str] = None, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def cancelOrdersWs(
+        self, ids: list[str], symbol: str | list[str] = None, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.cancelOrdersWs"""
         ...
 
-    def cancel_all_orders(self, symbol: str | list[str] = None, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def cancel_all_orders(
+        self, symbol: str | list[str] = None, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.cancel_all_orders"""
         ...
 
-    def cancel_all_orders_ws(self, symbol: str | list[str] = None, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def cancel_all_orders_ws(
+        self, symbol: str | list[str] = None, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.cancel_all_orders_ws"""
         ...
 
-    def cancel_order(self, id: str, symbol: str | list[str] = None, params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def cancel_order(
+        self, id: str, symbol: str | list[str] = None, params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.cancel_order"""
         ...
 
-    def cancel_order_ws(self, id: str, symbol: str | list[str] = None, params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def cancel_order_ws(
+        self, id: str, symbol: str | list[str] = None, params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.cancel_order_ws"""
         ...
 
-    def cancel_orders(self, ids: list[str], symbol: str | list[str] = None, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def cancel_orders(
+        self, ids: list[str], symbol: str | list[str] = None, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.cancel_orders"""
         ...
 
-    def cancel_orders_for_symbols(self, orders: pd.DataFrame, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def cancel_orders_for_symbols(
+        self, orders: pd.DataFrame, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.cancel_orders_for_symbols"""
         ...
 
-    def cancel_orders_ws(self, ids: list[str], symbol: str | list[str] = None, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def cancel_orders_ws(
+        self, ids: list[str], symbol: str | list[str] = None, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.cancel_orders_ws"""
         ...
 
     def createOrder(
         self,
         symbol: str | list[str],
-        type: Literal['limit', 'market'],
-        side: Literal['buy', 'sell'],
+        type: Literal["limit", "market"],
+        side: Literal["buy", "sell"],
         amount: float,
         price: None | str | float | int | Decimal = None,
-        params = {},
+        params={},
     ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.createOrder"""
         ...
@@ -113,31 +145,35 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
     def createOrderWs(
         self,
         symbol: str | list[str],
-        type: Literal['limit', 'market'],
-        side: Literal['buy', 'sell'],
+        type: Literal["limit", "market"],
+        side: Literal["buy", "sell"],
         amount: float,
         price: None | str | float | int | Decimal = None,
-        params = {},
+        params={},
     ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.createOrderWs"""
         ...
 
-    def createOrders(self, orders: pd.DataFrame, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def createOrders(
+        self, orders: pd.DataFrame, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.createOrders"""
         ...
 
-    def createOrdersWs(self, orders: pd.DataFrame, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def createOrdersWs(
+        self, orders: pd.DataFrame, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.createOrdersWs"""
         ...
 
     def create_order(
         self,
         symbol: str | list[str],
-        type: Literal['limit', 'market'],
-        side: Literal['buy', 'sell'],
+        type: Literal["limit", "market"],
+        side: Literal["buy", "sell"],
         amount: float,
         price: None | str | float | int | Decimal = None,
-        params = {},
+        params={},
     ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.create_order"""
         ...
@@ -145,20 +181,24 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
     def create_order_ws(
         self,
         symbol: str | list[str],
-        type: Literal['limit', 'market'],
-        side: Literal['buy', 'sell'],
+        type: Literal["limit", "market"],
+        side: Literal["buy", "sell"],
         amount: float,
         price: None | str | float | int | Decimal = None,
-        params = {},
+        params={},
     ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.create_order_ws"""
         ...
 
-    def create_orders(self, orders: pd.DataFrame, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def create_orders(
+        self, orders: pd.DataFrame, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.create_orders"""
         ...
 
-    def create_orders_ws(self, orders: pd.DataFrame, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def create_orders_ws(
+        self, orders: pd.DataFrame, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.create_orders_ws"""
         ...
 
@@ -166,11 +206,11 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         self,
         id: str,
         symbol: str | list[str],
-        type: Literal['limit', 'market'],
-        side: Literal['buy', 'sell'],
+        type: Literal["limit", "market"],
+        side: Literal["buy", "sell"],
         amount: None | str | float | int | Decimal = None,
         price: None | str | float | int | Decimal = None,
-        params = {},
+        params={},
     ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.editOrder"""
         ...
@@ -179,16 +219,18 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         self,
         id: str,
         symbol: str | list[str],
-        type: Literal['limit', 'market'],
-        side: Literal['buy', 'sell'],
+        type: Literal["limit", "market"],
+        side: Literal["buy", "sell"],
         amount: None | str | float | int | Decimal = None,
         price: None | str | float | int | Decimal = None,
-        params = {},
+        params={},
     ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.editOrderWs"""
         ...
 
-    def editOrders(self, orders: pd.DataFrame, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def editOrders(
+        self, orders: pd.DataFrame, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.editOrders"""
         ...
 
@@ -196,11 +238,11 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         self,
         id: str,
         symbol: str | list[str],
-        type: Literal['limit', 'market'],
-        side: Literal['buy', 'sell'],
+        type: Literal["limit", "market"],
+        side: Literal["buy", "sell"],
         amount: None | str | float | int | Decimal = None,
         price: None | str | float | int | Decimal = None,
-        params = {},
+        params={},
     ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.edit_order"""
         ...
@@ -209,36 +251,48 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         self,
         id: str,
         symbol: str | list[str],
-        type: Literal['limit', 'market'],
-        side: Literal['buy', 'sell'],
+        type: Literal["limit", "market"],
+        side: Literal["buy", "sell"],
         amount: None | str | float | int | Decimal = None,
         price: None | str | float | int | Decimal = None,
-        params = {},
+        params={},
     ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.edit_order_ws"""
         ...
 
-    def edit_orders(self, orders: pd.DataFrame, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def edit_orders(
+        self, orders: pd.DataFrame, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.edit_orders"""
         ...
 
-    def fetchADLRank(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetchADLRank(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetchADLRank"""
         ...
 
-    def fetchAccounts(self, params = {}) -> Awaitable[DataFrame[AccountsSchema]] | list[Awaitable[DataFrame[AccountsSchema]]]:
+    def fetchAccounts(
+        self, params={}
+    ) -> Awaitable[DataFrame[AccountsSchema]] | list[Awaitable[DataFrame[AccountsSchema]]]:
         """Returns a DataFrame[AccountsSchema] from ccxt.fetchAccounts"""
         ...
 
-    def fetchAllGreeks(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[GreeksSchema]] | list[Awaitable[DataFrame[GreeksSchema]]]:
+    def fetchAllGreeks(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[GreeksSchema]] | list[Awaitable[DataFrame[GreeksSchema]]]:
         """Returns a DataFrame[GreeksSchema] from ccxt.fetchAllGreeks"""
         ...
 
-    def fetchBalance(self, params = {}) -> Awaitable[DataFrame[BalanceSchema]] | list[Awaitable[DataFrame[BalanceSchema]]]:
+    def fetchBalance(
+        self, params={}
+    ) -> Awaitable[DataFrame[BalanceSchema]] | list[Awaitable[DataFrame[BalanceSchema]]]:
         """Returns a DataFrame[BalanceSchema] from ccxt.fetchBalance"""
         ...
 
-    def fetchBidsAsks(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[BidsAsksSchema]] | list[Awaitable[DataFrame[BidsAsksSchema]]]:
+    def fetchBidsAsks(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[BidsAsksSchema]] | list[Awaitable[DataFrame[BidsAsksSchema]]]:
         """Returns a DataFrame[BidsAsksSchema] from ccxt.fetchBidsAsks"""
         ...
 
@@ -250,8 +304,11 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
-    ) -> Awaitable[DataFrame[BorrowInterestSchema]] | list[Awaitable[DataFrame[BorrowInterestSchema]]]:
+        params={},
+    ) -> (
+        Awaitable[DataFrame[BorrowInterestSchema]]
+        | list[Awaitable[DataFrame[BorrowInterestSchema]]]
+    ):
         """Returns a DataFrame[BorrowInterestSchema] from ccxt.fetchBorrowInterest"""
         ...
 
@@ -262,7 +319,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[OrdersSchema]] | list[Awaitable[DataFrame[OrdersSchema]]]:
         """Returns a DataFrame[OrdersSchema] from ccxt.fetchCanceledAndClosedOrders"""
         ...
@@ -274,7 +331,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[OrdersSchema]] | list[Awaitable[DataFrame[OrdersSchema]]]:
         """Returns a DataFrame[OrdersSchema] from ccxt.fetchCanceledOrders"""
         ...
@@ -286,12 +343,14 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[OrdersSchema]] | list[Awaitable[DataFrame[OrdersSchema]]]:
         """Returns a DataFrame[OrdersSchema] from ccxt.fetchClosedOrders"""
         ...
 
-    def fetchConvertCurrencies(self, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def fetchConvertCurrencies(
+        self, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetchConvertCurrencies"""
         ...
 
@@ -302,32 +361,50 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetchConvertTradeHistory"""
         ...
 
-    def fetchCrossBorrowRate(self, code: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetchCrossBorrowRate(
+        self, code: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetchCrossBorrowRate"""
         ...
 
-    def fetchCrossBorrowRates(self, params = {}) -> Awaitable[DataFrame[CrossBorrowRatesSchema]] | list[Awaitable[DataFrame[CrossBorrowRatesSchema]]]:
+    def fetchCrossBorrowRates(
+        self, params={}
+    ) -> (
+        Awaitable[DataFrame[CrossBorrowRatesSchema]]
+        | list[Awaitable[DataFrame[CrossBorrowRatesSchema]]]
+    ):
         """Returns a DataFrame[CrossBorrowRatesSchema] from ccxt.fetchCrossBorrowRates"""
         ...
 
-    def fetchCurrencies(self, params = {}) -> Awaitable[DataFrame[CurrencySchema]] | list[Awaitable[DataFrame[CurrencySchema]]]:
+    def fetchCurrencies(
+        self, params={}
+    ) -> Awaitable[DataFrame[CurrencySchema]] | list[Awaitable[DataFrame[CurrencySchema]]]:
         """Returns a DataFrame[CurrencySchema] from ccxt.fetchCurrencies"""
         ...
 
-    def fetchDepositAddresses(self, codes: list[str] | None = None, params = {}) -> Awaitable[DataFrame[AddressesSchema]] | list[Awaitable[DataFrame[AddressesSchema]]]:
+    def fetchDepositAddresses(
+        self, codes: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[AddressesSchema]] | list[Awaitable[DataFrame[AddressesSchema]]]:
         """Returns a DataFrame[AddressesSchema] from ccxt.fetchDepositAddresses"""
         ...
 
-    def fetchDepositWithdrawFee(self, code: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetchDepositWithdrawFee(
+        self, code: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetchDepositWithdrawFee"""
         ...
 
-    def fetchDepositWithdrawFees(self, codes: list[str] | None = None, params = {}) -> Awaitable[DataFrame[DepositWithdrawFeesSchema]] | list[Awaitable[DataFrame[DepositWithdrawFeesSchema]]]:
+    def fetchDepositWithdrawFees(
+        self, codes: list[str] | None = None, params={}
+    ) -> (
+        Awaitable[DataFrame[DepositWithdrawFeesSchema]]
+        | list[Awaitable[DataFrame[DepositWithdrawFeesSchema]]]
+    ):
         """Returns a DataFrame[DepositWithdrawFeesSchema] from ccxt.fetchDepositWithdrawFees"""
         ...
 
@@ -338,7 +415,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[TransactionsSchema]] | list[Awaitable[DataFrame[TransactionsSchema]]]:
         """Returns a DataFrame[TransactionsSchema] from ccxt.fetchDeposits"""
         ...
@@ -350,7 +427,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[TransactionsSchema]] | list[Awaitable[DataFrame[TransactionsSchema]]]:
         """Returns a DataFrame[TransactionsSchema] from ccxt.fetchDepositsWithdrawals"""
         ...
@@ -362,20 +439,32 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
-    ) -> Awaitable[DataFrame[FundingHistorySchema]] | list[Awaitable[DataFrame[FundingHistorySchema]]]:
+        params={},
+    ) -> (
+        Awaitable[DataFrame[FundingHistorySchema]]
+        | list[Awaitable[DataFrame[FundingHistorySchema]]]
+    ):
         """Returns a DataFrame[FundingHistorySchema] from ccxt.fetchFundingHistory"""
         ...
 
-    def fetchFundingInterval(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetchFundingInterval(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetchFundingInterval"""
         ...
 
-    def fetchFundingIntervals(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[FundingIntervalsSchema]] | list[Awaitable[DataFrame[FundingIntervalsSchema]]]:
+    def fetchFundingIntervals(
+        self, symbols: list[str] | None = None, params={}
+    ) -> (
+        Awaitable[DataFrame[FundingIntervalsSchema]]
+        | list[Awaitable[DataFrame[FundingIntervalsSchema]]]
+    ):
         """Returns a DataFrame[FundingIntervalsSchema] from ccxt.fetchFundingIntervals"""
         ...
 
-    def fetchFundingRate(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetchFundingRate(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetchFundingRate"""
         ...
 
@@ -386,32 +475,50 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
-    ) -> Awaitable[DataFrame[FundingRateHistorySchema]] | list[Awaitable[DataFrame[FundingRateHistorySchema]]]:
+        params={},
+    ) -> (
+        Awaitable[DataFrame[FundingRateHistorySchema]]
+        | list[Awaitable[DataFrame[FundingRateHistorySchema]]]
+    ):
         """Returns a DataFrame[FundingRateHistorySchema] from ccxt.fetchFundingRateHistory"""
         ...
 
-    def fetchFundingRates(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[FundingRateSchema]] | list[Awaitable[DataFrame[FundingRateSchema]]]:
+    def fetchFundingRates(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[FundingRateSchema]] | list[Awaitable[DataFrame[FundingRateSchema]]]:
         """Returns a DataFrame[FundingRateSchema] from ccxt.fetchFundingRates"""
         ...
 
-    def fetchGreeks(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetchGreeks(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetchGreeks"""
         ...
 
-    def fetchIsolatedBorrowRate(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetchIsolatedBorrowRate(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetchIsolatedBorrowRate"""
         ...
 
-    def fetchIsolatedBorrowRates(self, params = {}) -> Awaitable[DataFrame[IsolatedBorrowRatesSchema]] | list[Awaitable[DataFrame[IsolatedBorrowRatesSchema]]]:
+    def fetchIsolatedBorrowRates(
+        self, params={}
+    ) -> (
+        Awaitable[DataFrame[IsolatedBorrowRatesSchema]]
+        | list[Awaitable[DataFrame[IsolatedBorrowRatesSchema]]]
+    ):
         """Returns a DataFrame[IsolatedBorrowRatesSchema] from ccxt.fetchIsolatedBorrowRates"""
         ...
 
-    def fetchL3OrderBook(self, symbol: str | list[str], limit: int | None = None, params = {}) -> Awaitable[DataFrame[OrderBookSchema]] | list[Awaitable[DataFrame[OrderBookSchema]]]:
+    def fetchL3OrderBook(
+        self, symbol: str | list[str], limit: int | None = None, params={}
+    ) -> Awaitable[DataFrame[OrderBookSchema]] | list[Awaitable[DataFrame[OrderBookSchema]]]:
         """Returns a DataFrame[OrderBookSchema] from ccxt.fetchL3OrderBook"""
         ...
 
-    def fetchLastPrices(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[LastPricesSchema]] | list[Awaitable[DataFrame[LastPricesSchema]]]:
+    def fetchLastPrices(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[LastPricesSchema]] | list[Awaitable[DataFrame[LastPricesSchema]]]:
         """Returns a DataFrame[LastPricesSchema] from ccxt.fetchLastPrices"""
         ...
 
@@ -422,16 +529,20 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[LedgerSchema]] | list[Awaitable[DataFrame[LedgerSchema]]]:
         """Returns a DataFrame[LedgerSchema] from ccxt.fetchLedger"""
         ...
 
-    def fetchLeverageTiers(self, symbols: list[str] | None = None, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def fetchLeverageTiers(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetchLeverageTiers"""
         ...
 
-    def fetchLeverages(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[LeveragesSchema]] | list[Awaitable[DataFrame[LeveragesSchema]]]:
+    def fetchLeverages(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[LeveragesSchema]] | list[Awaitable[DataFrame[LeveragesSchema]]]:
         """Returns a DataFrame[LeveragesSchema] from ccxt.fetchLeverages"""
         ...
 
@@ -442,7 +553,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[LiquidationsSchema]] | list[Awaitable[DataFrame[LiquidationsSchema]]]:
         """Returns a DataFrame[LiquidationsSchema] from ccxt.fetchLiquidations"""
         ...
@@ -455,8 +566,11 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
-    ) -> Awaitable[DataFrame[LongShortRatioSchema]] | list[Awaitable[DataFrame[LongShortRatioSchema]]]:
+        params={},
+    ) -> (
+        Awaitable[DataFrame[LongShortRatioSchema]]
+        | list[Awaitable[DataFrame[LongShortRatioSchema]]]
+    ):
         """Returns a DataFrame[LongShortRatioSchema] from ccxt.fetchLongShortRatioHistory"""
         ...
 
@@ -468,24 +582,32 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: None | str | float | int | Decimal = None,
-        params = {},
+        params={},
     ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetchMarginAdjustmentHistory"""
         ...
 
-    def fetchMarginModes(self, symbols: list[str] | None = None, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def fetchMarginModes(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetchMarginModes"""
         ...
 
-    def fetchMarkPrice(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetchMarkPrice(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetchMarkPrice"""
         ...
 
-    def fetchMarkPrices(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[MarkPricesSchema]] | list[Awaitable[DataFrame[MarkPricesSchema]]]:
+    def fetchMarkPrices(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[MarkPricesSchema]] | list[Awaitable[DataFrame[MarkPricesSchema]]]:
         """Returns a DataFrame[MarkPricesSchema] from ccxt.fetchMarkPrices"""
         ...
 
-    def fetchMarkets(self, params = {}) -> Awaitable[DataFrame[MarketSchema]] | list[Awaitable[DataFrame[MarketSchema]]]:
+    def fetchMarkets(
+        self, params={}
+    ) -> Awaitable[DataFrame[MarketSchema]] | list[Awaitable[DataFrame[MarketSchema]]]:
         """Returns a DataFrame[MarketSchema] from ccxt.fetchMarkets"""
         ...
 
@@ -496,7 +618,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[LiquidationsSchema]] | list[Awaitable[DataFrame[LiquidationsSchema]]]:
         """Returns a DataFrame[LiquidationsSchema] from ccxt.fetchMyLiquidations"""
         ...
@@ -508,7 +630,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[MyTradesSchema]] | list[Awaitable[DataFrame[MyTradesSchema]]]:
         """Returns a DataFrame[MyTradesSchema] from ccxt.fetchMyTrades"""
         ...
@@ -516,34 +638,41 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
     def fetchOHLCV(
         self,
         symbol: str | list[str],
-        timeframe: str = '1m',
+        timeframe: str = "1m",
         from_date: pd.Timestamp | dict | str | None = None,
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetchOHLCV"""
         ...
 
-    def fetchOpenInterest(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetchOpenInterest(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetchOpenInterest"""
         ...
 
     def fetchOpenInterestHistory(
         self,
         symbol: str | list[str],
-        timeframe: str = '1h',
+        timeframe: str = "1h",
         from_date: pd.Timestamp | dict | str | None = None,
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
-    ) -> Awaitable[DataFrame[OpenInterestHistorySchema]] | list[Awaitable[DataFrame[OpenInterestHistorySchema]]]:
+        params={},
+    ) -> (
+        Awaitable[DataFrame[OpenInterestHistorySchema]]
+        | list[Awaitable[DataFrame[OpenInterestHistorySchema]]]
+    ):
         """Returns a DataFrame[OpenInterestHistorySchema] from ccxt.fetchOpenInterestHistory"""
         ...
 
-    def fetchOpenInterests(self, symbols: list[str] | None = None, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def fetchOpenInterests(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetchOpenInterests"""
         ...
 
@@ -554,28 +683,38 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[OrdersSchema]] | list[Awaitable[DataFrame[OrdersSchema]]]:
         """Returns a DataFrame[OrdersSchema] from ccxt.fetchOpenOrders"""
         ...
 
-    def fetchOption(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetchOption(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetchOption"""
         ...
 
-    def fetchOptionChain(self, code: str | list[str], params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def fetchOptionChain(
+        self, code: str | list[str], params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetchOptionChain"""
         ...
 
-    def fetchOrder(self, id: str, symbol: str | list[str] = None, params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetchOrder(
+        self, id: str, symbol: str | list[str] = None, params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetchOrder"""
         ...
 
-    def fetchOrderBook(self, symbol: str | list[str], limit: int | None = None, params = {}) -> Awaitable[DataFrame[OrderBookSchema]] | list[Awaitable[DataFrame[OrderBookSchema]]]:
+    def fetchOrderBook(
+        self, symbol: str | list[str], limit: int | None = None, params={}
+    ) -> Awaitable[DataFrame[OrderBookSchema]] | list[Awaitable[DataFrame[OrderBookSchema]]]:
         """Returns a DataFrame[OrderBookSchema] from ccxt.fetchOrderBook"""
         ...
 
-    def fetchOrderBooks(self, symbols: list[str] | None = None, limit: int | None = None, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def fetchOrderBooks(
+        self, symbols: list[str] | None = None, limit: int | None = None, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetchOrderBooks"""
         ...
 
@@ -587,7 +726,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetchOrderTrades"""
         ...
@@ -599,7 +738,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[OrdersSchema]] | list[Awaitable[DataFrame[OrdersSchema]]]:
         """Returns a DataFrame[OrdersSchema] from ccxt.fetchOrders"""
         ...
@@ -611,16 +750,20 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[OrdersSchema]] | list[Awaitable[DataFrame[OrdersSchema]]]:
         """Returns a DataFrame[OrdersSchema] from ccxt.fetchOrdersWs"""
         ...
 
-    def fetchPosition(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetchPosition(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetchPosition"""
         ...
 
-    def fetchPositionADLRank(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetchPositionADLRank(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetchPositionADLRank"""
         ...
 
@@ -631,16 +774,23 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
-    ) -> Awaitable[DataFrame[PositionsHistorySchema]] | list[Awaitable[DataFrame[PositionsHistorySchema]]]:
+        params={},
+    ) -> (
+        Awaitable[DataFrame[PositionsHistorySchema]]
+        | list[Awaitable[DataFrame[PositionsHistorySchema]]]
+    ):
         """Returns a DataFrame[PositionsHistorySchema] from ccxt.fetchPositionHistory"""
         ...
 
-    def fetchPositions(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[PositionsSchema]] | list[Awaitable[DataFrame[PositionsSchema]]]:
+    def fetchPositions(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[PositionsSchema]] | list[Awaitable[DataFrame[PositionsSchema]]]:
         """Returns a DataFrame[PositionsSchema] from ccxt.fetchPositions"""
         ...
 
-    def fetchPositionsADLRank(self, symbols: list[str] | None = None, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def fetchPositionsADLRank(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetchPositionsADLRank"""
         ...
 
@@ -650,24 +800,33 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         from_date: pd.Timestamp | dict | str | None = None,
         to_date: pd.Timestamp | dict | str | None = None,
         limit: int | None = None,
-        params = {},
-    ) -> Awaitable[DataFrame[PositionsHistorySchema]] | list[Awaitable[DataFrame[PositionsHistorySchema]]]:
+        params={},
+    ) -> (
+        Awaitable[DataFrame[PositionsHistorySchema]]
+        | list[Awaitable[DataFrame[PositionsHistorySchema]]]
+    ):
         """Returns a DataFrame[PositionsHistorySchema] from ccxt.fetchPositionsHistory"""
         ...
 
-    def fetchPositionsRisk(self, symbols: list[str] | None = None, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def fetchPositionsRisk(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetchPositionsRisk"""
         ...
 
-    def fetchStatus(self, params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetchStatus(self, params={}) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetchStatus"""
         ...
 
-    def fetchTicker(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetchTicker(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetchTicker"""
         ...
 
-    def fetchTickers(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[TickersSchema]] | list[Awaitable[DataFrame[TickersSchema]]]:
+    def fetchTickers(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[TickersSchema]] | list[Awaitable[DataFrame[TickersSchema]]]:
         """Returns a DataFrame[TickersSchema] from ccxt.fetchTickers"""
         ...
 
@@ -678,20 +837,26 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[TradeSchema]] | list[Awaitable[DataFrame[TradeSchema]]]:
         """Returns a DataFrame[TradeSchema] from ccxt.fetchTrades"""
         ...
 
-    def fetchTradingFee(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetchTradingFee(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetchTradingFee"""
         ...
 
-    def fetchTradingFees(self, params = {}) -> Awaitable[DataFrame[TradingFeesSchema]] | list[Awaitable[DataFrame[TradingFeesSchema]]]:
+    def fetchTradingFees(
+        self, params={}
+    ) -> Awaitable[DataFrame[TradingFeesSchema]] | list[Awaitable[DataFrame[TradingFeesSchema]]]:
         """Returns a DataFrame[TradingFeesSchema] from ccxt.fetchTradingFees"""
         ...
 
-    def fetchTransactionFees(self, codes: list[str] | None = None, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def fetchTransactionFees(
+        self, codes: list[str] | None = None, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetchTransactionFees"""
         ...
 
@@ -702,7 +867,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[TransfersSchema]] | list[Awaitable[DataFrame[TransfersSchema]]]:
         """Returns a DataFrame[TransfersSchema] from ccxt.fetchTransfers"""
         ...
@@ -714,28 +879,38 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[TransactionsSchema]] | list[Awaitable[DataFrame[TransactionsSchema]]]:
         """Returns a DataFrame[TransactionsSchema] from ccxt.fetchWithdrawals"""
         ...
 
-    def fetch_accounts(self, params = {}) -> Awaitable[DataFrame[AccountsSchema]] | list[Awaitable[DataFrame[AccountsSchema]]]:
+    def fetch_accounts(
+        self, params={}
+    ) -> Awaitable[DataFrame[AccountsSchema]] | list[Awaitable[DataFrame[AccountsSchema]]]:
         """Returns a DataFrame[AccountsSchema] from ccxt.fetch_accounts"""
         ...
 
-    def fetch_adl_rank(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetch_adl_rank(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetch_adl_rank"""
         ...
 
-    def fetch_all_greeks(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[GreeksSchema]] | list[Awaitable[DataFrame[GreeksSchema]]]:
+    def fetch_all_greeks(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[GreeksSchema]] | list[Awaitable[DataFrame[GreeksSchema]]]:
         """Returns a DataFrame[GreeksSchema] from ccxt.fetch_all_greeks"""
         ...
 
-    def fetch_balance(self, params = {}) -> Awaitable[DataFrame[BalanceSchema]] | list[Awaitable[DataFrame[BalanceSchema]]]:
+    def fetch_balance(
+        self, params={}
+    ) -> Awaitable[DataFrame[BalanceSchema]] | list[Awaitable[DataFrame[BalanceSchema]]]:
         """Returns a DataFrame[BalanceSchema] from ccxt.fetch_balance"""
         ...
 
-    def fetch_bids_asks(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[BidsAsksSchema]] | list[Awaitable[DataFrame[BidsAsksSchema]]]:
+    def fetch_bids_asks(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[BidsAsksSchema]] | list[Awaitable[DataFrame[BidsAsksSchema]]]:
         """Returns a DataFrame[BidsAsksSchema] from ccxt.fetch_bids_asks"""
         ...
 
@@ -747,8 +922,11 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
-    ) -> Awaitable[DataFrame[BorrowInterestSchema]] | list[Awaitable[DataFrame[BorrowInterestSchema]]]:
+        params={},
+    ) -> (
+        Awaitable[DataFrame[BorrowInterestSchema]]
+        | list[Awaitable[DataFrame[BorrowInterestSchema]]]
+    ):
         """Returns a DataFrame[BorrowInterestSchema] from ccxt.fetch_borrow_interest"""
         ...
 
@@ -759,7 +937,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[OrdersSchema]] | list[Awaitable[DataFrame[OrdersSchema]]]:
         """Returns a DataFrame[OrdersSchema] from ccxt.fetch_canceled_and_closed_orders"""
         ...
@@ -771,7 +949,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[OrdersSchema]] | list[Awaitable[DataFrame[OrdersSchema]]]:
         """Returns a DataFrame[OrdersSchema] from ccxt.fetch_canceled_orders"""
         ...
@@ -783,12 +961,14 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[OrdersSchema]] | list[Awaitable[DataFrame[OrdersSchema]]]:
         """Returns a DataFrame[OrdersSchema] from ccxt.fetch_closed_orders"""
         ...
 
-    def fetch_convert_currencies(self, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def fetch_convert_currencies(
+        self, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetch_convert_currencies"""
         ...
 
@@ -799,32 +979,50 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetch_convert_trade_history"""
         ...
 
-    def fetch_cross_borrow_rate(self, code: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetch_cross_borrow_rate(
+        self, code: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetch_cross_borrow_rate"""
         ...
 
-    def fetch_cross_borrow_rates(self, params = {}) -> Awaitable[DataFrame[CrossBorrowRatesSchema]] | list[Awaitable[DataFrame[CrossBorrowRatesSchema]]]:
+    def fetch_cross_borrow_rates(
+        self, params={}
+    ) -> (
+        Awaitable[DataFrame[CrossBorrowRatesSchema]]
+        | list[Awaitable[DataFrame[CrossBorrowRatesSchema]]]
+    ):
         """Returns a DataFrame[CrossBorrowRatesSchema] from ccxt.fetch_cross_borrow_rates"""
         ...
 
-    def fetch_currencies(self, params = {}) -> Awaitable[DataFrame[CurrencySchema]] | list[Awaitable[DataFrame[CurrencySchema]]]:
+    def fetch_currencies(
+        self, params={}
+    ) -> Awaitable[DataFrame[CurrencySchema]] | list[Awaitable[DataFrame[CurrencySchema]]]:
         """Returns a DataFrame[CurrencySchema] from ccxt.fetch_currencies"""
         ...
 
-    def fetch_deposit_addresses(self, codes: list[str] | None = None, params = {}) -> Awaitable[DataFrame[AddressesSchema]] | list[Awaitable[DataFrame[AddressesSchema]]]:
+    def fetch_deposit_addresses(
+        self, codes: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[AddressesSchema]] | list[Awaitable[DataFrame[AddressesSchema]]]:
         """Returns a DataFrame[AddressesSchema] from ccxt.fetch_deposit_addresses"""
         ...
 
-    def fetch_deposit_withdraw_fee(self, code: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetch_deposit_withdraw_fee(
+        self, code: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetch_deposit_withdraw_fee"""
         ...
 
-    def fetch_deposit_withdraw_fees(self, codes: list[str] | None = None, params = {}) -> Awaitable[DataFrame[DepositWithdrawFeesSchema]] | list[Awaitable[DataFrame[DepositWithdrawFeesSchema]]]:
+    def fetch_deposit_withdraw_fees(
+        self, codes: list[str] | None = None, params={}
+    ) -> (
+        Awaitable[DataFrame[DepositWithdrawFeesSchema]]
+        | list[Awaitable[DataFrame[DepositWithdrawFeesSchema]]]
+    ):
         """Returns a DataFrame[DepositWithdrawFeesSchema] from ccxt.fetch_deposit_withdraw_fees"""
         ...
 
@@ -835,7 +1033,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[TransactionsSchema]] | list[Awaitable[DataFrame[TransactionsSchema]]]:
         """Returns a DataFrame[TransactionsSchema] from ccxt.fetch_deposits"""
         ...
@@ -847,7 +1045,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[TransactionsSchema]] | list[Awaitable[DataFrame[TransactionsSchema]]]:
         """Returns a DataFrame[TransactionsSchema] from ccxt.fetch_deposits_withdrawals"""
         ...
@@ -859,20 +1057,32 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
-    ) -> Awaitable[DataFrame[FundingHistorySchema]] | list[Awaitable[DataFrame[FundingHistorySchema]]]:
+        params={},
+    ) -> (
+        Awaitable[DataFrame[FundingHistorySchema]]
+        | list[Awaitable[DataFrame[FundingHistorySchema]]]
+    ):
         """Returns a DataFrame[FundingHistorySchema] from ccxt.fetch_funding_history"""
         ...
 
-    def fetch_funding_interval(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetch_funding_interval(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetch_funding_interval"""
         ...
 
-    def fetch_funding_intervals(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[FundingIntervalsSchema]] | list[Awaitable[DataFrame[FundingIntervalsSchema]]]:
+    def fetch_funding_intervals(
+        self, symbols: list[str] | None = None, params={}
+    ) -> (
+        Awaitable[DataFrame[FundingIntervalsSchema]]
+        | list[Awaitable[DataFrame[FundingIntervalsSchema]]]
+    ):
         """Returns a DataFrame[FundingIntervalsSchema] from ccxt.fetch_funding_intervals"""
         ...
 
-    def fetch_funding_rate(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetch_funding_rate(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetch_funding_rate"""
         ...
 
@@ -883,32 +1093,50 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
-    ) -> Awaitable[DataFrame[FundingRateHistorySchema]] | list[Awaitable[DataFrame[FundingRateHistorySchema]]]:
+        params={},
+    ) -> (
+        Awaitable[DataFrame[FundingRateHistorySchema]]
+        | list[Awaitable[DataFrame[FundingRateHistorySchema]]]
+    ):
         """Returns a DataFrame[FundingRateHistorySchema] from ccxt.fetch_funding_rate_history"""
         ...
 
-    def fetch_funding_rates(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[FundingRateSchema]] | list[Awaitable[DataFrame[FundingRateSchema]]]:
+    def fetch_funding_rates(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[FundingRateSchema]] | list[Awaitable[DataFrame[FundingRateSchema]]]:
         """Returns a DataFrame[FundingRateSchema] from ccxt.fetch_funding_rates"""
         ...
 
-    def fetch_greeks(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetch_greeks(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetch_greeks"""
         ...
 
-    def fetch_isolated_borrow_rate(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetch_isolated_borrow_rate(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetch_isolated_borrow_rate"""
         ...
 
-    def fetch_isolated_borrow_rates(self, params = {}) -> Awaitable[DataFrame[IsolatedBorrowRatesSchema]] | list[Awaitable[DataFrame[IsolatedBorrowRatesSchema]]]:
+    def fetch_isolated_borrow_rates(
+        self, params={}
+    ) -> (
+        Awaitable[DataFrame[IsolatedBorrowRatesSchema]]
+        | list[Awaitable[DataFrame[IsolatedBorrowRatesSchema]]]
+    ):
         """Returns a DataFrame[IsolatedBorrowRatesSchema] from ccxt.fetch_isolated_borrow_rates"""
         ...
 
-    def fetch_l3_order_book(self, symbol: str | list[str], limit: int | None = None, params = {}) -> Awaitable[DataFrame[OrderBookSchema]] | list[Awaitable[DataFrame[OrderBookSchema]]]:
+    def fetch_l3_order_book(
+        self, symbol: str | list[str], limit: int | None = None, params={}
+    ) -> Awaitable[DataFrame[OrderBookSchema]] | list[Awaitable[DataFrame[OrderBookSchema]]]:
         """Returns a DataFrame[OrderBookSchema] from ccxt.fetch_l3_order_book"""
         ...
 
-    def fetch_last_prices(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[LastPricesSchema]] | list[Awaitable[DataFrame[LastPricesSchema]]]:
+    def fetch_last_prices(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[LastPricesSchema]] | list[Awaitable[DataFrame[LastPricesSchema]]]:
         """Returns a DataFrame[LastPricesSchema] from ccxt.fetch_last_prices"""
         ...
 
@@ -919,16 +1147,20 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[LedgerSchema]] | list[Awaitable[DataFrame[LedgerSchema]]]:
         """Returns a DataFrame[LedgerSchema] from ccxt.fetch_ledger"""
         ...
 
-    def fetch_leverage_tiers(self, symbols: list[str] | None = None, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def fetch_leverage_tiers(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetch_leverage_tiers"""
         ...
 
-    def fetch_leverages(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[LeveragesSchema]] | list[Awaitable[DataFrame[LeveragesSchema]]]:
+    def fetch_leverages(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[LeveragesSchema]] | list[Awaitable[DataFrame[LeveragesSchema]]]:
         """Returns a DataFrame[LeveragesSchema] from ccxt.fetch_leverages"""
         ...
 
@@ -939,7 +1171,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[LiquidationsSchema]] | list[Awaitable[DataFrame[LiquidationsSchema]]]:
         """Returns a DataFrame[LiquidationsSchema] from ccxt.fetch_liquidations"""
         ...
@@ -952,8 +1184,11 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
-    ) -> Awaitable[DataFrame[LongShortRatioSchema]] | list[Awaitable[DataFrame[LongShortRatioSchema]]]:
+        params={},
+    ) -> (
+        Awaitable[DataFrame[LongShortRatioSchema]]
+        | list[Awaitable[DataFrame[LongShortRatioSchema]]]
+    ):
         """Returns a DataFrame[LongShortRatioSchema] from ccxt.fetch_long_short_ratio_history"""
         ...
 
@@ -965,24 +1200,32 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: None | str | float | int | Decimal = None,
-        params = {},
+        params={},
     ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetch_margin_adjustment_history"""
         ...
 
-    def fetch_margin_modes(self, symbols: list[str] | None = None, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def fetch_margin_modes(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetch_margin_modes"""
         ...
 
-    def fetch_mark_price(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetch_mark_price(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetch_mark_price"""
         ...
 
-    def fetch_mark_prices(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[MarkPricesSchema]] | list[Awaitable[DataFrame[MarkPricesSchema]]]:
+    def fetch_mark_prices(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[MarkPricesSchema]] | list[Awaitable[DataFrame[MarkPricesSchema]]]:
         """Returns a DataFrame[MarkPricesSchema] from ccxt.fetch_mark_prices"""
         ...
 
-    def fetch_markets(self, params = {}) -> Awaitable[DataFrame[MarketSchema]] | list[Awaitable[DataFrame[MarketSchema]]]:
+    def fetch_markets(
+        self, params={}
+    ) -> Awaitable[DataFrame[MarketSchema]] | list[Awaitable[DataFrame[MarketSchema]]]:
         """Returns a DataFrame[MarketSchema] from ccxt.fetch_markets"""
         ...
 
@@ -993,7 +1236,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[LiquidationsSchema]] | list[Awaitable[DataFrame[LiquidationsSchema]]]:
         """Returns a DataFrame[LiquidationsSchema] from ccxt.fetch_my_liquidations"""
         ...
@@ -1005,7 +1248,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[MyTradesSchema]] | list[Awaitable[DataFrame[MyTradesSchema]]]:
         """Returns a DataFrame[MyTradesSchema] from ccxt.fetch_my_trades"""
         ...
@@ -1013,34 +1256,41 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
     def fetch_ohlcv(
         self,
         symbol: str | list[str],
-        timeframe: str = '1m',
+        timeframe: str = "1m",
         from_date: pd.Timestamp | dict | str | None = None,
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[OHLCVSchema]] | list[Awaitable[DataFrame[OHLCVSchema]]]:
         """Returns a DataFrame[OHLCVSchema] from ccxt.fetch_ohlcv"""
         ...
 
-    def fetch_open_interest(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetch_open_interest(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetch_open_interest"""
         ...
 
     def fetch_open_interest_history(
         self,
         symbol: str | list[str],
-        timeframe: str = '1h',
+        timeframe: str = "1h",
         from_date: pd.Timestamp | dict | str | None = None,
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
-    ) -> Awaitable[DataFrame[OpenInterestHistorySchema]] | list[Awaitable[DataFrame[OpenInterestHistorySchema]]]:
+        params={},
+    ) -> (
+        Awaitable[DataFrame[OpenInterestHistorySchema]]
+        | list[Awaitable[DataFrame[OpenInterestHistorySchema]]]
+    ):
         """Returns a DataFrame[OpenInterestHistorySchema] from ccxt.fetch_open_interest_history"""
         ...
 
-    def fetch_open_interests(self, symbols: list[str] | None = None, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def fetch_open_interests(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetch_open_interests"""
         ...
 
@@ -1051,28 +1301,38 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[OrdersSchema]] | list[Awaitable[DataFrame[OrdersSchema]]]:
         """Returns a DataFrame[OrdersSchema] from ccxt.fetch_open_orders"""
         ...
 
-    def fetch_option(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetch_option(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetch_option"""
         ...
 
-    def fetch_option_chain(self, code: str | list[str], params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def fetch_option_chain(
+        self, code: str | list[str], params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetch_option_chain"""
         ...
 
-    def fetch_order(self, id: str, symbol: str | list[str] = None, params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetch_order(
+        self, id: str, symbol: str | list[str] = None, params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetch_order"""
         ...
 
-    def fetch_order_book(self, symbol: str | list[str], limit: int | None = None, params = {}) -> Awaitable[DataFrame[OrderBookSchema]] | list[Awaitable[DataFrame[OrderBookSchema]]]:
+    def fetch_order_book(
+        self, symbol: str | list[str], limit: int | None = None, params={}
+    ) -> Awaitable[DataFrame[OrderBookSchema]] | list[Awaitable[DataFrame[OrderBookSchema]]]:
         """Returns a DataFrame[OrderBookSchema] from ccxt.fetch_order_book"""
         ...
 
-    def fetch_order_books(self, symbols: list[str] | None = None, limit: int | None = None, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def fetch_order_books(
+        self, symbols: list[str] | None = None, limit: int | None = None, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetch_order_books"""
         ...
 
@@ -1084,7 +1344,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetch_order_trades"""
         ...
@@ -1096,7 +1356,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[OrdersSchema]] | list[Awaitable[DataFrame[OrdersSchema]]]:
         """Returns a DataFrame[OrdersSchema] from ccxt.fetch_orders"""
         ...
@@ -1108,16 +1368,20 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[OrdersSchema]] | list[Awaitable[DataFrame[OrdersSchema]]]:
         """Returns a DataFrame[OrdersSchema] from ccxt.fetch_orders_ws"""
         ...
 
-    def fetch_position(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetch_position(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetch_position"""
         ...
 
-    def fetch_position_adl_rank(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetch_position_adl_rank(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetch_position_adl_rank"""
         ...
 
@@ -1128,16 +1392,26 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
-    ) -> Awaitable[DataFrame[PositionsHistorySchema]] | list[Awaitable[DataFrame[PositionsHistorySchema]]]:
+        params={},
+    ) -> (
+        Awaitable[DataFrame[PositionsHistorySchema]]
+        | list[Awaitable[DataFrame[PositionsHistorySchema]]]
+    ):
         """Returns a DataFrame[PositionsHistorySchema] from ccxt.fetch_position_history"""
         ...
 
-    def fetch_positions(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[PositionsSchema]] | list[Awaitable[DataFrame[PositionsSchema]]]:
+    def fetch_positions(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[PositionsSchema]] | list[Awaitable[DataFrame[PositionsSchema]]]:
         """Returns a DataFrame[PositionsSchema] from ccxt.fetch_positions"""
         ...
 
-    def fetch_positions_adl_rank(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[PositionsADLRankSchema]] | list[Awaitable[DataFrame[PositionsADLRankSchema]]]:
+    def fetch_positions_adl_rank(
+        self, symbols: list[str] | None = None, params={}
+    ) -> (
+        Awaitable[DataFrame[PositionsADLRankSchema]]
+        | list[Awaitable[DataFrame[PositionsADLRankSchema]]]
+    ):
         """Returns a DataFrame[PositionsADLRankSchema] from ccxt.fetch_positions_adl_rank"""
         ...
 
@@ -1147,24 +1421,33 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         from_date: pd.Timestamp | dict | str | None = None,
         to_date: pd.Timestamp | dict | str | None = None,
         limit: int | None = None,
-        params = {},
-    ) -> Awaitable[DataFrame[PositionsHistorySchema]] | list[Awaitable[DataFrame[PositionsHistorySchema]]]:
+        params={},
+    ) -> (
+        Awaitable[DataFrame[PositionsHistorySchema]]
+        | list[Awaitable[DataFrame[PositionsHistorySchema]]]
+    ):
         """Returns a DataFrame[PositionsHistorySchema] from ccxt.fetch_positions_history"""
         ...
 
-    def fetch_positions_risk(self, symbols: list[str] | None = None, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def fetch_positions_risk(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetch_positions_risk"""
         ...
 
-    def fetch_status(self, params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetch_status(self, params={}) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetch_status"""
         ...
 
-    def fetch_ticker(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetch_ticker(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetch_ticker"""
         ...
 
-    def fetch_tickers(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[TickersSchema]] | list[Awaitable[DataFrame[TickersSchema]]]:
+    def fetch_tickers(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[TickersSchema]] | list[Awaitable[DataFrame[TickersSchema]]]:
         """Returns a DataFrame[TickersSchema] from ccxt.fetch_tickers"""
         ...
 
@@ -1175,20 +1458,26 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[TradeSchema]] | list[Awaitable[DataFrame[TradeSchema]]]:
         """Returns a DataFrame[TradeSchema] from ccxt.fetch_trades"""
         ...
 
-    def fetch_trading_fee(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def fetch_trading_fee(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.fetch_trading_fee"""
         ...
 
-    def fetch_trading_fees(self, params = {}) -> Awaitable[DataFrame[TradingFeesSchema]] | list[Awaitable[DataFrame[TradingFeesSchema]]]:
+    def fetch_trading_fees(
+        self, params={}
+    ) -> Awaitable[DataFrame[TradingFeesSchema]] | list[Awaitable[DataFrame[TradingFeesSchema]]]:
         """Returns a DataFrame[TradingFeesSchema] from ccxt.fetch_trading_fees"""
         ...
 
-    def fetch_transaction_fees(self, codes: list[str] | None = None, params = {}) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
+    def fetch_transaction_fees(
+        self, codes: list[str] | None = None, params={}
+    ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.fetch_transaction_fees"""
         ...
 
@@ -1199,7 +1488,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[TransfersSchema]] | list[Awaitable[DataFrame[TransfersSchema]]]:
         """Returns a DataFrame[TransfersSchema] from ccxt.fetch_transfers"""
         ...
@@ -1211,32 +1500,44 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[TransactionsSchema]] | list[Awaitable[DataFrame[TransactionsSchema]]]:
         """Returns a DataFrame[TransactionsSchema] from ccxt.fetch_withdrawals"""
         ...
 
-    def loadMarkets(self, reload = False, params = {}) -> Awaitable[DataFrame[MarketSchema]] | list[Awaitable[DataFrame[MarketSchema]]]:
+    def loadMarkets(
+        self, reload=False, params={}
+    ) -> Awaitable[DataFrame[MarketSchema]] | list[Awaitable[DataFrame[MarketSchema]]]:
         """Returns a DataFrame[MarketSchema] from ccxt.loadMarkets"""
         ...
 
-    def load_markets(self, reload = False, params = {}) -> Awaitable[DataFrame[MarketSchema]] | list[Awaitable[DataFrame[MarketSchema]]]:
+    def load_markets(
+        self, reload=False, params={}
+    ) -> Awaitable[DataFrame[MarketSchema]] | list[Awaitable[DataFrame[MarketSchema]]]:
         """Returns a DataFrame[MarketSchema] from ccxt.load_markets"""
         ...
 
-    def watchBalance(self, params = {}) -> Awaitable[DataFrame[BalanceSchema]] | list[Awaitable[DataFrame[BalanceSchema]]]:
+    def watchBalance(
+        self, params={}
+    ) -> Awaitable[DataFrame[BalanceSchema]] | list[Awaitable[DataFrame[BalanceSchema]]]:
         """Returns a DataFrame[BalanceSchema] from ccxt.watchBalance"""
         ...
 
-    def watchBidsAsks(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[BidsAsksSchema]] | list[Awaitable[DataFrame[BidsAsksSchema]]]:
+    def watchBidsAsks(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[BidsAsksSchema]] | list[Awaitable[DataFrame[BidsAsksSchema]]]:
         """Returns a DataFrame[BidsAsksSchema] from ccxt.watchBidsAsks"""
         ...
 
-    def watchFundingRate(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def watchFundingRate(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.watchFundingRate"""
         ...
 
-    def watchFundingRates(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[FundingRateSchema]] | list[Awaitable[DataFrame[FundingRateSchema]]]:
+    def watchFundingRates(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[FundingRateSchema]] | list[Awaitable[DataFrame[FundingRateSchema]]]:
         """Returns a DataFrame[FundingRateSchema] from ccxt.watchFundingRates"""
         ...
 
@@ -1247,7 +1548,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[LiquidationsSchema]] | list[Awaitable[DataFrame[LiquidationsSchema]]]:
         """Returns a DataFrame[LiquidationsSchema] from ccxt.watchLiquidations"""
         ...
@@ -1258,16 +1559,20 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         from_date: pd.Timestamp | dict | str | None = None,
         to_date: pd.Timestamp | dict | str | None = None,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[LiquidationsSchema]] | list[Awaitable[DataFrame[LiquidationsSchema]]]:
         """Returns a DataFrame[LiquidationsSchema] from ccxt.watchLiquidationsForSymbols"""
         ...
 
-    def watchMarkPrice(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def watchMarkPrice(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.watchMarkPrice"""
         ...
 
-    def watchMarkPrices(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[MarkPricesSchema]] | list[Awaitable[DataFrame[MarkPricesSchema]]]:
+    def watchMarkPrices(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[MarkPricesSchema]] | list[Awaitable[DataFrame[MarkPricesSchema]]]:
         """Returns a DataFrame[MarkPricesSchema] from ccxt.watchMarkPrices"""
         ...
 
@@ -1278,7 +1583,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[LiquidationsSchema]] | list[Awaitable[DataFrame[LiquidationsSchema]]]:
         """Returns a DataFrame[LiquidationsSchema] from ccxt.watchMyLiquidations"""
         ...
@@ -1289,7 +1594,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         from_date: pd.Timestamp | dict | str | None = None,
         to_date: pd.Timestamp | dict | str | None = None,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[LiquidationsSchema]] | list[Awaitable[DataFrame[LiquidationsSchema]]]:
         """Returns a DataFrame[LiquidationsSchema] from ccxt.watchMyLiquidationsForSymbols"""
         ...
@@ -1301,7 +1606,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[MyTradesSchema]] | list[Awaitable[DataFrame[MyTradesSchema]]]:
         """Returns a DataFrame[MyTradesSchema] from ccxt.watchMyTrades"""
         ...
@@ -1312,7 +1617,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         from_date: pd.Timestamp | dict | str | None = None,
         to_date: pd.Timestamp | dict | str | None = None,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[MyTradesSchema]] | list[Awaitable[DataFrame[MyTradesSchema]]]:
         """Returns a DataFrame[MyTradesSchema] from ccxt.watchMyTradesForSymbols"""
         ...
@@ -1320,12 +1625,12 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
     def watchOHLCV(
         self,
         symbol: str | list[str],
-        timeframe: str = '1m',
+        timeframe: str = "1m",
         from_date: pd.Timestamp | dict | str | None = None,
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.watchOHLCV"""
         ...
@@ -1336,16 +1641,20 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         from_date: pd.Timestamp | dict | str | None = None,
         to_date: pd.Timestamp | dict | str | None = None,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[pd.DataFrame] | list[Awaitable[pd.DataFrame]]:
         """Returns a pd.DataFrame from ccxt.watchOHLCVForSymbols"""
         ...
 
-    def watchOrderBook(self, symbol: str | list[str], limit: int | None = None, params = {}) -> Awaitable[DataFrame[OrderBookSchema]] | list[Awaitable[DataFrame[OrderBookSchema]]]:
+    def watchOrderBook(
+        self, symbol: str | list[str], limit: int | None = None, params={}
+    ) -> Awaitable[DataFrame[OrderBookSchema]] | list[Awaitable[DataFrame[OrderBookSchema]]]:
         """Returns a DataFrame[OrderBookSchema] from ccxt.watchOrderBook"""
         ...
 
-    def watchOrderBookForSymbols(self, symbols: list[str], limit: int | None = None, params = {}) -> Awaitable[DataFrame[OrderBookSchema]] | list[Awaitable[DataFrame[OrderBookSchema]]]:
+    def watchOrderBookForSymbols(
+        self, symbols: list[str], limit: int | None = None, params={}
+    ) -> Awaitable[DataFrame[OrderBookSchema]] | list[Awaitable[DataFrame[OrderBookSchema]]]:
         """Returns a DataFrame[OrderBookSchema] from ccxt.watchOrderBookForSymbols"""
         ...
 
@@ -1356,7 +1665,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[OrdersSchema]] | list[Awaitable[DataFrame[OrdersSchema]]]:
         """Returns a DataFrame[OrdersSchema] from ccxt.watchOrders"""
         ...
@@ -1367,12 +1676,14 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         from_date: pd.Timestamp | dict | str | None = None,
         to_date: pd.Timestamp | dict | str | None = None,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[OrdersSchema]] | list[Awaitable[DataFrame[OrdersSchema]]]:
         """Returns a DataFrame[OrdersSchema] from ccxt.watchOrdersForSymbols"""
         ...
 
-    def watchPosition(self, symbol: str | list[str] = None, params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def watchPosition(
+        self, symbol: str | list[str] = None, params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.watchPosition"""
         ...
 
@@ -1382,16 +1693,20 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         from_date: pd.Timestamp | dict | str | None = None,
         to_date: pd.Timestamp | dict | str | None = None,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[PositionsSchema]] | list[Awaitable[DataFrame[PositionsSchema]]]:
         """Returns a DataFrame[PositionsSchema] from ccxt.watchPositions"""
         ...
 
-    def watchTicker(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def watchTicker(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.watchTicker"""
         ...
 
-    def watchTickers(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[TickersSchema]] | list[Awaitable[DataFrame[TickersSchema]]]:
+    def watchTickers(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[TickersSchema]] | list[Awaitable[DataFrame[TickersSchema]]]:
         """Returns a DataFrame[TickersSchema] from ccxt.watchTickers"""
         ...
 
@@ -1402,7 +1717,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[TradeSchema]] | list[Awaitable[DataFrame[TradeSchema]]]:
         """Returns a DataFrame[TradeSchema] from ccxt.watchTrades"""
         ...
@@ -1413,24 +1728,32 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         from_date: pd.Timestamp | dict | str | None = None,
         to_date: pd.Timestamp | dict | str | None = None,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[TradeSchema]] | list[Awaitable[DataFrame[TradeSchema]]]:
         """Returns a DataFrame[TradeSchema] from ccxt.watchTradesForSymbols"""
         ...
 
-    def watch_balance(self, params = {}) -> Awaitable[DataFrame[BalanceSchema]] | list[Awaitable[DataFrame[BalanceSchema]]]:
+    def watch_balance(
+        self, params={}
+    ) -> Awaitable[DataFrame[BalanceSchema]] | list[Awaitable[DataFrame[BalanceSchema]]]:
         """Returns a DataFrame[BalanceSchema] from ccxt.watch_balance"""
         ...
 
-    def watch_bids_asks(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[BidsAsksSchema]] | list[Awaitable[DataFrame[BidsAsksSchema]]]:
+    def watch_bids_asks(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[BidsAsksSchema]] | list[Awaitable[DataFrame[BidsAsksSchema]]]:
         """Returns a DataFrame[BidsAsksSchema] from ccxt.watch_bids_asks"""
         ...
 
-    def watch_funding_rate(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def watch_funding_rate(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.watch_funding_rate"""
         ...
 
-    def watch_funding_rates(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[FundingRateSchema]] | list[Awaitable[DataFrame[FundingRateSchema]]]:
+    def watch_funding_rates(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[FundingRateSchema]] | list[Awaitable[DataFrame[FundingRateSchema]]]:
         """Returns a DataFrame[FundingRateSchema] from ccxt.watch_funding_rates"""
         ...
 
@@ -1441,7 +1764,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[LiquidationsSchema]] | list[Awaitable[DataFrame[LiquidationsSchema]]]:
         """Returns a DataFrame[LiquidationsSchema] from ccxt.watch_liquidations"""
         ...
@@ -1452,16 +1775,20 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         from_date: pd.Timestamp | dict | str | None = None,
         to_date: pd.Timestamp | dict | str | None = None,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[LiquidationsSchema]] | list[Awaitable[DataFrame[LiquidationsSchema]]]:
         """Returns a DataFrame[LiquidationsSchema] from ccxt.watch_liquidations_for_symbols"""
         ...
 
-    def watch_mark_price(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def watch_mark_price(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.watch_mark_price"""
         ...
 
-    def watch_mark_prices(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[MarkPricesSchema]] | list[Awaitable[DataFrame[MarkPricesSchema]]]:
+    def watch_mark_prices(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[MarkPricesSchema]] | list[Awaitable[DataFrame[MarkPricesSchema]]]:
         """Returns a DataFrame[MarkPricesSchema] from ccxt.watch_mark_prices"""
         ...
 
@@ -1472,7 +1799,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[LiquidationsSchema]] | list[Awaitable[DataFrame[LiquidationsSchema]]]:
         """Returns a DataFrame[LiquidationsSchema] from ccxt.watch_my_liquidations"""
         ...
@@ -1483,7 +1810,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         from_date: pd.Timestamp | dict | str | None = None,
         to_date: pd.Timestamp | dict | str | None = None,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[LiquidationsSchema]] | list[Awaitable[DataFrame[LiquidationsSchema]]]:
         """Returns a DataFrame[LiquidationsSchema] from ccxt.watch_my_liquidations_for_symbols"""
         ...
@@ -1495,7 +1822,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[MyTradesSchema]] | list[Awaitable[DataFrame[MyTradesSchema]]]:
         """Returns a DataFrame[MyTradesSchema] from ccxt.watch_my_trades"""
         ...
@@ -1506,7 +1833,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         from_date: pd.Timestamp | dict | str | None = None,
         to_date: pd.Timestamp | dict | str | None = None,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[MyTradesSchema]] | list[Awaitable[DataFrame[MyTradesSchema]]]:
         """Returns a DataFrame[MyTradesSchema] from ccxt.watch_my_trades_for_symbols"""
         ...
@@ -1514,12 +1841,12 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
     def watch_ohlcv(
         self,
         symbol: str | list[str],
-        timeframe: str = '1m',
+        timeframe: str = "1m",
         from_date: pd.Timestamp | dict | str | None = None,
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[OHLCVSchema]] | list[Awaitable[DataFrame[OHLCVSchema]]]:
         """Returns a DataFrame[OHLCVSchema] from ccxt.watch_ohlcv"""
         ...
@@ -1530,16 +1857,20 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         from_date: pd.Timestamp | dict | str | None = None,
         to_date: pd.Timestamp | dict | str | None = None,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[OHLCVSchema]] | list[Awaitable[DataFrame[OHLCVSchema]]]:
         """Returns a DataFrame[OHLCVSchema] from ccxt.watch_ohlcv_for_symbols"""
         ...
 
-    def watch_order_book(self, symbol: str | list[str], limit: int | None = None, params = {}) -> Awaitable[DataFrame[OrderBookSchema]] | list[Awaitable[DataFrame[OrderBookSchema]]]:
+    def watch_order_book(
+        self, symbol: str | list[str], limit: int | None = None, params={}
+    ) -> Awaitable[DataFrame[OrderBookSchema]] | list[Awaitable[DataFrame[OrderBookSchema]]]:
         """Returns a DataFrame[OrderBookSchema] from ccxt.watch_order_book"""
         ...
 
-    def watch_order_book_for_symbols(self, symbols: list[str], limit: int | None = None, params = {}) -> Awaitable[DataFrame[OrderBookSchema]] | list[Awaitable[DataFrame[OrderBookSchema]]]:
+    def watch_order_book_for_symbols(
+        self, symbols: list[str], limit: int | None = None, params={}
+    ) -> Awaitable[DataFrame[OrderBookSchema]] | list[Awaitable[DataFrame[OrderBookSchema]]]:
         """Returns a DataFrame[OrderBookSchema] from ccxt.watch_order_book_for_symbols"""
         ...
 
@@ -1550,7 +1881,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[OrdersSchema]] | list[Awaitable[DataFrame[OrdersSchema]]]:
         """Returns a DataFrame[OrdersSchema] from ccxt.watch_orders"""
         ...
@@ -1561,12 +1892,14 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         from_date: pd.Timestamp | dict | str | None = None,
         to_date: pd.Timestamp | dict | str | None = None,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[OrdersSchema]] | list[Awaitable[DataFrame[OrdersSchema]]]:
         """Returns a DataFrame[OrdersSchema] from ccxt.watch_orders_for_symbols"""
         ...
 
-    def watch_position(self, symbol: str | list[str] = None, params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def watch_position(
+        self, symbol: str | list[str] = None, params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.watch_position"""
         ...
 
@@ -1576,16 +1909,20 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         from_date: pd.Timestamp | dict | str | None = None,
         to_date: pd.Timestamp | dict | str | None = None,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[PositionsSchema]] | list[Awaitable[DataFrame[PositionsSchema]]]:
         """Returns a DataFrame[PositionsSchema] from ccxt.watch_positions"""
         ...
 
-    def watch_ticker(self, symbol: str | list[str], params = {}) -> Awaitable[dict] | list[Awaitable[dict]]:
+    def watch_ticker(
+        self, symbol: str | list[str], params={}
+    ) -> Awaitable[dict] | list[Awaitable[dict]]:
         """Returns a dict from ccxt.watch_ticker"""
         ...
 
-    def watch_tickers(self, symbols: list[str] | None = None, params = {}) -> Awaitable[DataFrame[TickersSchema]] | list[Awaitable[DataFrame[TickersSchema]]]:
+    def watch_tickers(
+        self, symbols: list[str] | None = None, params={}
+    ) -> Awaitable[DataFrame[TickersSchema]] | list[Awaitable[DataFrame[TickersSchema]]]:
         """Returns a DataFrame[TickersSchema] from ccxt.watch_tickers"""
         ...
 
@@ -1596,7 +1933,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         to_date: pd.Timestamp | dict | str | None = None,
         cache: bool = False,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[TradeSchema]] | list[Awaitable[DataFrame[TradeSchema]]]:
         """Returns a DataFrame[TradeSchema] from ccxt.watch_trades"""
         ...
@@ -1607,7 +1944,7 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         from_date: pd.Timestamp | dict | str | None = None,
         to_date: pd.Timestamp | dict | str | None = None,
         limit: int | None = None,
-        params = {},
+        params={},
     ) -> Awaitable[DataFrame[TradeSchema]] | list[Awaitable[DataFrame[TradeSchema]]]:
         """Returns a DataFrame[TradeSchema] from ccxt.watch_trades_for_symbols"""
         ...
@@ -1860,7 +2197,9 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         """Returns a pd.DataFrame from ccxt.privateGetFinanceFlexibleLoanLoanInfo"""
         ...
 
-    def privateGetFinanceFlexibleLoanMaxCollateralRedeemAmount(self, params={}) -> Awaitable[pd.DataFrame]:
+    def privateGetFinanceFlexibleLoanMaxCollateralRedeemAmount(
+        self, params={}
+    ) -> Awaitable[pd.DataFrame]:
         """Returns a pd.DataFrame from ccxt.privateGetFinanceFlexibleLoanMaxCollateralRedeemAmount"""
         ...
 
@@ -1880,7 +2219,9 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         """Returns a pd.DataFrame from ccxt.privateGetFinanceStakingDefiEthProductInfo"""
         ...
 
-    def privateGetFinanceStakingDefiEthPurchaseRedeemHistory(self, params={}) -> Awaitable[pd.DataFrame]:
+    def privateGetFinanceStakingDefiEthPurchaseRedeemHistory(
+        self, params={}
+    ) -> Awaitable[pd.DataFrame]:
         """Returns a pd.DataFrame from ccxt.privateGetFinanceStakingDefiEthPurchaseRedeemHistory"""
         ...
 
@@ -1904,7 +2245,9 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         """Returns a pd.DataFrame from ccxt.privateGetFinanceStakingDefiSolProductInfo"""
         ...
 
-    def privateGetFinanceStakingDefiSolPurchaseRedeemHistory(self, params={}) -> Awaitable[pd.DataFrame]:
+    def privateGetFinanceStakingDefiSolPurchaseRedeemHistory(
+        self, params={}
+    ) -> Awaitable[pd.DataFrame]:
         """Returns a pd.DataFrame from ccxt.privateGetFinanceStakingDefiSolPurchaseRedeemHistory"""
         ...
 
@@ -2212,15 +2555,21 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         """Returns a pd.DataFrame from ccxt.publicGetPublicSettlementHistory"""
         ...
 
-    def publicGetRubikStatContractsLongShortAccountRatio(self, params={}) -> Awaitable[pd.DataFrame]:
+    def publicGetRubikStatContractsLongShortAccountRatio(
+        self, params={}
+    ) -> Awaitable[pd.DataFrame]:
         """Returns a pd.DataFrame from ccxt.publicGetRubikStatContractsLongShortAccountRatio"""
         ...
 
-    def publicGetRubikStatContractsLongShortAccountRatioContract(self, params={}) -> Awaitable[pd.DataFrame]:
+    def publicGetRubikStatContractsLongShortAccountRatioContract(
+        self, params={}
+    ) -> Awaitable[pd.DataFrame]:
         """Returns a pd.DataFrame from ccxt.publicGetRubikStatContractsLongShortAccountRatioContract"""
         ...
 
-    def publicGetRubikStatContractsLongShortAccountRatioContractTopTrader(self, params={}) -> Awaitable[pd.DataFrame]:
+    def publicGetRubikStatContractsLongShortAccountRatioContractTopTrader(
+        self, params={}
+    ) -> Awaitable[pd.DataFrame]:
         """Returns a pd.DataFrame from ccxt.publicGetRubikStatContractsLongShortAccountRatioContractTopTrader"""
         ...
 
@@ -2240,7 +2589,9 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         """Returns a pd.DataFrame from ccxt.publicGetRubikStatOptionOpenInterestVolume"""
         ...
 
-    def publicGetRubikStatOptionOpenInterestVolumeExpiry(self, params={}) -> Awaitable[pd.DataFrame]:
+    def publicGetRubikStatOptionOpenInterestVolumeExpiry(
+        self, params={}
+    ) -> Awaitable[pd.DataFrame]:
         """Returns a pd.DataFrame from ccxt.publicGetRubikStatOptionOpenInterestVolumeExpiry"""
         ...
 
@@ -2248,7 +2599,9 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         """Returns a pd.DataFrame from ccxt.publicGetRubikStatOptionOpenInterestVolumeRatio"""
         ...
 
-    def publicGetRubikStatOptionOpenInterestVolumeStrike(self, params={}) -> Awaitable[pd.DataFrame]:
+    def publicGetRubikStatOptionOpenInterestVolumeStrike(
+        self, params={}
+    ) -> Awaitable[pd.DataFrame]:
         """Returns a pd.DataFrame from ccxt.publicGetRubikStatOptionOpenInterestVolumeStrike"""
         ...
 
@@ -2336,7 +2689,9 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         """Returns a pd.DataFrame from ccxt.sapiGetSimpleEarnAccount"""
         ...
 
-    def sapiGetSimpleEarnFlexibleHistoryRedemptionRecord(self, params={}) -> Awaitable[pd.DataFrame]:
+    def sapiGetSimpleEarnFlexibleHistoryRedemptionRecord(
+        self, params={}
+    ) -> Awaitable[pd.DataFrame]:
         """Returns a pd.DataFrame from ccxt.sapiGetSimpleEarnFlexibleHistoryRedemptionRecord"""
         ...
 
@@ -2344,7 +2699,9 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         """Returns a pd.DataFrame from ccxt.sapiGetSimpleEarnFlexibleHistoryRewardsRecord"""
         ...
 
-    def sapiGetSimpleEarnFlexibleHistorySubscriptionRecord(self, params={}) -> Awaitable[pd.DataFrame]:
+    def sapiGetSimpleEarnFlexibleHistorySubscriptionRecord(
+        self, params={}
+    ) -> Awaitable[pd.DataFrame]:
         """Returns a pd.DataFrame from ccxt.sapiGetSimpleEarnFlexibleHistorySubscriptionRecord"""
         ...
 
@@ -2364,7 +2721,9 @@ class AsyncCCXTPandasExchangeTyped(Protocol):
         """Returns a pd.DataFrame from ccxt.sapiGetSimpleEarnLockedHistoryRewardsRecord"""
         ...
 
-    def sapiGetSimpleEarnLockedHistorySubscriptionRecord(self, params={}) -> Awaitable[pd.DataFrame]:
+    def sapiGetSimpleEarnLockedHistorySubscriptionRecord(
+        self, params={}
+    ) -> Awaitable[pd.DataFrame]:
         """Returns a pd.DataFrame from ccxt.sapiGetSimpleEarnLockedHistorySubscriptionRecord"""
         ...
 

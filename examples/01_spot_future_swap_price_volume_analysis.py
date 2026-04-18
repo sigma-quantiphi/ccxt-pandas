@@ -117,9 +117,7 @@ for symbol, group in ohlcv.groupby("symbol"):
     legend_title = legend_titles.get(legend_group, legend_group)
 
     legend_title_arg = (
-        {"legendgrouptitle_text": legend_title}
-        if legend_group not in added_legendgroups
-        else {}
+        {"legendgrouptitle_text": legend_title} if legend_group not in added_legendgroups else {}
     )
     added_legendgroups.add(legend_group)
 

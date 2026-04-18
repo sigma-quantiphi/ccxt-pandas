@@ -1,6 +1,5 @@
 """Order book data schema."""
 
-from typing import Optional
 
 import pandas as pd
 import pandera.pandas as pa
@@ -18,9 +17,7 @@ class OrderBookSchema(BaseExchangeSchema):
     differentiated by the 'side' column.
     """
 
-    price: Series[float] = pa.Field(
-        ge=0, nullable=True, title="Price", description="Price level"
-    )
+    price: Series[float] = pa.Field(ge=0, nullable=True, title="Price", description="Price level")
     qty: Series[float] = pa.Field(
         ge=0,
         nullable=True,
@@ -33,15 +30,15 @@ class OrderBookSchema(BaseExchangeSchema):
         title="Side",
         description="Side: 'bids' or 'asks'",
     )
-    symbol: Optional[Series[str]] = pa.Field(
+    symbol: Series[str] | None = pa.Field(
         nullable=True, title="Symbol", description="Trading pair"
     )
-    timestamp: Optional[Series[pd.Timestamp]] = pa.Field(
+    timestamp: Series[pd.Timestamp] | None = pa.Field(
         nullable=True, title="Timestamp", description="Order book timestamp"
     )
-    datetime: Optional[Series[pd.Timestamp]] = pa.Field(
+    datetime: Series[pd.Timestamp] | None = pa.Field(
         nullable=True, title="Datetime", description="Order book datetime (alias)"
     )
-    nonce: Optional[Series[int]] = pa.Field(
+    nonce: Series[int] | None = pa.Field(
         nullable=True, title="Nonce", description="Order book sequence number"
     )

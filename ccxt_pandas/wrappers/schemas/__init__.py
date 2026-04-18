@@ -27,10 +27,10 @@ from ccxt_pandas.wrappers.schemas.deposit_withdraw_fees_schema import (
 )
 from ccxt_pandas.wrappers.schemas.funding_history_schema import FundingHistorySchema
 from ccxt_pandas.wrappers.schemas.funding_intervals_schema import FundingIntervalsSchema
-from ccxt_pandas.wrappers.schemas.funding_rate_schema import FundingRateSchema
 from ccxt_pandas.wrappers.schemas.funding_rate_history_schema import (
     FundingRateHistorySchema,
 )
+from ccxt_pandas.wrappers.schemas.funding_rate_schema import FundingRateSchema
 from ccxt_pandas.wrappers.schemas.greeks_schema import GreeksSchema
 from ccxt_pandas.wrappers.schemas.last_prices_schema import LastPricesSchema
 from ccxt_pandas.wrappers.schemas.ledger_schema import LedgerSchema
@@ -44,16 +44,16 @@ from ccxt_pandas.wrappers.schemas.ohlcv_schema import OHLCVSchema
 from ccxt_pandas.wrappers.schemas.open_interest_history_schema import (
     OpenInterestHistorySchema,
 )
+from ccxt_pandas.wrappers.schemas.order_book_schema import OrderBookSchema
 from ccxt_pandas.wrappers.schemas.order_schema import OrderSchema
 from ccxt_pandas.wrappers.schemas.orders_schema import OrdersSchema
-from ccxt_pandas.wrappers.schemas.order_book_schema import OrderBookSchema
 from ccxt_pandas.wrappers.schemas.portfolio_details_schema import PortfolioDetailsSchema
 from ccxt_pandas.wrappers.schemas.portfolios_schema import PortfoliosSchema
 from ccxt_pandas.wrappers.schemas.positions_adl_rank_schema import (
     PositionsADLRankSchema,
 )
-from ccxt_pandas.wrappers.schemas.positions_schema import PositionsSchema
 from ccxt_pandas.wrappers.schemas.positions_history_schema import PositionsHistorySchema
+from ccxt_pandas.wrappers.schemas.positions_schema import PositionsSchema
 from ccxt_pandas.wrappers.schemas.tickers_schema import TickersSchema
 from ccxt_pandas.wrappers.schemas.trade_schema import MyTradesSchema, TradeSchema
 from ccxt_pandas.wrappers.schemas.trading_fees_schema import TradingFeesSchema

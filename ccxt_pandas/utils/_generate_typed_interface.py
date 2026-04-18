@@ -1,18 +1,19 @@
 import inspect
 import types as builtin_types
-from typing import Callable, Literal, Union, get_args, get_origin
+from collections.abc import Callable
+from typing import Literal, Union, get_args, get_origin
 
 import ccxt
 import ccxt.pro as ccxt_pro
 
-from ccxt_pandas.wrappers.method_mappings import (
-    dataframe_methods,
-    modified_methods,
-    get_method_schema,
-)
 from ccxt_pandas.wrappers.exchange_parsers import (
     BINANCE_METHOD_CONFIG,
     OKX_METHOD_CONFIG,
+)
+from ccxt_pandas.wrappers.method_mappings import (
+    dataframe_methods,
+    get_method_schema,
+    modified_methods,
 )
 
 # Build reverse lookup from ccxt.base.types for known type aliases
@@ -184,7 +185,7 @@ def _collect_used_imports(code: str) -> str:
         schemas = sorted(set(re.findall(schema_pattern, code)))
         if schemas:
             # Import all used schemas
-            lines.append(f"from ccxt_pandas.wrappers.schemas import (")
+            lines.append("from ccxt_pandas.wrappers.schemas import (")
             for i, schema in enumerate(schemas):
                 comma = "," if i < len(schemas) - 1 else ""
                 lines.append(f"    {schema}{comma}")
@@ -232,8 +233,7 @@ def generate_typed_interface_class(
     is_async: bool = False,
 ) -> str:
     class_header = (
-        f"\nclass {class_name}(Protocol):\n"
-        f'    """A Class to add type hinting to {class_name}"""\n'
+        f'\nclass {class_name}(Protocol):\n    """A Class to add type hinting to {class_name}"""\n'
     )
     lines = []
     for method_name in sorted(modified_methods):

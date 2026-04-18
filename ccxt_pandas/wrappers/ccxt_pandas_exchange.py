@@ -1,31 +1,30 @@
 import inspect
+from collections.abc import Callable
+from dataclasses import dataclass, field
 from functools import wraps
-from typing import Literal, Callable, Union, Any
+from typing import Any, Literal
 
 import ccxt
 import pandas as pd
-from dataclasses import dataclass, field
-
 from cachetools.func import ttl_cache
 
-from ccxt_pandas.wrappers.base_processor import BaseProcessor
-from ccxt_pandas.wrappers.method_mappings import (
-    single_order_methods,
-    symbol_order_methods,
-    modified_methods,
-)
 from ccxt_pandas.utils.ccxt_pandas_exchange_typed import CCXTPandasExchangeTyped
 from ccxt_pandas.utils.pandas_utils import (
+    FunctionHandler,
+    concat_results,
+    merge_markets_with_balances,
     preprocess_order,
     preprocess_order_dataframe,
-    check_orders_dataframe_size,
-    concat_results,
-    FunctionHandler,
-    merge_markets_with_balances,
     timestamp_to_int,
 )
 from ccxt_pandas.utils.utils import exchange_has_method
+from ccxt_pandas.wrappers.base_processor import BaseProcessor
 from ccxt_pandas.wrappers.exchange_parsers import get_parser
+from ccxt_pandas.wrappers.method_mappings import (
+    modified_methods,
+    single_order_methods,
+    symbol_order_methods,
+)
 
 
 @dataclass
@@ -72,9 +71,7 @@ class CCXTPandasExchange(CCXTPandasExchangeTyped):
     price_out_of_range: Literal["warn", "clip"] = "warn"
     validate_schemas: bool = False
     strict_validation: bool = False
-    _ccxt_processor: BaseProcessor = field(
-        default_factory=BaseProcessor, init=False, repr=False
-    )
+    _ccxt_processor: BaseProcessor = field(default_factory=BaseProcessor, init=False, repr=False)
     _function_handler: FunctionHandler = field(
         default_factory=FunctionHandler, init=False, repr=False
     )
@@ -108,7 +105,7 @@ class CCXTPandasExchange(CCXTPandasExchangeTyped):
         original_method = getattr(self.exchange, method_name)
 
         @wraps(original_method)
-        def base_call(*args, **kwargs) -> Union[dict, pd.DataFrame]:
+        def base_call(*args, **kwargs) -> dict | pd.DataFrame:
             if method_name in single_order_methods:
                 kwargs["amount"], kwargs["price"] = preprocess_order(
                     exchange=self.exchange,
@@ -154,10 +151,12 @@ class CCXTPandasExchange(CCXTPandasExchangeTyped):
                 processor = super().__getattribute__("_ccxt_processor")
                 parser = get_parser(processor.exchange_name)
                 if parser is not None:
+
                     @wraps(exchange_method)
                     def implicit_wrapper(*args, **kwargs):
                         result = exchange_method(*args, **kwargs)
                         return parser(processor, result, method_name=method_name)
+
                     return implicit_wrapper
             return super().__getattribute__(method_name)
 
@@ -177,25 +176,21 @@ class CCXTPandasExchange(CCXTPandasExchangeTyped):
             to_date = kwargs.pop("to_date", None)
 
             if symbols and (supports_symbol or supports_code):
-                symbol_column: Literal["code", "symbol"] = (
-                    "code" if supports_code else "symbol"
-                )
+                symbol_column: Literal["code", "symbol"] = "code" if supports_code else "symbol"
                 if cache:
                     cache_attr = method_name.replace("fetch_", "")
                     try:
                         current_cache = object.__getattribute__(self, cache_attr)
                     except AttributeError:
                         current_cache = pd.DataFrame()
-                    updated = (
-                        self._function_handler.load_multi_symbol_dataset_into_cache(
-                            function=base_call,
-                            data=current_cache,
-                            symbols=symbols,
-                            symbol_column=symbol_column,
-                            from_date=from_date,
-                            to_date=to_date,
-                            **kwargs,
-                        )
+                    updated = self._function_handler.load_multi_symbol_dataset_into_cache(
+                        function=base_call,
+                        data=current_cache,
+                        symbols=symbols,
+                        symbol_column=symbol_column,
+                        from_date=from_date,
+                        to_date=to_date,
+                        **kwargs,
                     )
                     setattr(self, cache_attr, updated)
                     return updated.copy()
@@ -244,9 +239,7 @@ class CCXTPandasExchange(CCXTPandasExchangeTyped):
 
         return wrapper
 
-    def create_order_from_dataframe(
-        self, orders: pd.DataFrame, **kwargs
-    ) -> pd.DataFrame:
+    def create_order_from_dataframe(self, orders: pd.DataFrame, **kwargs) -> pd.DataFrame:
         base_call = self._make_base_call("create_order")
         return self._function_handler.loop_through_orders(
             function=base_call,
@@ -264,9 +257,7 @@ class CCXTPandasExchange(CCXTPandasExchangeTyped):
             **kwargs,
         )
 
-    def cancel_order_from_dataframe(
-        self, orders: pd.DataFrame, **kwargs
-    ) -> pd.DataFrame:
+    def cancel_order_from_dataframe(self, orders: pd.DataFrame, **kwargs) -> pd.DataFrame:
         base_call = self._make_base_call("cancel_order")
         return self._function_handler.loop_through_orders(
             function=base_call,
@@ -331,9 +322,7 @@ class CCXTPandasExchange(CCXTPandasExchangeTyped):
             results.append(result)
         return concat_results(results)
 
-    def cancel_orders_from_dataframe(
-        self, orders: pd.DataFrame, **kwargs
-    ) -> pd.DataFrame:
+    def cancel_orders_from_dataframe(self, orders: pd.DataFrame, **kwargs) -> pd.DataFrame:
         base_call = self._make_base_call("cancel_orders")
         return self._function_handler.call_per_group_concat(
             function=base_call,
@@ -355,9 +344,7 @@ class CCXTPandasExchange(CCXTPandasExchangeTyped):
         reload_markets: bool = False,
     ) -> pd.DataFrame:
         return merge_markets_with_balances(
-            markets=self.load_markets(
-                params=markets_params or {}, reload=reload_markets
-            ),
+            markets=self.load_markets(params=markets_params or {}, reload=reload_markets),
             balance=self.fetch_balance(params=balance_params or {}),
         )
 
