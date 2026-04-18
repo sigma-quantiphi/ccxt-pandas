@@ -63,13 +63,17 @@ exclude_patterns = []
 html_baseurl = "https://sigma-quantiphi.github.io/ccxt-pandas/"
 html_theme = "furo"
 html_static_path = ["_static"]
-html_context = {"default_mode": "dark"}
 html_logo = "_static/Sigma-Quantiphi-logo-new.png"
 html_favicon = "_static/favicon.png"
+html_js_files = [("default-dark.js", {"priority": 100})]  # run before furo.js (priority 800)
 html_theme_options = {
     "source_repository": "https://github.com/sigma-quantiphi/ccxt-pandas/",
     "source_branch": "main",
     "source_directory": "docs/source/",
+    # default_mode controls furo's initial theme on first load (before user
+    # interacts with the toggle). default-dark.js handles the
+    # already-cached-as-light edge case.
+    "default_mode": "dark",
 }
 ogp_site_url = html_baseurl
 ogp_site_name = "ccxt-pandas docs"
