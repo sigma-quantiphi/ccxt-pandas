@@ -39,7 +39,7 @@ dependencies = [
 [project.optional-dependencies]
 docs = [
     "sphinx>=8.2.3,<9.0.0",
-    "furo>=2024.8.6,<2025.0.0",
+    "furo>=2024.8.6,<2026.0.0",
     "myst-parser>=4.0",
     "linkify-it-py>=2.0",
     "sphinx_copybutton>=0.5",
