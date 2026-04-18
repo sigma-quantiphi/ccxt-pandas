@@ -153,6 +153,6 @@ def test_signed_price_alias_for_sort_keeps_best_at_top():
     """signed_price reverses bid order so sort ascending puts best bid first."""
     df = pd.DataFrame({"side": ["bids", "bids", "bids"], "price": [98.0, 99.0, 99.5]})
     sp = signed_price(df)
-    # All bids → all negative; ascending sort puts most negative first = highest abs price = best bid
+    # All bids → negative; ascending sort puts most negative first = best bid (highest price)
     assert sp.tolist() == [-98.0, -99.0, -99.5]
     assert np.argmin(sp) == 2  # index 2 (price 99.5) sorts first

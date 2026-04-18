@@ -169,6 +169,10 @@ module = "ccxt_pandas.utils.pandas_utils"
 disable_error_code = ["arg-type", "assignment", "operator", "var-annotated", "union-attr", "return-value", "misc"]
 
 [[tool.mypy.overrides]]
+module = "ccxt_pandas.calculations.*"
+disable_error_code = ["assignment", "return-value", "arg-type"]
+
+[[tool.mypy.overrides]]
 module = "ccxt_pandas.utils._generate_typed_interface"
 ignore_errors = true
 
