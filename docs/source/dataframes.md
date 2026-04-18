@@ -63,7 +63,7 @@ full list of schemas, see the API reference.
 | id | symbol | side | type | price | amount | filled | status | timestamp |
 |---|---|---|---|---|---|---|---|---|
 
-- For batch operations, accept and return the same DataFrame shape — see [examples/00_sync_basics.py](https://github.com/sigma-quantiphi/ccxt-pandas/blob/main/examples/00_sync_basics.py).
+- For batch operations, accept and return the same DataFrame shape — see [examples/00_sync_basics.ipynb](https://github.com/sigma-quantiphi/ccxt-pandas/blob/main/examples/00_sync_basics.ipynb).
 
 ## Markets — `load_markets`, `fetch_markets`
 
@@ -79,7 +79,7 @@ full list of schemas, see the API reference.
 |---|---|---|---|---|---|---|---|---|---|
 
 - One row per `(currency, network)` combination — networks are exploded.
-- Useful for routing transfers (see [examples/18_cheapest_withdrawal_route.py](https://github.com/sigma-quantiphi/ccxt-pandas/blob/main/examples/18_cheapest_withdrawal_route.py)).
+- Useful for routing transfers (see [examples/18_cheapest_withdrawal_route.ipynb](https://github.com/sigma-quantiphi/ccxt-pandas/blob/main/examples/18_cheapest_withdrawal_route.ipynb)).
 
 ## Funding rates — `fetch_funding_rates`, `fetch_funding_rate_history`
 

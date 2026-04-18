@@ -47,30 +47,31 @@ pip install ccxt-pandas
 
 ## Examples
 
-See the [`examples/`](examples/) directory for 17 runnable scripts covering market data, trading, analytics, and WebSocket streaming:
+See the [`examples/`](examples/) directory for 20 runnable examples covering market data, trading, analytics, and WebSocket streaming. Most ship as paired `.py` + `.ipynb` files (open the notebook in [Binder](https://mybinder.org/v2/gh/sigma-quantiphi/ccxt-pandas/HEAD?urlpath=%2Fdoc%2Ftree%2Fexamples) for inline plots); the 4 async / WebSocket examples (10, 14, 16, 17) are `.py`-only because Jupyter's running event loop breaks `asyncio.run()`.
 
-| # | Script | Description | Auth? |
+| # | Notebook | Description | Auth? |
 |---|--------|-------------|-------|
-| 01 | [Spot/Future/Swap Analysis](examples/01_spot_future_swap_price_volume_analysis.py) | BTC spread and volume across contract types | No |
-| 02 | [Exchange Arbitrage](examples/02_exchange_arbitrage.py) | Cross-exchange spread detection | No |
-| 03 | [Fetch Private Data](examples/03_fetch_private_data.py) | Trades, positions, greeks | Yes |
-| 04 | [Plot Trades](examples/04_plot_trades.py) | OHLCV candlestick + trade scatter charts | No |
-| 05 | [Orderbook Depth](examples/05_plot_orderbook_depth.py) | Cumulative depth chart | No |
-| 06 | [Orderbook VWAPs](examples/06_calculate_orderbook_vwaps.py) | VWAP at multiple notional depths | No |
-| 07 | [Market Making](examples/07_market_making_orders.py) | LIMIT_MAKER and QUEUE orders | Yes |
-| 08 | [Coin-Quoted Pricing](examples/08_pricing_coin_quoted_symbols.py) | Convert to USDT-equivalent prices | No |
-| 09 | [Deposits/Withdrawals](examples/09_deposits_withdrawals.py) | Fetch deposit/withdrawal history | Yes |
-| 10 | [WS Liquidations](examples/10_websockets_listen_liquidations.py) | Stream live liquidation events | No |
-| 11 | [Volatility History](examples/11_fetch_volatility_history.py) | BTC volatility from Deribit | No |
-| 12 | [Options Calendar Spread](examples/12_options_strategy_around_event.py) | Pick BTC call legs around an event date | No |
-| 13 | [Delta Position](examples/13_delta_position.py) | Net delta across spot + derivatives | Yes |
-| 14 | [WS Orders](examples/14_send_orders_via_websockets.py) | Place/edit orders via WebSocket | Yes |
-| 15 | [Open Interest](examples/15_open_interest_history.py) | Historical open interest + pct change | No |
-| 16 | [1000 OHLCV Async](examples/16_load_1000_ohlcv_async.py) | Bulk OHLCV with `asyncio.gather` | No |
-| 17 | [All Exchanges Async](examples/17_load_symbols_all_exchanges_async.py) | Load markets from every exchange | No |
-| 18 | [Cheapest Withdrawal Route](examples/18_cheapest_withdrawal_route.py) | Cheapest cross-exchange transfer rail per currency | Yes |
-| 19 | [Multi-Exchange Greeks](examples/19_multi_exchange_greeks.py) | Aggregate option Greeks across binance/bybit/okx | No |
-| 20 | [Trade Caching](examples/20_caching_repeat_fetches.py) | `cache=True` for incremental `fetch_trades` | No |
+| 00 | [Sync basics](examples/00_sync_basics.ipynb) | OHLCV, order books, trades, funding rates, batch orders | Yes |
+| 01 | [Spot/Future/Swap Analysis](examples/01_spot_future_swap_price_volume_analysis.ipynb) | BTC spread and volume across contract types | No |
+| 02 | [Exchange Arbitrage](examples/02_exchange_arbitrage.ipynb) | Cross-exchange spread detection | No |
+| 03 | [Fetch Private Data](examples/03_fetch_private_data.ipynb) | Trades, positions, greeks | Yes |
+| 04 | [Plot Trades](examples/04_plot_trades.ipynb) | OHLCV candlestick + trade scatter charts | No |
+| 05 | [Orderbook Depth](examples/05_plot_orderbook_depth.ipynb) | Cumulative depth chart | No |
+| 06 | [Orderbook VWAPs](examples/06_calculate_orderbook_vwaps.ipynb) | VWAP at multiple notional depths | No |
+| 07 | [Market Making](examples/07_market_making_orders.ipynb) | LIMIT_MAKER and QUEUE orders | Yes |
+| 08 | [Coin-Quoted Pricing](examples/08_pricing_coin_quoted_symbols.ipynb) | Convert to USDT-equivalent prices | No |
+| 09 | [Deposits/Withdrawals](examples/09_deposits_withdrawals.ipynb) | Fetch deposit/withdrawal history | Yes |
+| 10 | [WS Liquidations](examples/10_websockets_listen_liquidations.py) (`.py`) | Stream live liquidation events | No |
+| 11 | [Volatility History](examples/11_fetch_volatility_history.ipynb) | BTC volatility from Deribit | No |
+| 12 | [Options Calendar Spread](examples/12_options_strategy_around_event.ipynb) | Pick BTC call legs around an event date | No |
+| 13 | [Delta Position](examples/13_delta_position.ipynb) | Net delta across spot + derivatives | Yes |
+| 14 | [WS Orders](examples/14_send_orders_via_websockets.py) (`.py`) | Place/edit orders via WebSocket | Yes |
+| 15 | [Open Interest](examples/15_open_interest_history.ipynb) | Historical open interest + pct change | No |
+| 16 | [1000 OHLCV Async](examples/16_load_1000_ohlcv_async.py) (`.py`) | Bulk OHLCV with `asyncio.gather` | No |
+| 17 | [All Exchanges Async](examples/17_load_symbols_all_exchanges_async.py) (`.py`) | Load markets from every exchange | No |
+| 18 | [Cheapest Withdrawal Route](examples/18_cheapest_withdrawal_route.ipynb) | Cheapest cross-exchange transfer rail per currency | Yes |
+| 19 | [Multi-Exchange Greeks](examples/19_multi_exchange_greeks.ipynb) | Aggregate option Greeks across binance/bybit/okx | No |
+| 20 | [Trade Caching](examples/20_caching_repeat_fetches.ipynb) | `cache=True` for incremental `fetch_trades` | No |
 
 ## Getting Started
 
