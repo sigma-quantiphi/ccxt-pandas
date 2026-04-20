@@ -322,6 +322,11 @@ OKX_METHOD_CONFIG: dict[str, MethodConfig] = _build_dual_case_config(
             data_key="data",
             column_names=("timestamp", "longShortRatio"),
         ),
+        # Added via ccxt PR #28427.
+        "publicGetRubikStatContractsLongShortPositionRatioContractTopTrader": MethodConfig(
+            data_key="data",
+            column_names=("timestamp", "longShortRatio"),
+        ),
         "publicGetRubikStatContractsOpenInterestHistory": MethodConfig(
             data_key="data",
             column_names=("timestamp", "oi", "oiCcy", "oiUsd"),
@@ -373,6 +378,9 @@ OKX_METHOD_CONFIG: dict[str, MethodConfig] = _build_dual_case_config(
         "publicGetMarketBlockTicker": MethodConfig(data_key="data"),
         "publicGetMarketPlatform24Volume": MethodConfig(data_key="data"),
         "publicGetMarketExchangeRate": MethodConfig(data_key="data"),
+        # Added via ccxt PR #28427 — "call-auction-details" (plural) is the path
+        # in the current OKX docs; the legacy singular `call-auction-detail` remains.
+        "publicGetMarketCallAuctionDetails": MethodConfig(data_key="data"),
         # --- Public instruments / funding ---
         # https://www.okx.com/docs-v5/en/#public-data-rest-api
         "publicGetPublicInstruments": MethodConfig(data_key="data"),
@@ -388,6 +396,16 @@ OKX_METHOD_CONFIG: dict[str, MethodConfig] = _build_dual_case_config(
         "publicGetPublicSettlementHistory": MethodConfig(data_key="data"),
         "publicGetPublicDeliveryExerciseHistory": MethodConfig(data_key="data"),
         "publicGetPublicEstimatedPrice": MethodConfig(data_key="data"),
+        # --- Public event contracts ---
+        # https://www.okx.com/docs-v5/en/#event-contract
+        # Added via ccxt PR #28427.
+        "publicGetPublicEventContractEvents": MethodConfig(data_key="data"),
+        "publicGetPublicEventContractMarkets": MethodConfig(data_key="data"),
+        "publicGetPublicEventContractSeries": MethodConfig(data_key="data"),
+        # --- Support ---
+        # Added via ccxt PR #28427 — "announcement-types" (singular "announcement")
+        # is the path in the current OKX docs; the legacy `announcements-types` remains.
+        "publicGetSupportAnnouncementTypes": MethodConfig(data_key="data"),
         # --- Private account / trade ---
         # https://www.okx.com/docs-v5/en/#trading-account-rest-api
         "privateGetAccountBalance": MethodConfig(data_key="data"),
@@ -399,6 +417,11 @@ OKX_METHOD_CONFIG: dict[str, MethodConfig] = _build_dual_case_config(
         "privateGetAccountConfig": MethodConfig(data_key="data"),
         "privateGetAccountInterestAccrued": MethodConfig(data_key="data"),
         "privateGetAccountLeverageInfo": MethodConfig(data_key="data"),
+        # Added via ccxt PR #28427.
+        "privateGetAccountSubtypes": MethodConfig(data_key="data"),
+        "privatePostAccountSetRiskOffsetAmt": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
         "privateGetTradeFills": MethodConfig(data_key="data"),
         "privateGetTradeFillsHistory": MethodConfig(data_key="data"),
         "privateGetTradeOrdersPending": MethodConfig(data_key="data"),
@@ -455,6 +478,21 @@ OKX_METHOD_CONFIG: dict[str, MethodConfig] = _build_dual_case_config(
         "privatePostFinanceFlexibleLoanAdjustCollateral": MethodConfig(
             data_key="data", single_dict=True
         ),
+        # --- Dual Investment (Shark Fin / DCD) ---
+        # https://www.okx.com/docs-v5/en/#financial-product-dual-investment
+        # Added via ccxt PR #28425 — pre-integrated here before CCXT release.
+        "privateGetFinanceSfpDcdCurrencyPair": MethodConfig(data_key="data"),
+        "privateGetFinanceSfpDcdOrderStatus": MethodConfig(data_key="data"),
+        "privateGetFinanceSfpDcdOrderHistory": MethodConfig(data_key="data"),
+        "privatePostFinanceSfpDcdTrade": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
+        "privatePostFinanceSfpDcdRedeemQuote": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
+        "privatePostFinanceSfpDcdRedeem": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
         # --- Spread trading ---
         # https://www.okx.com/docs-v5/en/#spread-trading-rest-api
         # Public endpoints
@@ -509,6 +547,10 @@ OKX_METHOD_CONFIG: dict[str, MethodConfig] = _build_dual_case_config(
         "privatePostTradingBotGridMarginBalance": MethodConfig(
             data_key="data", single_dict=True, is_write=True
         ),
+        # Added via ccxt PR #28427.
+        "privatePostTradingBotGridCopyOrderAlgo": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
         # --- Signal trading (trading bot) ---
         "privateGetTradingBotSignalOrdersAlgoPending": MethodConfig(data_key="data"),
         "privateGetTradingBotSignalOrdersAlgoHistory": MethodConfig(data_key="data"),
@@ -521,6 +563,58 @@ OKX_METHOD_CONFIG: dict[str, MethodConfig] = _build_dual_case_config(
         "privateGetTradingBotRecurringOrdersAlgoHistory": MethodConfig(data_key="data"),
         "privateGetTradingBotRecurringOrdersAlgoDetails": MethodConfig(data_key="data"),
         "privateGetTradingBotRecurringSubOrders": MethodConfig(data_key="data"),
+        # Recurring buy writes — added via ccxt PR #28427.
+        "privatePostTradingBotRecurringAddInvestment": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
+        "privatePostTradingBotRecurringAmendPriceRange": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
+        "privatePostTradingBotRecurringAmendRecurringAmount": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
+        "privatePostTradingBotRecurringAmendRecurringTime": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
+        "privatePostTradingBotRecurringPause": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
+        "privatePostTradingBotRecurringRestart": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
+        # --- DCA trading (trading bot) ---
+        # https://www.okx.com/docs-v5/en/#order-book-trading-dca-trading
+        # Added via ccxt PR #28425 — pre-integrated here before CCXT release.
+        "privateGetTradingBotDcaOngoingList": MethodConfig(data_key="data"),
+        "privateGetTradingBotDcaHistoryList": MethodConfig(data_key="data"),
+        "privateGetTradingBotDcaOrders": MethodConfig(data_key="data"),
+        "privateGetTradingBotDcaPositionDetails": MethodConfig(data_key="data"),
+        "privateGetTradingBotDcaCycleList": MethodConfig(data_key="data"),
+        # DCA writes — mirror grid pattern (single_dict + is_write)
+        "privatePostTradingBotDcaCreate": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
+        "privatePostTradingBotDcaAmendOrderAlgo": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
+        "privatePostTradingBotDcaStop": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
+        "privatePostTradingBotDcaOrdersManualBuy": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
+        "privatePostTradingBotDcaSettingsReinvestment": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
+        "privatePostTradingBotDcaSettingsTakeProfit": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
+        "privatePostTradingBotDcaMarginAdd": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
+        "privatePostTradingBotDcaMarginReduce": MethodConfig(
+            data_key="data", single_dict=True, is_write=True
+        ),
     }
 )
 
