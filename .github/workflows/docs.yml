@@ -38,7 +38,7 @@ jobs:
           pip install -r docs/requirements.txt
       - name: Build
         run: sphinx-build -b html --keep-going docs/source docs/build/html
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: docs/build/html
 
