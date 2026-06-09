@@ -60,7 +60,7 @@ jobs:
           uv run python -c "from ccxt_pandas_explorer import APP_PATH"
       - name: Upload coverage to Codecov
         if: matrix.python-version == '3.12'
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@v7
         with:
           files: ./coverage.xml
           fail_ci_if_error: false
